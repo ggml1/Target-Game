@@ -223,7 +223,7 @@ while (program)
                 ALLEGRO_EVENT event;
                 al_wait_for_event(eventsQueue, &event);
                 if(event.type == ALLEGRO_EVENT_KEY_CHAR){
-                    if(flag == 0){
+                    if(flag == 0){ ///ESSA FLAG MARCA O FIM DO IP E COMECO DA INSERCAO DO NICKNAME
                         if(event.keyboard.keycode == ALLEGRO_KEY_ESCAPE){
                             menuConnection = false;
                             menu = true;
@@ -247,7 +247,7 @@ while (program)
                         if(event.keyboard.keycode == ALLEGRO_KEY_ENTER && strlen(ipOficial) >= 9){
                             flag = 1;
                         }
-                    } else{
+                    } else{  ///ELSE DA FLAG (AQUI A FLAG == 1)
                         if(event.keyboard.keycode == ALLEGRO_KEY_ESCAPE){
                             menuConnection = false;
                             menu = true;
@@ -279,7 +279,7 @@ while (program)
                                     menuErroSocket();
                                     break;
                                 case -1:
-                                    menuErroConnectionFailure();
+                                    menuErroConnectionFailure();  // erro: nao da pra sair dessa tela *******CORRIGIR********
                                     break;
                                 case 0:
                                     menuErroServerFull();
@@ -297,13 +297,14 @@ while (program)
                 if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
                 
                 al_draw_bitmap(menuImg, 0, 0, 0);
+                al_draw_rectangle(LARGURA/2 - 320, ALTURA/2 + 20, LARGURA/2 + 320, ALTURA/2 + 70, al_map_rgb(255, 0, 0), 2);
+                al_draw_rectangle(LARGURA/2 - 320, ALTURA/2 - 100, LARGURA/2 + 320, ALTURA/2 - 50, al_map_rgb(255,0,0), 2);
                 al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 20, ALLEGRO_ALIGN_CENTRE, "CONNECTION");
                 al_draw_text(font_1, al_map_rgb(255,0,0), LARGURA/2-10, ALTURA/2 - 150, ALLEGRO_ALIGN_CENTRE, "ENTER THE SERVER'S IP:");
-                al_draw_rectangle(LARGURA/2 - 320, ALTURA/2 - 100, LARGURA/2 + 320, ALTURA/2 - 50, al_map_rgb(255,0,0), 2);
                 al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, ALTURA/2 - 94, ALLEGRO_ALIGN_CENTRE, ipOficial);
                 al_draw_text(font_1, al_map_rgb(255, 0, 0), LARGURA/2-10, ALTURA/2 - 30, ALLEGRO_ALIGN_CENTRE, "ENTER YOUR NICKNAME:");
                 al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, ALTURA/2 + 26, ALLEGRO_ALIGN_CENTRE, nickname);
-                al_draw_rectangle(LARGURA/2 - 320, ALTURA/2 + 20, LARGURA/2 + 320, ALTURA/2 + 70, al_map_rgb(255, 0, 0), 2);
+                al_draw_text(font_2, al_map_rgb(255,255,255), LARGURA/2 + 5, ALTURA/2 + 80, ALLEGRO_ALIGN_CENTRE, "(MUST BE AT LEAST 5 CHARACTERS LONG)");
                 al_draw_text(font_2, al_map_rgb(255, 0, 0), LARGURA/2, 640, ALLEGRO_ALIGN_CENTRE, "PRESS ESC TO RETURN TO MENU");
                 if(flag == 0) al_draw_bitmap(seta, LARGURA/2 - 405, ALTURA/2 - 100 , 0);
                 else al_draw_bitmap(seta, LARGURA/2 - 405, ALTURA/2 + 20 , 0);
@@ -313,7 +314,7 @@ while (program)
             }
         }
 //------------------------------------------------------------------------------------------------------------------------------------------------------
-        sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+        sendMsgToServer(&pacoteClient, sizeof(pacoteClient));   ///PRIMEIRA MSG DO PLAYER PARA O SERVER, "OFICIALIZA" A CONEXAO E EVITA BUGS
 //------------------------------------------------------------------------------------------------------------------------------------------------------
         while(teamSelection){
             bool notReady = true;
@@ -358,7 +359,9 @@ while (program)
     }
     return 0;       
 }
-
+//------------------------------------------------------------------------------------------------------------------------------------------------------
+//-----AQUI ESTA FORA DA MAIN - FUNCOES AUXILIARES!
+//------------------------------------------------------------------------------------------------------------------------------------------------------
 void menuErroSocket()
 {
     int vdd = 1;
@@ -375,8 +378,8 @@ void menuErroSocket()
         }
         al_draw_bitmap(menuImg, 0, 0, 0);
         al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 20, ALLEGRO_ALIGN_CENTRE, "CONNECTION");
-        al_draw_text(font_1, al_map_rgb(255,0,0), LARGURA/2-100, 384, ALLEGRO_ALIGN_CENTRE, "OOPS! SOCKET ERROR.");
-        al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2-100, 394, ALLEGRO_ALIGN_CENTRE, "PRESS ANY KEY TO RETURN AND TRY AGAIN.");
+        al_draw_text(font_1, al_map_rgb(255,0,0), LARGURA/2 + 10, 315, ALLEGRO_ALIGN_CENTRE, "OOPS! SOCKET ERROR.");
+        al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2 - 20, 361, ALLEGRO_ALIGN_CENTRE, "PRESS ANY KEY TO RETURN AND TRY AGAIN.");
         al_flip_display();
         al_clear_to_color(al_map_rgb(0,0,0));
         FPSLimit();
@@ -398,8 +401,8 @@ void menuErroServerFull()
         }
         al_draw_bitmap(menuImg, 0, 0, 0);
         al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 20, ALLEGRO_ALIGN_CENTRE, "CONNECTION");
-        al_draw_text(font_1, al_map_rgb(255,0,0), LARGURA/2-100, 384, ALLEGRO_ALIGN_CENTRE, "OOPS! SERVER IS FULL.");
-        al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2-100, 394, ALLEGRO_ALIGN_CENTRE, "PRESS ANY KEY TO RETURN");
+        al_draw_text(font_1, al_map_rgb(255,0,0), LARGURA/2 + 10, 315, ALLEGRO_ALIGN_CENTRE, "OOPS! SERVER IS FULL.");
+        al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2 - 20, 361, ALLEGRO_ALIGN_CENTRE, "PRESS ANY KEY TO RETURN");
         al_flip_display();
         al_clear_to_color(al_map_rgb(0,0,0));
         FPSLimit();
@@ -407,7 +410,7 @@ void menuErroServerFull()
 }
 void menuErroConnectionFailure()
 {
-    int vdd = 1;
+    bool vdd = true;
     eventsQueue = al_create_event_queue();
     while(vdd){
         startTimer();
@@ -415,14 +418,14 @@ void menuErroConnectionFailure()
             ALLEGRO_EVENT event;
             al_wait_for_event(eventsQueue, &event);
             if(event.type == ALLEGRO_EVENT_KEY_CHAR){
-                vdd = 0;
+                vdd = false;
             }
             if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
         }
         al_draw_bitmap(menuImg, 0, 0, 0);
         al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 20, ALLEGRO_ALIGN_CENTRE, "CONNECTION");
-        al_draw_text(font_1, al_map_rgb(255,0,0), LARGURA/2-100, 384, ALLEGRO_ALIGN_CENTRE, "OOPS! CONNECTION FAILURE.");
-        al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2-100, 384, ALLEGRO_ALIGN_CENTRE, "PRESS ANY KEY TO RETURN AND TRY AGAIN.");
+        al_draw_text(font_1, al_map_rgb(255,0,0), LARGURA/2 + 10, 315, ALLEGRO_ALIGN_CENTRE, "OOPS! CONNECTION FAILURE.");
+        al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2 - 20, 361, ALLEGRO_ALIGN_CENTRE, "PRESS ANY KEY TO RETURN AND TRY AGAIN.");
         al_flip_display();
         al_clear_to_color(al_map_rgb(0,0,0));
         FPSLimit();

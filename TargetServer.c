@@ -46,8 +46,6 @@ int main(){
                     break;
                 case playerAction:
                     break;
-
-
             }
         }
 

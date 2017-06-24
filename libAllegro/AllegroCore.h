@@ -33,8 +33,6 @@ ALLEGRO_BITMAP *tileSet;
 ALLEGRO_BITMAP *menuImg;
 ALLEGRO_BITMAP *seta;
 
-
-// NAO ESTA SENDO USADA
 typedef struct{
 	int tipoPacote;				// 0 -> msg inicial (nickname), 1 - > movimento
     char playerName[16];

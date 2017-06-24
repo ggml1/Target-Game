@@ -251,6 +251,7 @@ while (program)
                         if(event.keyboard.keycode == ALLEGRO_KEY_ESCAPE){
                             menuConnection = false;
                             menu = true;
+                            flag = 0;
                         }
                         if(strlen(nicknameTemp) < 15){
                             char nicktemp[] = {event.keyboard.unichar, '\0'};
@@ -326,6 +327,11 @@ while (program)
                     if(event.keyboard.keycode == ALLEGRO_KEY_ESCAPE){
                         teamSelection = false;
                         menuConnection = true;
+                        flag = 0;
+                        strcpy(ipOficial, "0.0.0.0");
+                        strcpy(ipTemp, "");
+                        strcpy(nickname, "<seu_nick>");
+                        strcpy(nicknameTemp, "");
                     }
                     if(event.keyboard.keycode == ALLEGRO_KEY_LEFT){
 
@@ -341,6 +347,8 @@ while (program)
 
             al_draw_bitmap(menuImg, 0, 0, 0);
             al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 20, ALLEGRO_ALIGN_CENTRE, "TEAM LOBBY");
+            al_draw_text(font_1, al_map_rgb(255,  0,  0), LARGURA/2 - 300, 110, ALLEGRO_ALIGN_CENTRE, "RED TEAM");
+            al_draw_text(font_1, al_map_rgb(  0,  0,255), LARGURA/2 + 260, 110, ALLEGRO_ALIGN_CENTRE, "BLUE TEAM");
             if(notReady) al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2, 610, ALLEGRO_ALIGN_CENTRE, "WAITING FOR PLAYERS...");
             al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2, 640, ALLEGRO_ALIGN_CENTRE, "PRESS ESC TO RETURN TO MENU");
             al_flip_display();

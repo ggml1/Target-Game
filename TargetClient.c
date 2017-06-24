@@ -124,20 +124,20 @@ while (program)
             al_draw_text(font_1, al_map_rgb(255,0,0), (LARGURA/2), (ALTURA/2) + 200, ALLEGRO_ALIGN_CENTRE , "EXIT GAME");
             switch(option){
                 case 0:
-                    al_draw_bitmap(seta, LARGURA/2 - 250, ALTURA/2 - 110, 0);
-                    al_draw_bitmap(seta, LARGURA/2 + 170, ALTURA/2 - 110, -1);
+                    al_draw_bitmap(seta, LARGURA/2 - 232, ALTURA/2 - 96, 0);
+                    al_draw_bitmap(seta, LARGURA/2 + 178, ALTURA/2 - 96, -1);
                     break;
                 case 1:
-                    al_draw_bitmap(seta, LARGURA/2 - 250, ALTURA/2 - 10, 0);
-                    al_draw_bitmap(seta, LARGURA/2 + 170, ALTURA/2 - 10, -1);
+                    al_draw_bitmap(seta, LARGURA/2 - 232, ALTURA/2 + 2, 0);
+                    al_draw_bitmap(seta, LARGURA/2 + 178, ALTURA/2 + 2, -1);
                     break;
                 case 2:
-                    al_draw_bitmap(seta, LARGURA/2 - 250, ALTURA/2 + 90, 0);
-                    al_draw_bitmap(seta, LARGURA/2 + 170, ALTURA/2 + 90, -1);
+                    al_draw_bitmap(seta, LARGURA/2 - 232, ALTURA/2 + 102, 0);
+                    al_draw_bitmap(seta, LARGURA/2 + 178, ALTURA/2 + 102, -1);
                     break;
                 case 3:
-                    al_draw_bitmap(seta, LARGURA/2 - 250, ALTURA/2 + 190 , 0);
-                    al_draw_bitmap(seta, LARGURA/2 + 170, ALTURA/2 + 190 , -1);
+                    al_draw_bitmap(seta, LARGURA/2 - 232, ALTURA/2 + 202, 0);
+                    al_draw_bitmap(seta, LARGURA/2 + 178, ALTURA/2 + 202, -1);
                     break;
             }
             al_flip_display();
@@ -307,8 +307,8 @@ while (program)
                 al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, ALTURA/2 + 26, ALLEGRO_ALIGN_CENTRE, nickname);
                 al_draw_text(font_2, al_map_rgb(255,255,255), LARGURA/2 + 5, ALTURA/2 + 80, ALLEGRO_ALIGN_CENTRE, "(MUST BE AT LEAST 5 CHARACTERS LONG)");
                 al_draw_text(font_2, al_map_rgb(255, 0, 0), LARGURA/2, 640, ALLEGRO_ALIGN_CENTRE, "PRESS ESC TO RETURN TO MENU");
-                if(flag == 0) al_draw_bitmap(seta, LARGURA/2 - 405, ALTURA/2 - 100 , 0);
-                else al_draw_bitmap(seta, LARGURA/2 - 405, ALTURA/2 + 20 , 0);
+                if(flag == 0) al_draw_bitmap(seta, LARGURA/2 - 405, ALTURA/2 - 95 , 0);
+                else al_draw_bitmap(seta, LARGURA/2 - 405, ALTURA/2 + 25 , 0);
                 al_flip_display();
                 al_clear_to_color(al_map_rgb(0,0,0));
                 FPSLimit();

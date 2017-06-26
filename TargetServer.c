@@ -3,6 +3,7 @@
 
 #define playerFlagMSG 0
 #define playerAction 1
+#define playerLogIn 2
 
 int main(){
     if(!coreInit()) //INICIA OS MODULOS PRINCIPAIS DO ALLEGRO
@@ -45,6 +46,43 @@ int main(){
                     playerList[id] = pacote;
                     break;
                 case playerAction:
+                    pacote.teamPos = 3 + chegou.client_id;
+                    broadcast(&pacote, sizeof(pacote));
+                    break;
+                case playerLogIn:
+                    pacote.teamPos = 3 + chegou.client_id;
+                    switch(pacote.teamPos){
+                        case 1:
+                            pacote.playerX = 22;
+                            pacote.playerY = 1;
+                            broadcast(&pacote, sizeof(pacote));
+                            break;
+                        case 2:
+                            pacote.playerX = 21;
+                            pacote.playerY = 1;
+                            broadcast(&pacote, sizeof(pacote));
+                            break;
+                        case 3:
+                            pacote.playerX = 1;
+                            pacote.playerY = 1;
+                            broadcast(&pacote, sizeof(pacote));
+                            break;
+                        case 4:
+                            pacote.playerX = 1;
+                            pacote.playerY = 30;
+                            broadcast(&pacote, sizeof(pacote));
+                            break;
+                        case 5:
+                            pacote.playerX = 1;
+                            pacote.playerY = 29;
+                            broadcast(&pacote, sizeof(pacote));
+                            break;
+                        case 6:
+                            pacote.playerX = 1;
+                            pacote.playerY = 28;
+                            broadcast(&pacote, sizeof(pacote));
+                            break;
+                    }
                     break;
             }
         }

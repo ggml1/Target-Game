@@ -34,12 +34,23 @@ ALLEGRO_BITMAP *menuImg;
 ALLEGRO_BITMAP *seta;
 
 typedef struct{
+	int teamPos;
 	int tipoPacote;				// 0 -> msg inicial (nickname), 1 - > movimento
     char playerName[16];
     char mov;                   // u -> up, d -> down, l -> left, r -> right, s -> space
     int playerX;
     int playerY;
 }Player;
+
+///1 2 3 -> time vermelho
+// 1 -> [22][1];
+// 2 -> [21][1];
+// 3 -> [20][1];
+// 4 5 6 -> time azul
+// 4 -> [1][30];
+// 5 -> [1][29];
+// 6 -> [1][28];
+
 
 //Funções Centrais da Allegro
 bool coreInit();

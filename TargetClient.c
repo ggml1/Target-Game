@@ -3,6 +3,7 @@
 
 #define LARGURA 1024
 #define ALTURA 768
+#define TILE 32
 
 void menuErroSocket();
 void menuErroServerFull();
@@ -44,8 +45,36 @@ int main(int argc, char const *argv[]){
     int option = 0;
     int conecta = 0;
     int flag = 0;
+    int i, j;
+    int aux;
 
-    Player pacoteClient;
+    //struct msg_ret_t chegouSv;
+    Player pacoteClient, pacoteDoServer, EU;
+
+    int mapa[24][32] = {{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}};
     
 //-------------------------------------------------------------------------------------
     
@@ -287,9 +316,11 @@ while (program)
                                     break;
                                 case 1:
                                     menuConnection = false;
-                                    teamSelection = true;
+                                    //teamSelection = true;
+                                    gameOn = true;
                                     pacoteClient.tipoPacote = 0;
                                     strcpy(pacoteClient.playerName, nickname);
+                                    strcpy(EU.playerName, nickname);
                                     break;
                             }
                         }
@@ -356,14 +387,100 @@ while (program)
             FPSLimit();
         }
 //------------------------------------------------------------------------------------------------------------------------------------------------------
-       /* while(gameOn){
+        pacoteClient.tipoPacote = 2;
+        sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+//------------------------------------------------------------------------------------------------------------------------------------------------------
+       while(gameOn){
             startTimer();
             while(!al_is_event_queue_empty(eventsQueue)){
                 ALLEGRO_EVENT event;
                 al_wait_for_event(eventsQueue, &event);
                 if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
+                if(event.type == ALLEGRO_EVENT_KEY_CHAR){
+                    switch(event.keyboard.keycode){
+                        case ALLEGRO_KEY_UP:
+                            if(EU.playerX > 1){
+                                aux = mapa[EU.playerX][EU.playerY];
+                                mapa[EU.playerX][EU.playerY] = mapa[EU.playerX-1][EU.playerY];
+                                mapa[EU.playerX-1][EU.playerY] = aux;
+                                EU.playerX--;
+                                pacoteClient = EU;
+                                pacoteClient.tipoPacote = 1;
+                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                printf("Estou em %d,%d\n",  EU.playerX,EU.playerY);
+                            }
+                            break;
+                        case ALLEGRO_KEY_DOWN:
+                            if(EU.playerX < 22){
+                                aux = mapa[EU.playerX][EU.playerY];
+
+                                mapa[EU.playerX][EU.playerY] = mapa[EU.playerX+1][EU.playerY];
+                                mapa[EU.playerX+1][EU.playerY] = aux;
+                                EU.playerX++;
+                                pacoteClient = EU;
+                                pacoteClient.tipoPacote = 1;
+                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                printf("Estou em %d,%d\n",  EU.playerX,EU.playerY);
+                            }
+                            break;
+                        case ALLEGRO_KEY_RIGHT:
+                            if(EU.playerY < 30){
+                                aux = mapa[EU.playerX][EU.playerY];
+                                mapa[EU.playerX][EU.playerY] = mapa[EU.playerX][EU.playerY+1];
+                                mapa[EU.playerX][EU.playerY+1] = aux;
+                                EU.playerY++;
+                                pacoteClient = EU;
+                                pacoteClient.tipoPacote = 1;
+                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                printf("Estou em %d,%d\n",  EU.playerX,EU.playerY);
+                            }
+                            break;
+                        case ALLEGRO_KEY_LEFT:
+                            if(EU.playerY > 1){
+                                aux = mapa[EU.playerX][EU.playerY];
+                                mapa[EU.playerX][EU.playerY] = mapa[EU.playerX][EU.playerY-1];
+                                mapa[EU.playerX][EU.playerY-1] = aux;
+                                EU.playerY--;
+                                pacoteClient = EU;
+                                pacoteClient.tipoPacote = 1;
+                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                printf("Estou em %d,%d\n",  EU.playerX,EU.playerY);
+                            }
+                            break;
+                    }
+                }
             }
-        }*/
+            //chegouSv = recvMsgFromServer(&pacoteDoServer, DONT_WAIT);
+            if(recvMsgFromServer(&pacoteDoServer, DONT_WAIT) != NO_MESSAGE){
+                mapa[pacoteDoServer.playerX][pacoteDoServer.playerY] = pacoteDoServer.teamPos;
+                if(strcmp(EU.playerName, pacoteDoServer.playerName) == 0) EU = pacoteDoServer;
+            }
+                for(i=0; i<24; i++){
+                    for(j=0; j<32; j++){
+                            switch(mapa[i][j]){
+                                case 0:
+                                    al_draw_bitmap_region(tileSet, 0, 0, 96, 96, TILE*j, TILE*i, 0);
+                                    break;
+                                case 1:
+                                    al_draw_bitmap_region(tileSet, 0, 0, 96, 96, TILE*j, TILE*i, 0);
+                                    al_draw_bitmap_region(tileSet, 32, 32, 96, 96, TILE*j, TILE*i, 0);
+                                    break;
+                                case 3:
+                                    al_draw_bitmap_region(tileSet, 0, 0, 96, 96, TILE*j, TILE*i, 0);
+                                    al_draw_bitmap_region(tileSet,2*TILE,0*TILE,96,96,TILE*j,TILE*i,0);
+                                    break;
+                                case 4:
+                                    al_draw_bitmap_region(tileSet, 0, 0, 96, 96, TILE*j, TILE*i, 0);
+                                    al_draw_bitmap_region(tileSet,2*TILE,1*TILE, 96, 96, TILE*j, TILE*i, 0);
+                                    break;
+                            }
+                    }
+                }
+                //drawplayer
+            al_flip_display();
+            al_clear_to_color(al_map_rgb(0,0,0));
+            FPSLimit();
+        }
     }
     return 0;       
 }

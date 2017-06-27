@@ -45,36 +45,13 @@ int main(int argc, char const *argv[]){
     int option = 0;
     int conecta = 0;
     int flag = 0;
-    int i, j;
-    int aux;
+    int i, j, l = 0;
+    int aux;    
+    int map[24][32];
 
     //struct msg_ret_t chegouSv;
     Player pacoteClient, pacoteDoServer, EU;
-
-    int mapa[24][32] = {{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}};
+    Moves Alteracoes;
     
 //-------------------------------------------------------------------------------------
     
@@ -389,6 +366,16 @@ while (program)
 //------------------------------------------------------------------------------------------------------------------------------------------------------
         pacoteClient.tipoPacote = 2;
         sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+        while(recvMsgFromServer(&pacoteDoServer, DONT_WAIT) == NO_MESSAGE){
+            printf("esperando mapa...\n");
+        }
+        printf("Recebi pra entrar!\n");
+        for(i=0; i<24; i++){
+            for(j=0; j<32; j++){
+                map[i][j] = pacoteDoServer.mapa[i][j];
+            }
+        }
+
 //------------------------------------------------------------------------------------------------------------------------------------------------------
        while(gameOn){
             startTimer();
@@ -396,68 +383,53 @@ while (program)
                 ALLEGRO_EVENT event;
                 al_wait_for_event(eventsQueue, &event);
                 if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
-                if(event.type == ALLEGRO_EVENT_KEY_CHAR){
+                if(event.type == ALLEGRO_EVENT_KEY_DOWN){
                     switch(event.keyboard.keycode){
                         case ALLEGRO_KEY_UP:
-                            if(EU.playerX > 1){
-                                aux = mapa[EU.playerX][EU.playerY];
-                                mapa[EU.playerX][EU.playerY] = mapa[EU.playerX-1][EU.playerY];
-                                mapa[EU.playerX-1][EU.playerY] = aux;
-                                EU.playerX--;
-                                pacoteClient = EU;
-                                pacoteClient.tipoPacote = 1;
-                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
-                                printf("Estou em %d,%d\n",  EU.playerX,EU.playerY);
-                            }
+                            pacoteClient.mov = 'u';
+                            pacoteClient.tipoPacote = 1;
+                            sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
                             break;
                         case ALLEGRO_KEY_DOWN:
-                            if(EU.playerX < 22){
-                                aux = mapa[EU.playerX][EU.playerY];
-
-                                mapa[EU.playerX][EU.playerY] = mapa[EU.playerX+1][EU.playerY];
-                                mapa[EU.playerX+1][EU.playerY] = aux;
-                                EU.playerX++;
-                                pacoteClient = EU;
-                                pacoteClient.tipoPacote = 1;
-                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
-                                printf("Estou em %d,%d\n",  EU.playerX,EU.playerY);
-                            }
+                            pacoteClient.mov = 'd';
+                            pacoteClient.tipoPacote = 1;
+                            sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
                             break;
                         case ALLEGRO_KEY_RIGHT:
-                            if(EU.playerY < 30){
-                                aux = mapa[EU.playerX][EU.playerY];
-                                mapa[EU.playerX][EU.playerY] = mapa[EU.playerX][EU.playerY+1];
-                                mapa[EU.playerX][EU.playerY+1] = aux;
-                                EU.playerY++;
-                                pacoteClient = EU;
-                                pacoteClient.tipoPacote = 1;
-                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
-                                printf("Estou em %d,%d\n",  EU.playerX,EU.playerY);
-                            }
+                            pacoteClient.mov = 'r';
+                            pacoteClient.tipoPacote = 1;
+                            sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
                             break;
                         case ALLEGRO_KEY_LEFT:
-                            if(EU.playerY > 1){
-                                aux = mapa[EU.playerX][EU.playerY];
-                                mapa[EU.playerX][EU.playerY] = mapa[EU.playerX][EU.playerY-1];
-                                mapa[EU.playerX][EU.playerY-1] = aux;
-                                EU.playerY--;
-                                pacoteClient = EU;
-                                pacoteClient.tipoPacote = 1;
-                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
-                                printf("Estou em %d,%d\n",  EU.playerX,EU.playerY);
-                            }
+                            pacoteClient.mov = 'l';
+                            pacoteClient.tipoPacote = 1;
+                            sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
                             break;
                     }
                 }
             }
-            //chegouSv = recvMsgFromServer(&pacoteDoServer, DONT_WAIT);
-            if(recvMsgFromServer(&pacoteDoServer, DONT_WAIT) != NO_MESSAGE){
-                mapa[pacoteDoServer.playerX][pacoteDoServer.playerY] = pacoteDoServer.teamPos;
-                if(strcmp(EU.playerName, pacoteDoServer.playerName) == 0) EU = pacoteDoServer;
+            if(l == 0){
+                if(recvMsgFromServer(&pacoteDoServer, DONT_WAIT) != NO_MESSAGE){
+                    for(i=0; i<24; i++){
+                        for(j=0; j<24; j++){
+                            map[i][j] = pacoteDoServer.mapa[i][j];
+                        }
+                    }
+                    l++;
+                }
+            }
+            else{
+                if(recvMsgFromServer(&Alteracoes, DONT_WAIT) != NO_MESSAGE){
+                    printf("Mudou a matriz!\n");
+                    map[Alteracoes.oldx][Alteracoes.oldy] = 0;
+                    map[Alteracoes.newx][Alteracoes.newy] = Alteracoes.idMoved;
+                    printf("Posicoes:\nAntiga: %d %d\nNova: %d %d\n", Alteracoes.oldx, Alteracoes.oldy, Alteracoes.newx, Alteracoes.newy);
+                    printf("Valor antigo: %d\n Valor novo: %d\n", map[Alteracoes.oldx][Alteracoes.oldy], map[Alteracoes.newx][Alteracoes.newy]);
+                }
             }
                 for(i=0; i<24; i++){
                     for(j=0; j<32; j++){
-                            switch(mapa[i][j]){
+                            switch(map[i][j]){
                                 case 0:
                                     al_draw_bitmap_region(tileSet, 0, 0, 96, 96, TILE*j, TILE*i, 0);
                                     break;
@@ -465,11 +437,11 @@ while (program)
                                     al_draw_bitmap_region(tileSet, 0, 0, 96, 96, TILE*j, TILE*i, 0);
                                     al_draw_bitmap_region(tileSet, 32, 32, 96, 96, TILE*j, TILE*i, 0);
                                     break;
-                                case 3:
+                                case 3: //player
                                     al_draw_bitmap_region(tileSet, 0, 0, 96, 96, TILE*j, TILE*i, 0);
                                     al_draw_bitmap_region(tileSet,2*TILE,0*TILE,96,96,TILE*j,TILE*i,0);
                                     break;
-                                case 4:
+                                case 4: //player
                                     al_draw_bitmap_region(tileSet, 0, 0, 96, 96, TILE*j, TILE*i, 0);
                                     al_draw_bitmap_region(tileSet,2*TILE,1*TILE, 96, 96, TILE*j, TILE*i, 0);
                                     break;

@@ -37,10 +37,20 @@ typedef struct{
 	int teamPos;
 	int tipoPacote;				// 0 -> msg inicial (nickname), 1 - > movimento
     char playerName[16];
-    char mov;                   // u -> up, d -> down, l -> left, r -> right, s -> space
+    char mov;
     int playerX;
     int playerY;
+    int mapa[24][32];
 }Player;
+
+typedef struct{
+	int tipoPacote;
+	int oldx;
+	int oldy;
+	int newx;
+	int newy;
+	int idMoved;
+}Moves;
 
 ///1 2 3 -> time vermelho
 // 1 -> [22][1];

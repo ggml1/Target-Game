@@ -5,6 +5,31 @@
 #define playerAction 1
 #define playerLogIn 2
 
+int mapa[24][32] = {{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}};
+
 int main(){
     if(!coreInit()) //INICIA OS MODULOS PRINCIPAIS DO ALLEGRO
         return -1;
@@ -23,8 +48,10 @@ int main(){
 
     int qtdPlayers = 0; 
     struct msg_ret_t chegou;
-    Player playerList[6], pacote;
+    Player playerList[6], pacote, playersJogando[10];
+    Moves mudaMatriz;
 
+    int i, j, x, y;
     
     serverInit(6); // INICIALIZA O SERVER E PERMITE NO MAX. 4 CLIENTS
     
@@ -41,52 +68,112 @@ int main(){
         {
             id = chegou.client_id;
             switch(pacote.tipoPacote){
-                case playerFlagMSG:
+                case playerFlagMSG: //0
                     printf("%s se conectou com o id %d\n", pacote.playerName, chegou.client_id); //chegou.client_id = id;
                     playerList[id] = pacote;
                     break;
-                case playerAction:
+
+                case playerAction: //1
                     pacote.teamPos = 3 + chegou.client_id;
-                    broadcast(&pacote, sizeof(pacote));
-                    break;
-                case playerLogIn:
-                    pacote.teamPos = 3 + chegou.client_id;
-                    switch(pacote.teamPos){
-                        case 1:
-                            pacote.playerX = 22;
-                            pacote.playerY = 1;
-                            broadcast(&pacote, sizeof(pacote));
+                    switch(pacote.mov){
+                        case 'u':
+                            if(playersJogando[pacote.teamPos].playerX > 1){
+                                x = playersJogando[pacote.teamPos].playerX;
+                                y = playersJogando[pacote.teamPos].playerY;
+                                mudaMatriz.idMoved = pacote.teamPos;
+                                mudaMatriz.oldx = x;
+                                mudaMatriz.oldy = y;
+                                mapa[x][y] = 0;
+                                x--;
+                                mudaMatriz.newx = x;
+                                mudaMatriz.newy = y;
+                                mapa[x][y] = pacote.teamPos;
+                                playersJogando[pacote.teamPos].playerX--;
+                            }
                             break;
-                        case 2:
-                            pacote.playerX = 21;
-                            pacote.playerY = 1;
-                            broadcast(&pacote, sizeof(pacote));
+                        case 'd':
+                            if(playersJogando[pacote.teamPos].playerX < 22){
+                                x = playersJogando[pacote.teamPos].playerX;
+                                y = playersJogando[pacote.teamPos].playerY;
+                                mudaMatriz.idMoved = pacote.teamPos;
+                                mudaMatriz.oldx = x;
+                                mudaMatriz.oldy = y;
+                                mapa[x][y] = 0;
+                                x++;
+                                mudaMatriz.newx = x;
+                                mudaMatriz.newy = y;
+                                mapa[x][y] = pacote.teamPos;
+                                playersJogando[pacote.teamPos].playerX++;
+                            }
                             break;
-                        case 3:
-                            pacote.playerX = 1;
-                            pacote.playerY = 1;
-                            broadcast(&pacote, sizeof(pacote));
+                        case 'l':
+                            if(playersJogando[pacote.teamPos].playerY > 1){
+                                x = playersJogando[pacote.teamPos].playerX;
+                                y = playersJogando[pacote.teamPos].playerY;
+                                mudaMatriz.idMoved = pacote.teamPos;
+                                mudaMatriz.oldx = x;
+                                mudaMatriz.oldy = y;
+                                mapa[x][y] = 0;
+                                y--;
+                                mudaMatriz.newx = x;
+                                mudaMatriz.newy = y;
+                                mapa[x][y] = pacote.teamPos;
+                                playersJogando[pacote.teamPos].playerY--;
+                            }
                             break;
-                        case 4:
-                            pacote.playerX = 1;
-                            pacote.playerY = 30;
-                            broadcast(&pacote, sizeof(pacote));
-                            break;
-                        case 5:
-                            pacote.playerX = 1;
-                            pacote.playerY = 29;
-                            broadcast(&pacote, sizeof(pacote));
-                            break;
-                        case 6:
-                            pacote.playerX = 1;
-                            pacote.playerY = 28;
-                            broadcast(&pacote, sizeof(pacote));
+                        case 'r':
+                            if(playersJogando[pacote.teamPos].playerY < 30){
+                                x = playersJogando[pacote.teamPos].playerX;
+                                y = playersJogando[pacote.teamPos].playerY;
+                                mudaMatriz.idMoved = pacote.teamPos;
+                                mudaMatriz.oldx = x;
+                                mudaMatriz.oldy = y;
+                                mapa[x][y] = 0;
+                                y++;
+                                mudaMatriz.newx = x;
+                                mudaMatriz.newy = y;
+                                mapa[x][y] = pacote.teamPos;
+                                playersJogando[pacote.teamPos].playerY++;
+                            }
                             break;
                     }
+                    broadcast(&mudaMatriz, sizeof(mudaMatriz));
+                    break;
+
+                case playerLogIn: //2
+                    //player logou no server. hora de mostrar onde ele fica.
+                    pacote.teamPos = 3 + chegou.client_id;
+                    switch(pacote.teamPos){
+                        case 3:
+                            playersJogando[3].playerX = 22;
+                            playersJogando[3].playerY = 1;
+                            mapa[22][1] = 3;
+                            break;
+                        case 4:
+                            playersJogando[4].playerX = 21;
+                            playersJogando[4].playerY = 1;
+                            mapa[21][1] = 4;
+                            break;
+                        case 5:
+                            playersJogando[5].playerX = 1;
+                            playersJogando[5].playerY = 1;
+                            mapa[1][1] = 5;;
+                            break;
+                        case 6:
+                            playersJogando[6].playerX = 1;
+                            playersJogando[6].playerY = 30;
+                            mapa[1][30] = 6;
+                            break;
+                    }
+                    for(i=0; i<24; i++){
+                        for(j=0; j<32; j++){
+                            pacote.mapa[i][j] = mapa[i][j];
+                        }
+                    }
+                    broadcast(&pacote, sizeof(pacote));
                     break;
             }
         }
-
 
         al_flip_display();
         al_clear_to_color(al_map_rgb(0, 0, 0));

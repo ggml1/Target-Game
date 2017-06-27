@@ -193,8 +193,20 @@ bool loadGraphics() // INICIA AS IMAGENS "1_bitmap", "2_bitmap", "3_bitmap", "4_
         return false;
     }
 
-    menuImg = al_load_bitmap("Resources/Etc/menu.jpg");
-    if(!menuImg){
+    menuOpcoes = al_load_bitmap("Resources/Etc/menuOpcoes.png");
+    if(!menuOpcoes){
+        fprintf(stderr, "Falha ao carregar o tileset.\n");
+        return false;
+    }
+
+    menuInicio = al_load_bitmap("Resources/Etc/menuInicio.png");
+    if(!menuInicio){
+        fprintf(stderr, "Falha ao carregar o tileset.\n");
+        return false;
+    }
+
+    menuNormal = al_load_bitmap("Resources/Etc/menuNormal.png");
+    if(!menuNormal){
         fprintf(stderr, "Falha ao carregar o tileset.\n");
         return false;
     }

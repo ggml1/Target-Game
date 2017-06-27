@@ -41,6 +41,7 @@ int main(int argc, char const *argv[]){
     bool gameOn = false;
     bool teamSelection = false;
     bool pisca = false;
+    bool receberMapa = false;
     int count = 0;
     int option = 0;
     int conecta = 0;
@@ -67,16 +68,16 @@ while (program)
             if(event.type == ALLEGRO_EVENT_KEY_DOWN){
 		      inicio = false;
 		      menu = true;
-		}
+		    }
             if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) inicio = false;
         }
-		al_draw_bitmap(menuImg, 0, 0, 0);
-        al_draw_textf(font_1, al_map_rgb(255,255,255), LARGURA/2 - 140, 50, 0, "TARGET");
+		al_draw_bitmap(menuInicio, 0, 0, 0);
+        al_draw_textf(font_1, al_map_rgb(255,255,255), LARGURA/2 - 105, 50, 0, "TARGET");
         if(Blink() == 1) 
             pisca = !pisca;
 
         if(pisca)
-            al_draw_textf(font_1, al_map_rgb(255,0,0), LARGURA/2 - 335, ALTURA/2 + 40, 0, "PRESS ANY KEY TO BEGIN");
+            al_draw_textf(font_1, al_map_rgb(255,0,0), LARGURA/2 - 310, ALTURA/2 + 120, 0, "PRESS ANY KEY TO BEGIN");
 
         al_flip_display();
         al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -122,7 +123,7 @@ while (program)
                         break;
 		        }
             if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();   // APERTOU O 'X' DA JANELA 
-            al_draw_bitmap(menuImg, 0, 0, 0);
+            al_draw_bitmap(menuOpcoes, 0, 0, 0);
             al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 50, ALLEGRO_ALIGN_CENTRE , "TARGET");
             al_draw_text(font_1, al_map_rgb(255,0,0), (LARGURA/2), (ALTURA/2) - 100, ALLEGRO_ALIGN_CENTRE , "START GAME");
             al_draw_text(font_1, al_map_rgb(255,0,0), (LARGURA/2), (ALTURA/2), ALLEGRO_ALIGN_CENTRE , "HELP");
@@ -167,7 +168,7 @@ while (program)
             if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
         }
 
-        al_draw_bitmap(menuImg, 0, 0, 0);
+        al_draw_bitmap(menuNormal, 0, 0, 0);
         al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 50, ALLEGRO_ALIGN_CENTRE , "HELP");
         al_draw_text(font_1, al_map_rgb(255,255,255), 100 , 120, ALLEGRO_ALIGN_LEFT , "01. MOVES");
         al_draw_text(font_2, al_map_rgb(255,255,255), 200, 200, ALLEGRO_ALIGN_CENTRE , "UP");
@@ -197,8 +198,8 @@ while (program)
                         credits = false;
                     }
             	if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
-              	al_draw_bitmap(menuImg, 0, 0, 0);
-            	al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA / 2 , 20,ALLEGRO_ALIGN_CENTRE , "CREDITS");
+              	al_draw_bitmap(menuNormal, 0, 0, 0);
+            	al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA / 2 , 50, ALLEGRO_ALIGN_CENTRE , "CREDITS");
             	al_draw_text(font_1, al_map_rgb(255,255,255), 100, 200, ALLEGRO_ALIGN_LEFT , "01. STUDENTS");
             	al_draw_text(font_2, al_map_rgb(255,255,255), 200, 270, ALLEGRO_ALIGN_CENTRE , "RAFAEL VASCONCELOS");
             	al_draw_text(font_2, al_map_rgb(255,255,255), 500, 270, ALLEGRO_ALIGN_CENTRE , "GABRIEL GOMES");
@@ -294,7 +295,7 @@ while (program)
                                 case 1:
                                     menuConnection = false;
                                     //teamSelection = true;
-                                    gameOn = true;
+                                    receberMapa = true;
                                     pacoteClient.tipoPacote = 0;
                                     strcpy(pacoteClient.playerName, nickname);
                                     strcpy(EU.playerName, nickname);
@@ -305,7 +306,7 @@ while (program)
                 }
                 if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
                 
-                al_draw_bitmap(menuImg, 0, 0, 0);
+                al_draw_bitmap(menuNormal, 0, 0, 0);
                 al_draw_rectangle(LARGURA/2 - 320, ALTURA/2 + 20, LARGURA/2 + 320, ALTURA/2 + 70, al_map_rgb(255, 0, 0), 2);
                 al_draw_rectangle(LARGURA/2 - 320, ALTURA/2 - 100, LARGURA/2 + 320, ALTURA/2 - 50, al_map_rgb(255,0,0), 2);
                 al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 20, ALLEGRO_ALIGN_CENTRE, "CONNECTION");
@@ -353,7 +354,7 @@ while (program)
                 
             }
 
-            al_draw_bitmap(menuImg, 0, 0, 0);
+            al_draw_bitmap(menuNormal, 0, 0, 0);
             al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 20, ALLEGRO_ALIGN_CENTRE, "TEAM LOBBY");
             al_draw_text(font_1, al_map_rgb(255,  0,  0), LARGURA/2 - 300, 110, ALLEGRO_ALIGN_CENTRE, "RED TEAM");
             al_draw_text(font_1, al_map_rgb(  0,  0,255), LARGURA/2 + 260, 110, ALLEGRO_ALIGN_CENTRE, "BLUE TEAM");
@@ -364,16 +365,21 @@ while (program)
             FPSLimit();
         }
 //------------------------------------------------------------------------------------------------------------------------------------------------------
-        pacoteClient.tipoPacote = 2;
-        sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
-        while(recvMsgFromServer(&pacoteDoServer, DONT_WAIT) == NO_MESSAGE){
-            printf("esperando mapa...\n");
-        }
-        printf("Recebi pra entrar!\n");
-        for(i=0; i<24; i++){
-            for(j=0; j<32; j++){
-                map[i][j] = pacoteDoServer.mapa[i][j];
+        while(receberMapa){
+            pacoteClient.tipoPacote = 2;
+            sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+            while(recvMsgFromServer(&pacoteDoServer, DONT_WAIT) == NO_MESSAGE){
+                printf("esperando mapa...\n");
             }
+            printf("Recebi pra entrar!\n");
+            for(i=0; i<24; i++){
+                for(j=0; j<32; j++){
+                    map[i][j] = pacoteDoServer.mapa[i][j];
+                }
+            }
+            for(i=0; i<6; i++) Alteracoes.olhando[3+i] = 'd';
+            receberMapa = false;
+            gameOn = true;
         }
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -431,19 +437,131 @@ while (program)
                     for(j=0; j<32; j++){
                             switch(map[i][j]){
                                 case 0:
-                                    al_draw_bitmap_region(tileSet, 0, 0, 96, 96, TILE*j, TILE*i, 0);
+                                    al_draw_bitmap_region(tileSet, 0, 0, 32, 32, TILE*j, TILE*i, 0);
                                     break;
                                 case 1:
-                                    al_draw_bitmap_region(tileSet, 0, 0, 96, 96, TILE*j, TILE*i, 0);
-                                    al_draw_bitmap_region(tileSet, 32, 32, 96, 96, TILE*j, TILE*i, 0);
+                                    al_draw_bitmap_region(tileSet, 0, 0, 32, 32, TILE*j, TILE*i, 0);
+                                    al_draw_bitmap_region(tileSet, 32, 32, 32, 32, TILE*j, TILE*i, 0);
                                     break;
                                 case 3: //player
-                                    al_draw_bitmap_region(tileSet, 0, 0, 96, 96, TILE*j, TILE*i, 0);
-                                    al_draw_bitmap_region(tileSet,2*TILE,0*TILE,96,96,TILE*j,TILE*i,0);
+                                    switch(Alteracoes.olhando[3]){
+                                        case 'u':
+                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 0*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            break;
+                                        case 'd':
+                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 0*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            break;
+                                        case 'l':
+                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 0*TILE, 7*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            break;
+                                        case 'r':
+                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 0*TILE, 8*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            break;
+                                    }
                                     break;
                                 case 4: //player
-                                    al_draw_bitmap_region(tileSet, 0, 0, 96, 96, TILE*j, TILE*i, 0);
-                                    al_draw_bitmap_region(tileSet,2*TILE,1*TILE, 96, 96, TILE*j, TILE*i, 0);
+                                    switch(Alteracoes.olhando[4]){
+                                        case 'u':
+                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 1*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            break;
+                                        case 'd':
+                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 1*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            break;
+                                        case 'l':
+                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 1*TILE, 7*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            break;
+                                        case 'r':
+                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 1*TILE, 8*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            break;
+                                    }
+                                    break;
+                                case 5:
+                                    switch(Alteracoes.olhando[5]){
+                                        case 'u':
+                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 2*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            break;
+                                        case 'd':
+                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 2*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            break;
+                                        case 'l':
+                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 2*TILE, 7*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            break;
+                                        case 'r':
+                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 2*TILE, 8*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            break;
+                                    }
+                                    break;
+                                case 6:
+                                    switch(Alteracoes.olhando[6]){
+                                        case 'u':
+                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 0*TILE, 2*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            break;
+                                        case 'd':
+                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 0*TILE, 5*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            break;
+                                        case 'l':
+                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 0*TILE, 3*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            break;
+                                        case 'r':
+                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 0*TILE, 4*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            break;
+                                    }
+                                    break;
+                                case 7:
+                                    switch(Alteracoes.olhando[7]){
+                                        case 'u':
+                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 1*TILE, 2*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            break;
+                                        case 'd':
+                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 1*TILE, 5*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            break;
+                                        case 'l':
+                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 1*TILE, 3*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            break;
+                                        case 'r':
+                                            al_draw_bitmap_region(tileSet,      0,     0, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 1*TILE,4*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            break;
+                                    }
+                                    break;
+                                case 8:
+                                    switch(Alteracoes.olhando[8]){
+                                        case 'u':
+                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 2*TILE, 2*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            break;
+                                        case 'd':
+                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 2*TILE, 5*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            break;
+                                        case 'l':
+                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 2*TILE, 3*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            break;
+                                        case 'r':
+                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 2*TILE, 4*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            break;
+                                    }
                                     break;
                             }
                     }
@@ -459,7 +577,7 @@ while (program)
 //------------------------------------------------------------------------------------------------------------------------------------------------------
 //-----AQUI ESTA FORA DA MAIN - FUNCOES AUXILIARES!
 //------------------------------------------------------------------------------------------------------------------------------------------------------
-void menuErroSocket()
+void menuErroSocket()  ////VER FUNCAO DE ERRO DE CONEXAO NA BIBLIOTECA DE LUCAS!
 {
     int vdd = 1;
     eventsQueue = al_create_event_queue();
@@ -473,7 +591,7 @@ void menuErroSocket()
             }
             if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
         }
-        al_draw_bitmap(menuImg, 0, 0, 0);
+        al_draw_bitmap(menuNormal, 0, 0, 0);
         al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 20, ALLEGRO_ALIGN_CENTRE, "CONNECTION");
         al_draw_text(font_1, al_map_rgb(255,0,0), LARGURA/2 + 10, 315, ALLEGRO_ALIGN_CENTRE, "OOPS! SOCKET ERROR.");
         al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2 - 20, 361, ALLEGRO_ALIGN_CENTRE, "PRESS ANY KEY TO RETURN AND TRY AGAIN.");
@@ -496,7 +614,7 @@ void menuErroServerFull()
             }
             if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
         }
-        al_draw_bitmap(menuImg, 0, 0, 0);
+        al_draw_bitmap(menuNormal, 0, 0, 0);
         al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 20, ALLEGRO_ALIGN_CENTRE, "CONNECTION");
         al_draw_text(font_1, al_map_rgb(255,0,0), LARGURA/2 + 10, 315, ALLEGRO_ALIGN_CENTRE, "OOPS! SERVER IS FULL.");
         al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2 - 20, 361, ALLEGRO_ALIGN_CENTRE, "PRESS ANY KEY TO RETURN");
@@ -519,7 +637,7 @@ void menuErroConnectionFailure()
             }
             if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
         }
-        al_draw_bitmap(menuImg, 0, 0, 0);
+        al_draw_bitmap(menuNormal, 0, 0, 0);
         al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 20, ALLEGRO_ALIGN_CENTRE, "CONNECTION");
         al_draw_text(font_1, al_map_rgb(255,0,0), LARGURA/2 + 10, 315, ALLEGRO_ALIGN_CENTRE, "OOPS! CONNECTION FAILURE.");
         al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2 - 20, 361, ALLEGRO_ALIGN_CENTRE, "PRESS ANY KEY TO RETURN AND TRY AGAIN.");

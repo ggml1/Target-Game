@@ -30,7 +30,9 @@ ALLEGRO_BITMAP *bit2;
 ALLEGRO_BITMAP *bit3;
 ALLEGRO_BITMAP *bit4;
 ALLEGRO_BITMAP *tileSet;
-ALLEGRO_BITMAP *menuImg;
+ALLEGRO_BITMAP *menuInicio;
+ALLEGRO_BITMAP *menuOpcoes;
+ALLEGRO_BITMAP *menuNormal;
 ALLEGRO_BITMAP *seta;
 
 typedef struct{
@@ -44,12 +46,13 @@ typedef struct{
 }Player;
 
 typedef struct{
-	int tipoPacote;
+	//int tipoPacote; nao precisa, pois o server mandara pro client e o client nao precisa ter um switch case de opcoes de moves.
 	int oldx;
 	int oldy;
 	int newx;
 	int newy;
 	int idMoved;
+	char olhando[20];
 }Moves;
 
 ///1 2 3 -> time vermelho

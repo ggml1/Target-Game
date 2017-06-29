@@ -159,14 +159,24 @@ int main(){
                             mapa[21][1] = 4;
                             break;
                         case 5:
-                            playersJogando[5].playerX = 1;
+                            playersJogando[5].playerX = 20;
                             playersJogando[5].playerY = 1;
                             mapa[1][1] = 5;;
                             break;
                         case 6:
-                            playersJogando[6].playerX = 1;
-                            playersJogando[6].playerY = 30;
-                            mapa[1][30] = 6;
+                            playersJogando[6].playerX = 30;
+                            playersJogando[6].playerY = 1;
+                            mapa[30][1] = 6;
+                            break;
+                        case 7:
+                            playersJogando[7].playerX = 29;
+                            playersJogando[7].playerY = 1;
+                            mapa[29][1] = 7;
+                            break;
+                        case 8:
+                            playersJogando[8].playerX = 28;
+                            playersJogando[8].playerY = 1;
+                            mapa[28][1] = 8;
                             break;
                     }
                     for(i=0; i<24; i++){

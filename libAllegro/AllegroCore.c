@@ -103,14 +103,20 @@ bool inputInit()
 bool fontInit() // O NOME DA FONTE EH "font_1"
 {
     /*------------------------------FONTE--------------------------------*/
-    font_1 = al_load_font("Resources/Fonts/Boxy-Bold.ttf", 38, 0);
+    font_1 = al_load_font("Resources/Fonts/Boxy-Bold.ttf", 45, 0);
     if (!font_1)
     {
         fprintf(stderr, "Falha ao carregar \"Boxy-Bold.ttf\".\n");
         return false;
     }
-	font_2 = al_load_font("Resources/Fonts/Boxy-Bold.ttf", 20, 0);
+	font_2 = al_load_font("Resources/Fonts/Boxy-Bold.ttf", 25, 0);
     if (!font_2)
+    {
+        fprintf(stderr, "Falha ao carregar \"Boxy-Bold.ttf\".\n");
+        return false;
+    }
+    font_3 = al_load_font("Resources/Fonts/Boxy-Bold.ttf", 120, 0);
+    if (!font_3)
     {
         fprintf(stderr, "Falha ao carregar \"Boxy-Bold.ttf\".\n");
         return false;

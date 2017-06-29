@@ -69,15 +69,15 @@ while (program)
 		      inicio = false;
 		      menu = true;
 		    }
-            if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) inicio = false;
+            if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
         }
 		al_draw_bitmap(menuInicio, 0, 0, 0);
-        al_draw_textf(font_1, al_map_rgb(255,255,255), LARGURA/2 - 105, 50, 0, "TARGET");
+        al_draw_textf(font_3, al_map_rgb(255,255,255), LARGURA/2 - 181, 50, 0, "TARGET");
         if(Blink() == 1) 
             pisca = !pisca;
 
         if(pisca)
-            al_draw_textf(font_1, al_map_rgb(255,0,0), LARGURA/2 - 310, ALTURA/2 + 120, 0, "PRESS ANY KEY TO BEGIN");
+            al_draw_textf(font_1, al_map_rgb(255,0,0), LARGURA/2 - 245, ALTURA/2 + 120, 0, "PRESS ANY KEY TO BEGIN");
 
         al_flip_display();
         al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -121,10 +121,14 @@ while (program)
             				break;
 			            }
                         break;
+                    case ALLEGRO_KEY_ESCAPE:
+                        menu = false;
+                        inicio = true;
+                        break;
 		        }
             if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();   // APERTOU O 'X' DA JANELA 
             al_draw_bitmap(menuOpcoes, 0, 0, 0);
-            al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 50, ALLEGRO_ALIGN_CENTRE , "TARGET");
+            al_draw_text(font_1, al_map_rgb(255, 255, 255), LARGURA/2, 50, ALLEGRO_ALIGN_CENTRE , "TARGET");
             al_draw_text(font_1, al_map_rgb(255,0,0), (LARGURA/2), (ALTURA/2) - 100, ALLEGRO_ALIGN_CENTRE , "START GAME");
             al_draw_text(font_1, al_map_rgb(255,0,0), (LARGURA/2), (ALTURA/2), ALLEGRO_ALIGN_CENTRE , "HELP");
             al_draw_text(font_1, al_map_rgb(255,0,0), (LARGURA/2), (ALTURA/2) + 100, ALLEGRO_ALIGN_CENTRE , "CREDITS");
@@ -169,16 +173,16 @@ while (program)
         }
 
         al_draw_bitmap(menuNormal, 0, 0, 0);
-        al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 50, ALLEGRO_ALIGN_CENTRE , "HELP");
-        al_draw_text(font_1, al_map_rgb(255,255,255), 100 , 120, ALLEGRO_ALIGN_LEFT , "01. MOVES");
-        al_draw_text(font_2, al_map_rgb(255,255,255), 200, 200, ALLEGRO_ALIGN_CENTRE , "UP");
-        al_draw_text(font_2, al_map_rgb(255,255,255), 600, 200, ALLEGRO_ALIGN_CENTRE , "DOWN");
-        al_draw_text(font_2, al_map_rgb(255,255,255), 200, 270, ALLEGRO_ALIGN_CENTRE , "LEFT");
-        al_draw_text(font_2, al_map_rgb(255,255,255), 600, 270, ALLEGRO_ALIGN_CENTRE , "RIGHT");
-        al_draw_text(font_2, al_map_rgb(255,255,255), 200, 340, ALLEGRO_ALIGN_CENTRE , "SPACE BAR");
-        al_draw_text(font_1, al_map_rgb(255,255,255), 100, 420, ALLEGRO_ALIGN_LEFT, "02. OBJECTIVE");
-        al_draw_text(font_2, al_map_rgb(255,255,255), 200, 500, ALLEGRO_ALIGN_LEFT, "YOU MUST DEFEAT THE ENEMY TARGET");
-        al_draw_text(font_2, al_map_rgb(255,255,255), 200, 540,  ALLEGRO_ALIGN_LEFT, "WHILE PROTECTING YOURS");
+        al_draw_text(font_1, al_map_rgb(0,0,0), LARGURA/2, 50, ALLEGRO_ALIGN_CENTRE , "HELP");
+        al_draw_text(font_1, al_map_rgb(255,0,0), 100 , 120, ALLEGRO_ALIGN_LEFT , "01. MOVES");
+        al_draw_text(font_2, al_map_rgb(0,0,0), 200, 200, ALLEGRO_ALIGN_CENTRE , "UP");
+        al_draw_text(font_2, al_map_rgb(0,0,0), 600, 200, ALLEGRO_ALIGN_CENTRE , "DOWN");
+        al_draw_text(font_2, al_map_rgb(0,0,0), 200, 270, ALLEGRO_ALIGN_CENTRE , "LEFT");
+        al_draw_text(font_2, al_map_rgb(0,0,0), 600, 270, ALLEGRO_ALIGN_CENTRE , "RIGHT");
+        al_draw_text(font_2, al_map_rgb(0,0,0), 200, 340, ALLEGRO_ALIGN_CENTRE , "SPACE BAR");
+        al_draw_text(font_1, al_map_rgb(255,0,0), 100, 420, ALLEGRO_ALIGN_LEFT, "02. OBJECTIVE");
+        al_draw_text(font_2, al_map_rgb(0,0,0), 200, 500, ALLEGRO_ALIGN_LEFT, "YOU MUST DEFEAT THE ENEMY TARGET");
+        al_draw_text(font_2, al_map_rgb(0,0,0), 200, 540,  ALLEGRO_ALIGN_LEFT, "BEFORE THE ENEMY TEAM DEFEAT YOURS.");
         al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA / 2, 640, ALLEGRO_ALIGN_CENTRE, "PRESS ANY KEY TO RETURN TO MENU");
     
     
@@ -199,17 +203,17 @@ while (program)
                     }
             	if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
               	al_draw_bitmap(menuNormal, 0, 0, 0);
-            	al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA / 2 , 50, ALLEGRO_ALIGN_CENTRE , "CREDITS");
-            	al_draw_text(font_1, al_map_rgb(255,255,255), 100, 200, ALLEGRO_ALIGN_LEFT , "01. STUDENTS");
-            	al_draw_text(font_2, al_map_rgb(255,255,255), 200, 270, ALLEGRO_ALIGN_CENTRE , "RAFAEL VASCONCELOS");
-            	al_draw_text(font_2, al_map_rgb(255,255,255), 500, 270, ALLEGRO_ALIGN_CENTRE , "GABRIEL GOMES");
-            	al_draw_text(font_2, al_map_rgb(255,255,255), 200, 320, ALLEGRO_ALIGN_CENTRE , "MATHEUS CARACCIOLO");
-            	al_draw_text(font_2, al_map_rgb(255,255,255), 500, 320, ALLEGRO_ALIGN_CENTRE , "ARTHUR BARA");
-            	al_draw_text(font_2, al_map_rgb(255,255,255), 200, 370, ALLEGRO_ALIGN_CENTRE , "GABRIEL FONSECA");
-            	al_draw_text(font_2, al_map_rgb(255,255,255), 500, 370, ALLEGRO_ALIGN_CENTRE , "BRUNO");
-            	al_draw_text(font_2, al_map_rgb(255,255,255), 800, 270, ALLEGRO_ALIGN_CENTRE , "VITINHO");
-            	al_draw_text(font_1, al_map_rgb(255,255,255), 100, 440, ALLEGRO_ALIGN_LEFT , "02. MONITOR");
-            	al_draw_text(font_2, al_map_rgb(255,255,255), 200, 510, ALLEGRO_ALIGN_LEFT, "HEITOR MITO GOD HOMAO DA PORRA");
+            	al_draw_text(font_1, al_map_rgb(0, 0, 0), LARGURA / 2 , 50, ALLEGRO_ALIGN_CENTRE , "CREDITS");
+            	al_draw_text(font_1, al_map_rgb(255, 0, 0), 100, 200, ALLEGRO_ALIGN_LEFT , "01. STUDENTS");
+            	al_draw_text(font_2, al_map_rgb(0,0,0), 200, 270, ALLEGRO_ALIGN_CENTRE , "RAFAEL VASCONCELOS");
+            	al_draw_text(font_2, al_map_rgb(0,0,0), 520, 270, ALLEGRO_ALIGN_CENTRE , "GABRIEL GOMES");
+            	al_draw_text(font_2, al_map_rgb(0,0,0), 200, 320, ALLEGRO_ALIGN_CENTRE , "MATHEUS CARACCIOLO");
+            	al_draw_text(font_2, al_map_rgb(0,0,0), 520, 320, ALLEGRO_ALIGN_CENTRE , "ARTHUR BARA");
+            	al_draw_text(font_2, al_map_rgb(0,0,0), 200, 370, ALLEGRO_ALIGN_CENTRE , "GABRIEL FONSECA");
+            	al_draw_text(font_2, al_map_rgb(0,0,0), 520, 370, ALLEGRO_ALIGN_CENTRE , "BRUNO MOREIRA");
+            	al_draw_text(font_2, al_map_rgb(0,0,0), 800, 270, ALLEGRO_ALIGN_CENTRE , "VICTOR BRUNO");
+            	al_draw_text(font_1, al_map_rgb(255, 0, 0), 100, 440, ALLEGRO_ALIGN_LEFT , "02. MONITOR");
+            	al_draw_text(font_2, al_map_rgb(0,0,0), 365, 510, ALLEGRO_ALIGN_LEFT, "HEITOR SAMMUEL (HSCS)");
                 al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA / 2, 640, ALLEGRO_ALIGN_CENTRE, "PRESS ANY KEY TO RETURN TO MENU");
                     
             	al_flip_display();
@@ -309,12 +313,12 @@ while (program)
                 al_draw_bitmap(menuNormal, 0, 0, 0);
                 al_draw_rectangle(LARGURA/2 - 320, ALTURA/2 + 20, LARGURA/2 + 320, ALTURA/2 + 70, al_map_rgb(255, 0, 0), 2);
                 al_draw_rectangle(LARGURA/2 - 320, ALTURA/2 - 100, LARGURA/2 + 320, ALTURA/2 - 50, al_map_rgb(255,0,0), 2);
-                al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 20, ALLEGRO_ALIGN_CENTRE, "CONNECTION");
+                al_draw_text(font_1, al_map_rgb(0,0,0), LARGURA/2, 20, ALLEGRO_ALIGN_CENTRE, "CONNECTION");
                 al_draw_text(font_1, al_map_rgb(255,0,0), LARGURA/2-10, ALTURA/2 - 150, ALLEGRO_ALIGN_CENTRE, "ENTER THE SERVER'S IP:");
-                al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, ALTURA/2 - 94, ALLEGRO_ALIGN_CENTRE, ipOficial);
+                al_draw_text(font_1, al_map_rgb(0,0,0), LARGURA/2, ALTURA/2 - 94, ALLEGRO_ALIGN_CENTRE, ipOficial);
                 al_draw_text(font_1, al_map_rgb(255, 0, 0), LARGURA/2-10, ALTURA/2 - 30, ALLEGRO_ALIGN_CENTRE, "ENTER YOUR NICKNAME:");
-                al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, ALTURA/2 + 26, ALLEGRO_ALIGN_CENTRE, nickname);
-                al_draw_text(font_2, al_map_rgb(255,255,255), LARGURA/2 + 5, ALTURA/2 + 80, ALLEGRO_ALIGN_CENTRE, "(MUST BE AT LEAST 5 CHARACTERS LONG)");
+                al_draw_text(font_1, al_map_rgb(0,0,0), LARGURA/2, ALTURA/2 + 26, ALLEGRO_ALIGN_CENTRE, nickname);
+                al_draw_text(font_2, al_map_rgb(0,0,0), LARGURA/2 + 5, ALTURA/2 + 80, ALLEGRO_ALIGN_CENTRE, "(MUST BE AT LEAST 5 CHARACTERS LONG)");
                 al_draw_text(font_2, al_map_rgb(255, 0, 0), LARGURA/2, 640, ALLEGRO_ALIGN_CENTRE, "PRESS ESC TO RETURN TO MENU");
                 if(flag == 0) al_draw_bitmap(seta, LARGURA/2 - 405, ALTURA/2 - 95 , 0);
                 else al_draw_bitmap(seta, LARGURA/2 - 405, ALTURA/2 + 25 , 0);

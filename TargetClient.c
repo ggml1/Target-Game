@@ -176,6 +176,7 @@ while (program)
         al_draw_text(font_1, al_map_rgb(0,0,0), LARGURA/2, 50, ALLEGRO_ALIGN_CENTRE , "HELP");
         al_draw_text(font_1, al_map_rgb(255,0,0), 100 , 120, ALLEGRO_ALIGN_LEFT , "01. MOVES");
         al_draw_text(font_2, al_map_rgb(0,0,0), 200, 200, ALLEGRO_ALIGN_CENTRE , "UP");
+        al_draw_bitmap(upKey, 0, 0, 0);
         al_draw_text(font_2, al_map_rgb(0,0,0), 600, 200, ALLEGRO_ALIGN_CENTRE , "DOWN");
         al_draw_text(font_2, al_map_rgb(0,0,0), 200, 270, ALLEGRO_ALIGN_CENTRE , "LEFT");
         al_draw_text(font_2, al_map_rgb(0,0,0), 600, 270, ALLEGRO_ALIGN_CENTRE , "RIGHT");
@@ -436,6 +437,11 @@ while (program)
                             pacoteClient.tipoPacote = 1;
                             sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
                             break;
+                        // case ALLEGRO_KEY_SPACE:
+                        //     pacoteClient.mov = 's';
+                        //     pacoteClient.tipoPacote = 1;
+                        //     sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                        //     break;
                     }
                 }
             }
@@ -452,7 +458,8 @@ while (program)
             else{
                 if(recvMsgFromServer(&Alteracoes, DONT_WAIT) != NO_MESSAGE){
                     // printf("Mudou a matriz!\n");
-                    map[Alteracoes.oldx][Alteracoes.oldy] = 0;
+                    if(Alteracoes.oldy < 16) map[Alteracoes.oldx][Alteracoes.oldy] = 0;
+                    else map[Alteracoes.oldx][Alteracoes.oldy] = 2;
                     map[Alteracoes.newx][Alteracoes.newy] = Alteracoes.idMoved;
                     // printf("Posicoes:\nAntiga: %d %d\nNova: %d %d\n", Alteracoes.oldx, Alteracoes.oldy, Alteracoes.newx, Alteracoes.newy);
                     // printf("Valor antigo: %d\n Valor novo: %d\n", map[Alteracoes.oldx][Alteracoes.oldy], map[Alteracoes.newx][Alteracoes.newy]);
@@ -461,30 +468,57 @@ while (program)
                 for(i=0; i<24; i++){
                     for(j=0; j<32; j++){
                             switch(map[i][j]){
+                                case 2:
+                                    al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    break;
+                                case -1:
+                                    al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    al_draw_bitmap_region(Dungeon_B, 5*TILE, 7*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    break;
                                 case 0:
-                                    al_draw_bitmap_region(tileSet, 0, 0, 32, 32, TILE*j, TILE*i, 0);
+                                    al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     break;
                                 case 1:
-                                    al_draw_bitmap_region(tileSet, 0, 0, 32, 32, TILE*j, TILE*i, 0);
-                                    al_draw_bitmap_region(tileSet, 32, 32, 32, 32, TILE*j, TILE*i, 0);
+                                    al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    al_draw_bitmap_region(Dungeon_B, 2*TILE, 7*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     break;
                                 case 3: //player
                                     switch(Alteracoes.olhando[3]){
                                         case 'u':
-                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
-                                            al_draw_bitmap_region(tileSet, 0*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            if(j > 15){
+                                                al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap_region(tileSet, 0*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            } else{
+                                                al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap_region(tileSet, 0*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);     
+                                            }
                                             break;
                                         case 'd':
-                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
-                                            al_draw_bitmap_region(tileSet, 0*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            if(j > 15){
+                                                al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap_region(tileSet, 0*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            } else{
+                                                al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap_region(tileSet, 0*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            }
                                             break;
                                         case 'l':
-                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
-                                            al_draw_bitmap_region(tileSet, 0*TILE, 7*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            if(j > 15){
+                                                al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap_region(tileSet, 0*TILE, 7*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            } else{
+                                                al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap_region(tileSet, 0*TILE, 7*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            }
                                             break;
                                         case 'r':
-                                            al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
-                                            al_draw_bitmap_region(tileSet, 0*TILE, 8*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            if(j > 15){
+                                                al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap_region(tileSet, 0*TILE, 8*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            } else{
+                                                al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap_region(tileSet, 0*TILE, 8*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            }
                                             break;
                                     }
                                     break;
@@ -588,6 +622,58 @@ while (program)
                                             break;
                                     }
                                     break;
+                                case 9:
+                                    al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    al_draw_bitmap_region(Dungeon_B, 5*TILE, 8*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    break;
+                                case 91:
+                                    al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    al_draw_bitmap_region(Dungeon_B, 5*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    break;
+                                case -9:
+                                    al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    al_draw_bitmap_region(Dungeon_B, 2*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    break;
+                                case -91:
+                                    al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    al_draw_bitmap_region(Dungeon_B, 2*TILE, 8*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    break;/////////////////////
+                                case 10:
+                                    if(j > 15){
+                                        al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                        al_draw_bitmap_region(tileSet, 10*TILE, 1*TILE, 32, 32, TILE*j, TILE*i, 0);       ////AJEITAR TILE 10
+                                    } else{
+                                        al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                        al_draw_bitmap_region(tileSet, 10*TILE, 1*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    }
+                                    break;
+                                case 11:
+                                    if(j > 15){
+                                        al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                        al_draw_bitmap_region(Dungeon_B, 8*TILE, 7*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    } else{
+                                        al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                        al_draw_bitmap_region(Dungeon_B, 8*TILE, 7*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    }
+                                    break;
+                                case 12:
+                                    if(j > 15){
+                                        al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                        al_draw_bitmap_region(Dungeon_B, 8*TILE, 8*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    } else{
+                                        al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                        al_draw_bitmap_region(Dungeon_B, 8*TILE, 8*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    }
+                                    break;
+                                case 13:
+                                    if(j > 15){
+                                        al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                        al_draw_bitmap_region(Outside_B,   7*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    } else{
+                                        al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                        al_draw_bitmap_region(Outside_B,   7*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    }
+                                    break;    
                             }
                     }
                 }

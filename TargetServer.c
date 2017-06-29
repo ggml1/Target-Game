@@ -5,30 +5,30 @@
 #define playerAction 1
 #define playerLogIn 2
 
-int mapa[24][32] = {{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}};
+int mapa[24][32] = {{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,   1,-1,-1  ,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                    {1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,   0,2,2  ,2,2,2,2,2,2,2,2,9,2,2,2,9,-1},
+                    {1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,   0,2,2  ,2,2,2,2,2,2,2,2,91,2,2,2,91,-1},
+                    {1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,   0,2,2  ,2,2,-1,-1,2,2,2,2,2,2,2,2,2,-1},
+                    {1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,   0,2,2  ,2,2,2,-1,-1,2,2,2,2,2,2,2,2,-1},
+                    {1,1,1,0,0,10,0,0,0,0,0,1,0,0,0   ,0,2,  2,2,2,2,2,-1,2,2,2,2,2,2,2,2,-1},
+                    {1,1,1,0,0,0,0,0,0,0,0,1,0,0,0,   0,2,2  ,2,2,2,2,2,2,2,2,2,2,2,2,2,-1},
+                    {1,1,1,0,0,0,0,0,0,0,0,1,1,1,1,   1,-1,-1  ,2,2,2,2,2,2,2,-1,2,2,2,2,2,-1},
+                    {1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,   0,2,2  ,2,2,2,2,2,2,2,-1,-1,2,2,2,2,-1},
+                    {1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,   0,2,2  ,2,2,2,2,2,2,2,2,-1,-1,2,2,2,-1},
+                    {1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,   1,-1,-1  ,2,2,2,2,2,2,2,2,2,2,2,2,2,-1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,   11,11  ,-1,2,2,2,2,2,2,2,2,2,2,2,2,2,-1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,   12,12  ,-1,2,2,2,2,2,2,2,2,2,2,2,2,2,-1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,   13,13  ,-1,-1,-1,2,2,2,2,-1,-1,-1,-1,-1,-1,-1,-1},
+                    {1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,   0,2,2  ,2,2,2,2,2,2,-1,-1,-1,-1,-1,-1,-1,-1},
+                    {1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,   0,2,2  ,2,2,2,2,2,2,2,2,2,2,2,-1,-1,-1},
+                    {1,0,0,0,0,0,1,0,0,0,0,0,0,1,1,   1,-1,-1  ,-1,-1,2,2,2,2,2,2,2,2,2,-1,-1,-1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   0,2,2  ,2,-1,2,2,2,2,2,2,2,2,2,-1,-1,-1},
+                    {1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,   0,2,2  ,2,-1,2,2,2,2,2,2,10,2,2,-1,-1,-1},
+                    {1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,   0,2,2  ,2,2,2,2,2,2,2,2,2,2,2,-1,-1,-1},
+                    {1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,   0,2,2  ,2,2,2,2,2,2,2,2,2,2,2,-1,-1,-1},
+                    {1,-91,0,0,0,-91,0,0,0,0,0,0,0,   0,0,0  ,2,2,2,2,2,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                    {1,-9,0,0,0,-9,0,0,0,0,0,0,0,0,   0,0,2  ,2,2,2,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,   1,-1,-1  ,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}};
 
 int main(){
     if(!coreInit()) //INICIA OS MODULOS PRINCIPAIS DO ALLEGRO
@@ -77,13 +77,14 @@ int main(){
                     pacote.teamPos = 3 + chegou.client_id;
                     switch(pacote.mov){
                         case 'u':
-                            if(playersJogando[pacote.teamPos].playerX > 1 && mapa[playersJogando[pacote.teamPos].playerX - 1][playersJogando[pacote.teamPos].playerY] == 0){
-                                x = playersJogando[pacote.teamPos].playerX;
-                                y = playersJogando[pacote.teamPos].playerY;
+                            x = playersJogando[pacote.teamPos].playerX;
+                            y = playersJogando[pacote.teamPos].playerY;
+                            if(playersJogando[pacote.teamPos].playerX > 1 && (mapa[x - 1][y] == 0 || mapa[x - 1][y] == 2)){
                                 mudaMatriz.idMoved = pacote.teamPos;
                                 mudaMatriz.oldx = x;
                                 mudaMatriz.oldy = y;
-                                mapa[x][y] = 0;
+                                if(y < 16) mapa[x][y] = 0;
+                                else mapa[x][y] = 2;
                                 x--;
                                 mudaMatriz.newx = x;
                                 mudaMatriz.newy = y;
@@ -93,13 +94,14 @@ int main(){
                             }
                             break;
                         case 'd':
-                            if(playersJogando[pacote.teamPos].playerX < 22 && mapa[playersJogando[pacote.teamPos].playerX + 1][playersJogando[pacote.teamPos].playerY] == 0){
-                                x = playersJogando[pacote.teamPos].playerX;
-                                y = playersJogando[pacote.teamPos].playerY;
+                            x = playersJogando[pacote.teamPos].playerX;
+                            y = playersJogando[pacote.teamPos].playerY;
+                            if(playersJogando[pacote.teamPos].playerX < 22 && (mapa[x + 1][y] == 0 || mapa[x + 1][y] == 2)){
                                 mudaMatriz.idMoved = pacote.teamPos;
                                 mudaMatriz.oldx = x;
                                 mudaMatriz.oldy = y;
-                                mapa[x][y] = 0;
+                                if(y < 16) mapa[x][y] = 0;
+                                else mapa[x][y] = 2;
                                 x++;
                                 mudaMatriz.newx = x;
                                 mudaMatriz.newy = y;
@@ -109,13 +111,14 @@ int main(){
                             }
                             break;
                         case 'l':
-                            if(playersJogando[pacote.teamPos].playerY > 1 && mapa[playersJogando[pacote.teamPos].playerX][playersJogando[pacote.teamPos].playerY - 1] == 0){
-                                x = playersJogando[pacote.teamPos].playerX;
-                                y = playersJogando[pacote.teamPos].playerY;
+                            x = playersJogando[pacote.teamPos].playerX;
+                            y = playersJogando[pacote.teamPos].playerY;
+                            if(playersJogando[pacote.teamPos].playerY > 1 && (mapa[x][y - 1] == 0 || mapa[x][y - 1] == 2)){
                                 mudaMatriz.idMoved = pacote.teamPos;
                                 mudaMatriz.oldx = x;
                                 mudaMatriz.oldy = y;
-                                mapa[x][y] = 0;
+                                if(y < 16) mapa[x][y] = 0;
+                                else mapa[x][y] = 2;
                                 y--;
                                 mudaMatriz.newx = x;
                                 mudaMatriz.newy = y;
@@ -125,13 +128,14 @@ int main(){
                             }
                             break;
                         case 'r':
-                            if(playersJogando[pacote.teamPos].playerY < 30 && mapa[playersJogando[pacote.teamPos].playerX][playersJogando[pacote.teamPos].playerY + 1] == 0){
-                                x = playersJogando[pacote.teamPos].playerX;
-                                y = playersJogando[pacote.teamPos].playerY;
+                            x = playersJogando[pacote.teamPos].playerX;
+                            y = playersJogando[pacote.teamPos].playerY;
+                            if(playersJogando[pacote.teamPos].playerY < 30 && (mapa[x][y + 1] == 0 || mapa[x][y + 1] == 2)){
                                 mudaMatriz.idMoved = pacote.teamPos;
                                 mudaMatriz.oldx = x;
                                 mudaMatriz.oldy = y;
-                                mapa[x][y] = 0;
+                                if(y < 16) mapa[x][y] = 0;
+                                else mapa[x][y] = 2;
                                 y++;
                                 mudaMatriz.newx = x;
                                 mudaMatriz.newy = y;
@@ -150,12 +154,12 @@ int main(){
                     switch(pacote.teamPos){
                         case 3:
                             playersJogando[3].playerX = 22;
-                            playersJogando[3].playerY = 1;
-                            mapa[22][1] = 3;
+                            playersJogando[3].playerY = 2;
+                            mapa[22][2] = 3;
                             mudaMatriz.oldx = 22;
-                            mudaMatriz.oldy = 1;
+                            mudaMatriz.oldy = 2;
                             mudaMatriz.newx = 22;
-                            mudaMatriz.newy = 1;
+                            mudaMatriz.newy = 2;
                             mudaMatriz.idMoved = pacote.teamPos;
                             mudaMatriz.olhando[pacote.teamPos] = 'd';
                             for(i=0; i<24; i++){
@@ -166,13 +170,13 @@ int main(){
                             sendMsgToClient(&pacote, sizeof(pacote), chegou.client_id);
                             break;
                         case 4:
-                            playersJogando[4].playerX = 21;
-                            playersJogando[4].playerY = 1;
-                            mapa[21][1] = 4;
-                            mudaMatriz.oldx = 21;
-                            mudaMatriz.oldy = 1;
-                            mudaMatriz.newx = 21;
-                            mudaMatriz.newy = 1;
+                            playersJogando[4].playerX = 22;
+                            playersJogando[4].playerY = 2;
+                            mapa[22][3] = 4;
+                            mudaMatriz.oldx = 22;
+                            mudaMatriz.oldy = 3;
+                            mudaMatriz.newx = 22;
+                            mudaMatriz.newy = 3;
                             mudaMatriz.idMoved = pacote.teamPos;
                             mudaMatriz.olhando[pacote.teamPos] = 'd';
                             for(i=0; i<24; i++){
@@ -183,13 +187,13 @@ int main(){
                             sendMsgToClient(&pacote, sizeof(pacote), chegou.client_id);
                             break;
                         case 5:
-                            playersJogando[5].playerX = 20;
-                            playersJogando[5].playerY = 1;
-                            mapa[1][1] = 5;
-                            mudaMatriz.oldx = 20;
-                            mudaMatriz.oldy = 1;
-                            mudaMatriz.newx = 20;
-                            mudaMatriz.newy = 1;
+                            playersJogando[5].playerX = 22;
+                            playersJogando[5].playerY = 4;
+                            mapa[22][4] = 5;
+                            mudaMatriz.oldx = 22;
+                            mudaMatriz.oldy = 4;
+                            mudaMatriz.newx = 22;
+                            mudaMatriz.newy = 4;
                             mudaMatriz.idMoved = pacote.teamPos;
                             mudaMatriz.olhando[pacote.teamPos] = 'd';
                             for(i=0; i<24; i++){

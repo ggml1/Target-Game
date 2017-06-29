@@ -222,7 +222,53 @@ bool loadGraphics() // INICIA AS IMAGENS "1_bitmap", "2_bitmap", "3_bitmap", "4_
         fprintf(stderr, "Falha ao carregar o seta.\n");
         return false;
     }
+
+    upKey = al_load_bitmap("Resources/Etc/up.png");
+    if(!upKey){
+        fprintf(stderr, "Falha ao carregar a sprite UPKEY.\n");
+        return false;
+    }
+
+    downKey = al_load_bitmap("Resources/Etc/down.png");
+    if(!downKey){
+        fprintf(stderr, "Falha ao carregar a sprite DOWNKEY.\n");
+        return false;
+    }
+
+    rightKey = al_load_bitmap("Resources/Etc/right.png");
+    if(!rightKey){
+        fprintf(stderr, "Falha ao carregar a sprite RIGHTKEY.\n");
+        return false;
+    }
+
+    leftKey = al_load_bitmap("Resources/Etc/left.png");
+    if(!leftKey){
+        fprintf(stderr, "Falha ao carregar a sprite LEFTKEY.\n");
+        return false;
+    }
     
-    
+    Dungeon_B = al_load_bitmap("Resources/Tilesets/Dungeon_B.png");
+    if(!Dungeon_B){
+        fprintf(stderr, "Falha ao carregar a Dungeon_B.\n");
+        return false;
+    }
+
+    Outside_B = al_load_bitmap("Resources/Tilesets/Outside_B.png");
+    if(!Outside_B){
+        fprintf(stderr, "Falha ao carregar a Outside_B.\n");
+        return false;
+    }
+
+    World_B = al_load_bitmap("Resources/Tilesets/World_B.png");
+    if(!World_B){
+        fprintf(stderr, "Falha ao carregar a World_B.\n");
+        return false;
+    }
+
+    Dungeon_A2 = al_load_bitmap("Resources/Tilesets/Dungeon_A2.png");
+    if(!Dungeon_A2){
+        fprintf(stderr, "Falha ao carregar a Dungeon_A2.\n");
+        return false;
+    }
     return true;
 }

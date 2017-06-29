@@ -35,11 +35,20 @@ ALLEGRO_BITMAP *menuInicio;
 ALLEGRO_BITMAP *menuOpcoes;
 ALLEGRO_BITMAP *menuNormal;
 ALLEGRO_BITMAP *seta;
+ALLEGRO_BITMAP *upKey;
+ALLEGRO_BITMAP *downKey;
+ALLEGRO_BITMAP *leftKey;
+ALLEGRO_BITMAP *rightKey;
+ALLEGRO_BITMAP *Dungeon_B;
+ALLEGRO_BITMAP *Outside_B;
+ALLEGRO_BITMAP *World_B;
+ALLEGRO_BITMAP *Dungeon_A2;
 
 typedef struct{
 	int teamPos;
 	int tipoPacote;				// 0 -> msg inicial (nickname), 1 - > movimento
     char playerName[16];
+    int HP;
     char mov;
     int playerX;
     int playerY;

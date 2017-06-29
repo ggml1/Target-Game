@@ -171,7 +171,7 @@ int main(){
                             break;
                         case 4:
                             playersJogando[4].playerX = 22;
-                            playersJogando[4].playerY = 2;
+                            playersJogando[4].playerY = 3;
                             mapa[22][3] = 4;
                             mudaMatriz.oldx = 22;
                             mudaMatriz.oldy = 3;

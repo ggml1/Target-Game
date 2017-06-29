@@ -181,7 +181,7 @@ struct msg_ret_t recvMsgFromClient(void *msg, int client_id, int option){
 			return make_msg_ret(NO_MESSAGE, -1, 0);
 		}
 	}
-	// either we have to wait, or there is nothing to wait
+	// either we have to wait, or there is nothing to wait for
 	int msg_size;
 	int size_ret, msg_ret;
 	// get message size

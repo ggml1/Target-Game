@@ -39,12 +39,12 @@ int connectToServer(const char *server_IP){
 		read(network_socket, &server_response, sizeof(int)); // reads server_response
 	}
 	else if(connection_status == -1){
-		printf("ERROR!! Connection was not succefull\n");
+		printf("ERROR!! Connection was not successful.\n");
 		return -1;
 		//exit(EXIT_FAILURE);
 	}
 	if(server_response == TOO_MANY_CLIENTS){
-		perror("Too many clients connected!");
+		printf("Too many clients connected!");
 		return 0;
 		//exit(EXIT_FAILURE);
 	}

@@ -53,7 +53,7 @@ typedef struct{
 	int newx;
 	int newy;
 	int idMoved;
-	char olhando[20];
+	char olhando[9];
 }Moves;
 
 ///1 2 3 -> time vermelho

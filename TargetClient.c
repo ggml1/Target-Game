@@ -289,12 +289,33 @@ while (program)
                             switch(conecta){
                                 case -2:
                                     menuErroSocket();
+                                    menu = true;
+                                    menuConnection = false;
+                                    flag = 0;
+                                    strcpy(ipOficial, "0.0.0.0");
+                                    strcpy(ipTemp, "");
+                                    strcpy(nickname, "<seu_nick>");
+                                    strcpy(nicknameTemp, "");
                                     break;
                                 case -1:
                                     menuErroConnectionFailure();  // erro: nao da pra sair dessa tela *******CORRIGIR********
+                                    menu = true;
+                                    menuConnection = false;
+                                    flag = 0;
+                                    strcpy(ipOficial, "0.0.0.0");
+                                    strcpy(ipTemp, "");
+                                    strcpy(nickname, "<seu_nick>");
+                                    strcpy(nicknameTemp, "");
                                     break;
                                 case 0:
                                     menuErroServerFull();
+                                    menu = true;
+                                    menuConnection = false;
+                                    flag = 0;
+                                    strcpy(ipOficial, "0.0.0.0");
+                                    strcpy(ipTemp, "");
+                                    strcpy(nickname, "<seu_nick>");
+                                    strcpy(nicknameTemp, "");
                                     break;
                                 case 1:
                                     menuConnection = false;
@@ -302,7 +323,7 @@ while (program)
                                     receberMapa = true;
                                     pacoteClient.tipoPacote = 0;
                                     strcpy(pacoteClient.playerName, nickname);
-                                    strcpy(EU.playerName, nickname);
+                                    //strcpy(EU.playerName, nickname);
                                     break;
                             }
                         }
@@ -393,7 +414,7 @@ while (program)
                 ALLEGRO_EVENT event;
                 al_wait_for_event(eventsQueue, &event);
                 if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
-                if(event.type == ALLEGRO_EVENT_KEY_DOWN){
+                if(event.type == ALLEGRO_EVENT_KEY_CHAR){
                     switch(event.keyboard.keycode){
                         case ALLEGRO_KEY_UP:
                             pacoteClient.mov = 'u';
@@ -430,11 +451,11 @@ while (program)
             }
             else{
                 if(recvMsgFromServer(&Alteracoes, DONT_WAIT) != NO_MESSAGE){
-                    printf("Mudou a matriz!\n");
+                    // printf("Mudou a matriz!\n");
                     map[Alteracoes.oldx][Alteracoes.oldy] = 0;
                     map[Alteracoes.newx][Alteracoes.newy] = Alteracoes.idMoved;
-                    printf("Posicoes:\nAntiga: %d %d\nNova: %d %d\n", Alteracoes.oldx, Alteracoes.oldy, Alteracoes.newx, Alteracoes.newy);
-                    printf("Valor antigo: %d\n Valor novo: %d\n", map[Alteracoes.oldx][Alteracoes.oldy], map[Alteracoes.newx][Alteracoes.newy]);
+                    // printf("Posicoes:\nAntiga: %d %d\nNova: %d %d\n", Alteracoes.oldx, Alteracoes.oldy, Alteracoes.newx, Alteracoes.newy);
+                    // printf("Valor antigo: %d\n Valor novo: %d\n", map[Alteracoes.oldx][Alteracoes.oldy], map[Alteracoes.newx][Alteracoes.newy]);
                 }
             }
                 for(i=0; i<24; i++){
@@ -511,11 +532,11 @@ while (program)
                                     switch(Alteracoes.olhando[6]){
                                         case 'u':
                                             al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
-                                            al_draw_bitmap_region(tileSet, 0*TILE, 2*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 0*TILE, 5*TILE, 32, 32, TILE*j, TILE*i, 0);
                                             break;
                                         case 'd':
                                             al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
-                                            al_draw_bitmap_region(tileSet, 0*TILE, 5*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 0*TILE, 2*TILE, 32, 32, TILE*j, TILE*i, 0);
                                             break;
                                         case 'l':
                                             al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
@@ -531,11 +552,11 @@ while (program)
                                     switch(Alteracoes.olhando[7]){
                                         case 'u':
                                             al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
-                                            al_draw_bitmap_region(tileSet, 1*TILE, 2*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 1*TILE, 5*TILE, 32, 32, TILE*j, TILE*i, 0);
                                             break;
                                         case 'd':
                                             al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
-                                            al_draw_bitmap_region(tileSet, 1*TILE, 5*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 1*TILE, 2*TILE, 32, 32, TILE*j, TILE*i, 0);
                                             break;
                                         case 'l':
                                             al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
@@ -543,7 +564,7 @@ while (program)
                                             break;
                                         case 'r':
                                             al_draw_bitmap_region(tileSet,      0,     0, 32, 32, TILE*j, TILE*i, 0);
-                                            al_draw_bitmap_region(tileSet, 1*TILE,4*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 1*TILE, 4*TILE, 32, 32, TILE*j, TILE*i, 0);
                                             break;
                                     }
                                     break;
@@ -551,11 +572,11 @@ while (program)
                                     switch(Alteracoes.olhando[8]){
                                         case 'u':
                                             al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
-                                            al_draw_bitmap_region(tileSet, 2*TILE, 2*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 2*TILE, 5*TILE, 32, 32, TILE*j, TILE*i, 0);
                                             break;
                                         case 'd':
                                             al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
-                                            al_draw_bitmap_region(tileSet, 2*TILE, 5*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            al_draw_bitmap_region(tileSet, 2*TILE, 2*TILE, 32, 32, TILE*j, TILE*i, 0);
                                             break;
                                         case 'l':
                                             al_draw_bitmap_region(tileSet,      0,      0, 32, 32, TILE*j, TILE*i, 0);
@@ -581,16 +602,15 @@ while (program)
 //------------------------------------------------------------------------------------------------------------------------------------------------------
 //-----AQUI ESTA FORA DA MAIN - FUNCOES AUXILIARES!
 //------------------------------------------------------------------------------------------------------------------------------------------------------
-void menuErroSocket()  ////VER FUNCAO DE ERRO DE CONEXAO NA BIBLIOTECA DE LUCAS!
+void menuErroSocket()  ////VER ERRO!
 {
     int vdd = 1;
-    eventsQueue = al_create_event_queue();
     while(vdd){
         startTimer();
         while(!al_is_event_queue_empty(eventsQueue)){
             ALLEGRO_EVENT event;
             al_wait_for_event(eventsQueue, &event);
-            if(event.type == ALLEGRO_EVENT_KEY_CHAR){
+            if(event.type == ALLEGRO_EVENT_KEY_DOWN){
                 vdd = 0;
             }
             if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
@@ -607,7 +627,6 @@ void menuErroSocket()  ////VER FUNCAO DE ERRO DE CONEXAO NA BIBLIOTECA DE LUCAS!
 void menuErroServerFull()
 {
     int vdd = 1;
-    eventsQueue = al_create_event_queue();
     while(vdd){
         startTimer();
         while(!al_is_event_queue_empty(eventsQueue)){
@@ -628,15 +647,15 @@ void menuErroServerFull()
     }
 }
 void menuErroConnectionFailure()
-{
+{   
     bool vdd = true;
-    eventsQueue = al_create_event_queue();
     while(vdd){
         startTimer();
         while(!al_is_event_queue_empty(eventsQueue)){
+            printf("cheguei\n");
             ALLEGRO_EVENT event;
             al_wait_for_event(eventsQueue, &event);
-            if(event.type == ALLEGRO_EVENT_KEY_CHAR){
+            if(event.type == ALLEGRO_EVENT_KEY_DOWN){
                 vdd = false;
             }
             if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();

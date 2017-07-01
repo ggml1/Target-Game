@@ -60,8 +60,7 @@ int main(){
         startTimer();
         int id = acceptConnection();
 
-        if(id != NO_CONNECTION)
-            printf("Alguem se Conectou com ID %d\n", id);
+        if(id != NO_CONNECTION) printf("Alguem se Conectou com ID %d\n", id);
         
         chegou = recvMsg(&pacote);
         if(chegou.status == MESSAGE_OK)
@@ -79,11 +78,14 @@ int main(){
                         case 'u':
                             x = playersJogando[pacote.teamPos].playerX;
                             y = playersJogando[pacote.teamPos].playerY;
-                            if(playersJogando[pacote.teamPos].playerX > 1 && (mapa[x - 1][y] == 0 || mapa[x - 1][y] == 2)){
+                            if(playersJogando[pacote.teamPos].playerX > 1 && (mapa[x - 1][y] == 0 || mapa[x - 1][y] == 2 || mapa[x - 1][y] == 55)){
                                 mudaMatriz.idMoved = pacote.teamPos;
                                 mudaMatriz.oldx = x;
                                 mudaMatriz.oldy = y;
-                                if(y < 16) mapa[x][y] = 0;
+                                if(y < 16){
+                                    if( (y >=2 && y <=4) && (x>=20 && x<=22) ) mapa[x][y] = 55;                                    
+                                    else mapa[x][y] = 0; 
+                                }
                                 else mapa[x][y] = 2;
                                 x--;
                                 mudaMatriz.newx = x;
@@ -96,11 +98,14 @@ int main(){
                         case 'd':
                             x = playersJogando[pacote.teamPos].playerX;
                             y = playersJogando[pacote.teamPos].playerY;
-                            if(playersJogando[pacote.teamPos].playerX < 22 && (mapa[x + 1][y] == 0 || mapa[x + 1][y] == 2)){
+                            if(playersJogando[pacote.teamPos].playerX < 22 && (mapa[x + 1][y] == 0 || mapa[x + 1][y] == 2 || mapa[x + 1][y] == 55)){
                                 mudaMatriz.idMoved = pacote.teamPos;
                                 mudaMatriz.oldx = x;
                                 mudaMatriz.oldy = y;
-                                if(y < 16) mapa[x][y] = 0;
+                                if(y < 16){
+                                    if( (y >=2 && y <=4) && (x>=20 && x<=22) ) mapa[x][y] = 55;                                    
+                                    else mapa[x][y] = 0; 
+                                }
                                 else mapa[x][y] = 2;
                                 x++;
                                 mudaMatriz.newx = x;
@@ -113,11 +118,14 @@ int main(){
                         case 'l':
                             x = playersJogando[pacote.teamPos].playerX;
                             y = playersJogando[pacote.teamPos].playerY;
-                            if(playersJogando[pacote.teamPos].playerY > 1 && (mapa[x][y - 1] == 0 || mapa[x][y - 1] == 2)){
+                            if(playersJogando[pacote.teamPos].playerY > 1 && (mapa[x][y - 1] == 0 || mapa[x][y - 1] == 2 || mapa[x][y - 1] == 55)){
                                 mudaMatriz.idMoved = pacote.teamPos;
                                 mudaMatriz.oldx = x;
                                 mudaMatriz.oldy = y;
-                                if(y < 16) mapa[x][y] = 0;
+                                if(y < 16){
+                                    if( (y >=2 && y <=4) && (x>=20 && x<=22) ) mapa[x][y] = 55;                                    
+                                    else mapa[x][y] = 0; 
+                                }
                                 else mapa[x][y] = 2;
                                 y--;
                                 mudaMatriz.newx = x;
@@ -130,11 +138,14 @@ int main(){
                         case 'r':
                             x = playersJogando[pacote.teamPos].playerX;
                             y = playersJogando[pacote.teamPos].playerY;
-                            if(playersJogando[pacote.teamPos].playerY < 30 && (mapa[x][y + 1] == 0 || mapa[x][y + 1] == 2)){
+                            if(playersJogando[pacote.teamPos].playerY < 30 && (mapa[x][y + 1] == 0 || mapa[x][y + 1] == 2 || mapa[x][y + 1] == 55)){
                                 mudaMatriz.idMoved = pacote.teamPos;
                                 mudaMatriz.oldx = x;
                                 mudaMatriz.oldy = y;
-                                if(y < 16) mapa[x][y] = 0;
+                                if(y < 16){
+                                    if( (y >=2 && y <=4) && (x>=20 && x<=22) ) mapa[x][y] = 55;                                    
+                                    else mapa[x][y] = 0; 
+                                }
                                 else mapa[x][y] = 2;
                                 y++;
                                 mudaMatriz.newx = x;
@@ -148,7 +159,7 @@ int main(){
                     broadcast(&mudaMatriz, sizeof(mudaMatriz));
                     break;
 
-                case playerLogIn: //2
+                case playerLogIn: /////////////////////////////////////////////////////////////////////2
                     //player logou no server. hora de mostrar onde ele fica.
                     pacote.teamPos = 3 + chegou.client_id;
                     switch(pacote.teamPos){
@@ -262,6 +273,7 @@ int main(){
                     }
                     break;
             }
+            pacote.tipoPacote = -1;
         }
         if(chegou.status == DISCONNECT_MSG)
         {

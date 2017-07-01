@@ -394,9 +394,10 @@ while (program)
         while(receberMapa){
             pacoteClient.tipoPacote = 2;
             sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
-            while(recvMsgFromServer(&pacoteDoServer, DONT_WAIT) == NO_MESSAGE){
-                printf("esperando mapa...\n");
-            }
+            // while(recvMsgFromServer(&pacoteDoServer, DONT_WAIT) == NO_MESSAGE){
+            //     printf("esperando mapa...\n");
+            // }
+            recvMsgFromServer(&pacoteDoServer, WAIT_FOR_IT);
             printf("Recebi pra entrar!\n");
             for(i=0; i<24; i++){
                 for(j=0; j<32; j++){
@@ -445,14 +446,16 @@ while (program)
                     }
                 }
             }
-            if(recvMsgFromServer(&Alteracoes, DONT_WAIT) != NO_MESSAGE){
-                // printf("Mudou a matriz!\n");
-                if(Alteracoes.oldy < 16) map[Alteracoes.oldx][Alteracoes.oldy] = 0;
-                else map[Alteracoes.oldx][Alteracoes.oldy] = 2;
-                map[Alteracoes.newx][Alteracoes.newy] = Alteracoes.idMoved;
-                // printf("Posicoes:\nAntiga: %d %d\nNova: %d %d\n", Alteracoes.oldx, Alteracoes.oldy, Alteracoes.newx, Alteracoes.newy);
-                // printf("Valor antigo: %d\n Valor novo: %d\n", map[Alteracoes.oldx][Alteracoes.oldy], map[Alteracoes.newx][Alteracoes.newy]);
-            }
+            // if(recvMsgFromServer(&Alteracoes, DONT_WAIT) != NO_MESSAGE){
+            //     // printf("Mudou a matriz!\n");
+            //     if(Alteracoes.oldy < 16){
+            //         if( (Alteracoes.oldy>=2 && Alteracoes.oldy<=4) && (Alteracoes.oldx>=20 && Alteracoes.oldx<=22) ) map[Alteracoes.oldx][Alteracoes.oldy] = 55;
+            //         else map[Alteracoes.oldx][Alteracoes.oldy] = 0;
+            //     } else map[Alteracoes.oldx][Alteracoes.oldy] = 2;
+            //     map[Alteracoes.newx][Alteracoes.newy] = Alteracoes.idMoved;
+            //     // printf("Posicoes:\nAntiga: %d %d\nNova: %d %d\n", Alteracoes.oldx, Alteracoes.oldy, Alteracoes.newx, Alteracoes.newy);
+            //     // printf("Valor antigo: %d\n Valor novo: %d\n", map[Alteracoes.oldx][Alteracoes.oldy], map[Alteracoes.newx][Alteracoes.newy]);
+            // }
                 for(i=0; i<24; i++){
                     for(j=0; j<32; j++){
                             switch(map[i][j]){
@@ -479,9 +482,15 @@ while (program)
                                                 al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
                                                 al_draw_bitmap_region(tileSet, 0*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
                                             } else{
-                                                al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
-                                                al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
-                                                al_draw_bitmap_region(tileSet, 0*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);     
+                                                if( (j >=2 && j <=4) && (i>=20 && i<=21) ){
+                                                    al_draw_bitmap(red, TILE*j, TILE*i, 0);
+                                                    al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
+                                                    al_draw_bitmap_region(tileSet, 0*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                } else{
+                                                    al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                    al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
+                                                    al_draw_bitmap_region(tileSet, 0*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                }     
                                             }
                                             break;
                                         case 'd':
@@ -490,9 +499,15 @@ while (program)
                                                 al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
                                                 al_draw_bitmap_region(tileSet, 0*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
                                             } else{
-                                                al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
-                                                al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
-                                                al_draw_bitmap_region(tileSet, 0*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                if( (j >=2 && j <=4) && (i>=20 && i<=22) ){
+                                                    al_draw_bitmap(red, TILE*j, TILE*i, 0);
+                                                    al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
+                                                    al_draw_bitmap_region(tileSet, 0*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                } else{
+                                                    al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                    al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
+                                                    al_draw_bitmap_region(tileSet, 0*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                }
                                             }
                                             break;
                                         case 'l':
@@ -501,9 +516,15 @@ while (program)
                                                 al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
                                                 al_draw_bitmap_region(tileSet, 0*TILE, 7*TILE, 32, 32, TILE*j, TILE*i, 0);
                                             } else{
-                                                al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
-                                                al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
-                                                al_draw_bitmap_region(tileSet, 0*TILE, 7*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                if( (j >=2 && j <=4) && (i>=20 && i<=22) ){
+                                                    al_draw_bitmap(red, TILE*j, TILE*i, 0);
+                                                    al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
+                                                    al_draw_bitmap_region(tileSet, 0*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                } else{
+                                                    al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                    al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
+                                                    al_draw_bitmap_region(tileSet, 0*TILE, 7*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                }
                                             }
                                             break;
                                         case 'r':
@@ -512,9 +533,15 @@ while (program)
                                                 al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
                                                 al_draw_bitmap_region(tileSet, 0*TILE, 8*TILE, 32, 32, TILE*j, TILE*i, 0);
                                             } else{
-                                                al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
-                                                al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
-                                                al_draw_bitmap_region(tileSet, 0*TILE, 8*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                if( (j >=2 && j <=4) && (i>=20 && i<=22) ){
+                                                    al_draw_bitmap(red, TILE*j, TILE*i, 0);
+                                                    al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
+                                                    al_draw_bitmap_region(tileSet, 0*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                } else{
+                                                    al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                    al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
+                                                    al_draw_bitmap_region(tileSet, 0*TILE, 8*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                }
                                             }
                                             break;
                                     }

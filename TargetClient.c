@@ -470,7 +470,8 @@ while (program)
                                     al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     al_draw_bitmap_region(Dungeon_B, 2*TILE, 7*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     break;
-                                case 3: //player
+                                //////////PLAYERS
+                                case 3:
                                     switch(Alteracoes.olhando[3]){
                                         case 'u':
                                             if(j > 15){
@@ -518,7 +519,7 @@ while (program)
                                             break;
                                     }
                                     break;
-                                case 4: //player
+                                case 4:
                                     switch(Alteracoes.olhando[4]){
                                         case 'u':
                                             if(j > 15){
@@ -758,8 +759,7 @@ while (program)
                                             break;
                                     }
                                     break;
-
-
+                                //////////PLAYERS
                                 case 9:
                                     al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     if(j == 26) al_draw_bitmap_region(TileC, 11*TILE, 7*TILE, 32, 32, TILE*j, TILE*i, 0);
@@ -775,12 +775,9 @@ while (program)
                                     if(j == 26) al_draw_bitmap_region(TileC, 11*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     else al_draw_bitmap_region(TileC, 12*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     break;
-
-
-
                                 case -9:
                                     al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
-                                    if(j == 1) al_draw_bitmap_region(TileC, 9*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0); ///CERTO
+                                    if(j == 1) al_draw_bitmap_region(TileC, 9*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     else al_draw_bitmap_region(TileC, 10*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     break;
                                 case -92:
@@ -788,22 +785,18 @@ while (program)
                                     if(j == 1) al_draw_bitmap_region(TileC, 9*TILE, 7*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     else al_draw_bitmap_region(TileC, 10*TILE, 7*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     break;
-                                case -91: //em cima
+                                case -91:
                                     al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     if(j == 1) al_draw_bitmap_region(TileC, 9*TILE, 8*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     else al_draw_bitmap_region(TileC, 10*TILE, 8*TILE, 32, 32, TILE*j, TILE*i, 0);
-                                    break;/////////////////////
-
-
-
-
+                                    break;
                                 case 10:
                                     if(j > 15){
                                         al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
-                                        al_draw_bitmap_region(tileSet, 10*TILE, 1*TILE, 32, 32, TILE*j, TILE*i, 0);       ////AJEITAR TILE 10
+                                        al_draw_bitmap_region(Dungeon_B, 10*TILE, 15*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     } else{
                                         al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
-                                        al_draw_bitmap_region(tileSet, 10*TILE, 1*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                        al_draw_bitmap_region(Dungeon_B, 10*TILE, 14*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     }
                                     break;
                                 case 11:
@@ -840,7 +833,6 @@ while (program)
                             }
                     }
                 }
-                //drawplayer
             al_flip_display();
             al_clear_to_color(al_map_rgb(0,0,0));
             FPSLimit();
@@ -851,7 +843,7 @@ while (program)
 //------------------------------------------------------------------------------------------------------------------------------------------------------
 //-----AQUI ESTA FORA DA MAIN - FUNCOES AUXILIARES!
 //------------------------------------------------------------------------------------------------------------------------------------------------------
-void menuErroSocket()  ////VER ERRO!
+void menuErroSocket()
 {
     int vdd = 1;
     while(vdd){

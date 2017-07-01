@@ -270,5 +270,11 @@ bool loadGraphics() // INICIA AS IMAGENS "1_bitmap", "2_bitmap", "3_bitmap", "4_
         fprintf(stderr, "Falha ao carregar a Dungeon_A2.\n");
         return false;
     }
+    
+    Inside_C = al_load_bitmap("Resources/Tilesets/Inside_C.png");
+    if(!Inside_C){
+        fprintf(stderr, "Falha ao carregar a Inside_C.\n");
+        return false;
+    }
     return true;
 }

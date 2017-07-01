@@ -350,7 +350,7 @@ while (program)
             }
         }
 //------------------------------------------------------------------------------------------------------------------------------------------------------
-        sendMsgToServer(&pacoteClient, sizeof(pacoteClient));   ///PRIMEIRA MSG DO PLAYER PARA O SERVER, "OFICIALIZA" A CONEXAO E EVITA BUGS
+        if(conecta == 1) sendMsgToServer(&pacoteClient, sizeof(pacoteClient));   ///PRIMEIRA MSG DO PLAYER PARA O SERVER, "OFICIALIZA" A CONEXAO E EVITA BUGS
 //------------------------------------------------------------------------------------------------------------------------------------------------------
         while(teamSelection){
             bool notReady = true;
@@ -445,25 +445,13 @@ while (program)
                     }
                 }
             }
-            if(l == 0){
-                if(recvMsgFromServer(&pacoteDoServer, DONT_WAIT) != NO_MESSAGE){
-                    for(i=0; i<24; i++){
-                        for(j=0; j<24; j++){
-                            map[i][j] = pacoteDoServer.mapa[i][j];
-                        }
-                    }
-                    l++;
-                }
-            }
-            else{
-                if(recvMsgFromServer(&Alteracoes, DONT_WAIT) != NO_MESSAGE){
-                    // printf("Mudou a matriz!\n");
-                    if(Alteracoes.oldy < 16) map[Alteracoes.oldx][Alteracoes.oldy] = 0;
-                    else map[Alteracoes.oldx][Alteracoes.oldy] = 2;
-                    map[Alteracoes.newx][Alteracoes.newy] = Alteracoes.idMoved;
-                    // printf("Posicoes:\nAntiga: %d %d\nNova: %d %d\n", Alteracoes.oldx, Alteracoes.oldy, Alteracoes.newx, Alteracoes.newy);
-                    // printf("Valor antigo: %d\n Valor novo: %d\n", map[Alteracoes.oldx][Alteracoes.oldy], map[Alteracoes.newx][Alteracoes.newy]);
-                }
+            if(recvMsgFromServer(&Alteracoes, DONT_WAIT) != NO_MESSAGE){
+                // printf("Mudou a matriz!\n");
+                if(Alteracoes.oldy < 16) map[Alteracoes.oldx][Alteracoes.oldy] = 0;
+                else map[Alteracoes.oldx][Alteracoes.oldy] = 2;
+                map[Alteracoes.newx][Alteracoes.newy] = Alteracoes.idMoved;
+                // printf("Posicoes:\nAntiga: %d %d\nNova: %d %d\n", Alteracoes.oldx, Alteracoes.oldy, Alteracoes.newx, Alteracoes.newy);
+                // printf("Valor antigo: %d\n Valor novo: %d\n", map[Alteracoes.oldx][Alteracoes.oldy], map[Alteracoes.newx][Alteracoes.newy]);
             }
                 for(i=0; i<24; i++){
                     for(j=0; j<32; j++){
@@ -760,18 +748,22 @@ while (program)
                                     if(j > 15){
                                         al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
                                         al_draw_bitmap_region(Dungeon_B, 8*TILE, 8*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                        al_draw_bitmap_region(Inside_C, 15*TILE, 5*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     } else{
                                         al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
                                         al_draw_bitmap_region(Dungeon_B, 8*TILE, 8*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                        al_draw_bitmap_region(Inside_C, 14*TILE, 5*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     }
                                     break;
                                 case 13:
                                     if(j > 15){
                                         al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
-                                        al_draw_bitmap_region(Outside_B,   7*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                        // al_draw_bitmap_region(Outside_B,   7*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);       --> LAPIDE
+                                        al_draw_bitmap_region(Inside_C, 15*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     } else{
                                         al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
-                                        al_draw_bitmap_region(Outside_B,   7*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                        // al_draw_bitmap_region(Outside_B,   7*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);       --> LAPIDE
+                                        al_draw_bitmap_region(Inside_C, 14*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     }
                                     break;    
                             }
@@ -794,6 +786,7 @@ void menuErroSocket()  ////VER ERRO!
     while(vdd){
         startTimer();
         while(!al_is_event_queue_empty(eventsQueue)){
+            printf("Nao foi possivel criar a socket. Erro!\n");
             ALLEGRO_EVENT event;
             al_wait_for_event(eventsQueue, &event);
             if(event.type == ALLEGRO_EVENT_KEY_DOWN){
@@ -816,6 +809,7 @@ void menuErroServerFull()
     while(vdd){
         startTimer();
         while(!al_is_event_queue_empty(eventsQueue)){
+            printf("Server esta cheio. Erro!\n");
             ALLEGRO_EVENT event;
             al_wait_for_event(eventsQueue, &event);
             if(event.type == ALLEGRO_EVENT_KEY_CHAR){
@@ -838,7 +832,7 @@ void menuErroConnectionFailure()
     while(vdd){
         startTimer();
         while(!al_is_event_queue_empty(eventsQueue)){
-            printf("cheguei\n");
+            printf("Server nao esta up. Erro!\n");
             ALLEGRO_EVENT event;
             al_wait_for_event(eventsQueue, &event);
             if(event.type == ALLEGRO_EVENT_KEY_DOWN){

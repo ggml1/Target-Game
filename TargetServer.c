@@ -267,7 +267,7 @@ int main(){
         {
             x = playersJogando[3+chegou.client_id].playerX;
             y = playersJogando[3+chegou.client_id].playerY;
-            mapa[x][y] = 0;
+            (y > 15) ? (mapa[x][y] = 2) : (mapa[x][y] = 0);
             mudaMatriz.oldx = x;
             mudaMatriz.oldy = y;
             mudaMatriz.newx = x;

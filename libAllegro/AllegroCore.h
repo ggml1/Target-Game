@@ -43,6 +43,7 @@ ALLEGRO_BITMAP *Dungeon_B;
 ALLEGRO_BITMAP *Outside_B;
 ALLEGRO_BITMAP *World_B;
 ALLEGRO_BITMAP *Dungeon_A2;
+ALLEGRO_BITMAP *Inside_C;
 
 typedef struct{
 	int teamPos;

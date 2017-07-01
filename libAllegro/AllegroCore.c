@@ -288,5 +288,17 @@ bool loadGraphics() // INICIA AS IMAGENS "1_bitmap", "2_bitmap", "3_bitmap", "4_
         fprintf(stderr, "Falha ao carregar a TileC.\n");
         return false;
     }
+
+    red = al_load_bitmap("Resources/Tilesets/red.png");
+    if(!red){
+        fprintf(stderr, "Falha ao carregar a red.\n");
+        return false;
+    }
+
+    blue = al_load_bitmap("Resources/Tilesets/blue.png");
+    if(!blue){
+        fprintf(stderr, "Falha ao carregar a blue.\n");
+        return false;
+    }
     return true;
 }

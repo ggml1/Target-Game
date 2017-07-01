@@ -760,36 +760,52 @@ while (program)
                                     }
                                     break;
                                 //////////PLAYERS
+
                                 case 9:
-                                    al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    al_draw_bitmap(blue, TILE*j, TILE*i, 0);
+                                    //al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     if(j == 26) al_draw_bitmap_region(TileC, 11*TILE, 7*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     else al_draw_bitmap_region(TileC, 12*TILE, 7*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     break;
                                 case 91:
-                                    al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    al_draw_bitmap(blue, TILE*j, TILE*i, 0);
+                                    //al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     if(j == 26) al_draw_bitmap_region(TileC, 11*TILE, 8*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     else al_draw_bitmap_region(TileC, 12*TILE, 8*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     break;
                                 case 92:
-                                    al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    al_draw_bitmap(blue, TILE*j, TILE*i, 0);
+                                    //al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     if(j == 26) al_draw_bitmap_region(TileC, 11*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     else al_draw_bitmap_region(TileC, 12*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     break;
                                 case -9:
-                                    al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    al_draw_bitmap(red, TILE*j, TILE*i, 0);
+                                    //al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     if(j == 1) al_draw_bitmap_region(TileC, 9*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     else al_draw_bitmap_region(TileC, 10*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     break;
                                 case -92:
-                                    al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    al_draw_bitmap(red, TILE*j, TILE*i, 0);
+                                    //al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     if(j == 1) al_draw_bitmap_region(TileC, 9*TILE, 7*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     else al_draw_bitmap_region(TileC, 10*TILE, 7*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     break;
                                 case -91:
-                                    al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    al_draw_bitmap(red, TILE*j, TILE*i, 0);
+                                    //al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     if(j == 1) al_draw_bitmap_region(TileC, 9*TILE, 8*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     else al_draw_bitmap_region(TileC, 10*TILE, 8*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     break;
+
+                                case 55:
+                                    al_draw_bitmap(red, TILE*j, TILE*i, 0);
+                                    break;
+
+                                case 56:
+                                    al_draw_bitmap(blue, TILE*j, TILE*i, 0);
+                                    break;
+
                                 case 10:
                                     if(j > 15){
                                         al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);

@@ -46,6 +46,8 @@ ALLEGRO_BITMAP *Dungeon_A2;
 ALLEGRO_BITMAP *Inside_C;
 ALLEGRO_BITMAP *Shadow;
 ALLEGRO_BITMAP *TileC;
+ALLEGRO_BITMAP *red;
+ALLEGRO_BITMAP *blue;
 
 typedef struct{
 	int teamPos;

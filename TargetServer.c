@@ -241,20 +241,8 @@ int main(){
                         case 6:
                             playersJogando[id+3].HP = 20;
                             playersJogando[6].playerX = 1;
-                            playersJogando[6].playerY = 30;
-                            mapa[1][30] = 6;
-                            mudaMatriz.oldx = 1;
-                            mudaMatriz.oldy = 30;
-                            mudaMatriz.newx = 1;
-                            mudaMatriz.newy = 30;
-                            mudaMatriz.idMoved = pacote.teamPos;
-                            mudaMatriz.olhando[pacote.teamPos] = 'd';
-                            break;
-                        case 7:
-                            playersJogando[id+3].HP = 20;
-                            playersJogando[7].playerX = 1;
-                            playersJogando[7].playerY = 29;
-                            mapa[1][29] = 7;
+                            playersJogando[6].playerY = 29;
+                            mapa[1][29] = 6;
                             mudaMatriz.oldx = 1;
                             mudaMatriz.oldy = 29;
                             mudaMatriz.newx = 1;
@@ -262,15 +250,27 @@ int main(){
                             mudaMatriz.idMoved = pacote.teamPos;
                             mudaMatriz.olhando[pacote.teamPos] = 'd';
                             break;
-                        case 8:
+                        case 7:
                             playersJogando[id+3].HP = 20;
-                            playersJogando[8].playerX = 1;
-                            playersJogando[8].playerY = 28;
-                            mapa[1][28] = 8;
+                            playersJogando[7].playerX = 1;
+                            playersJogando[7].playerY = 28;
+                            mapa[1][28] = 7;
                             mudaMatriz.oldx = 1;
                             mudaMatriz.oldy = 28;
                             mudaMatriz.newx = 1;
                             mudaMatriz.newy = 28;
+                            mudaMatriz.idMoved = pacote.teamPos;
+                            mudaMatriz.olhando[pacote.teamPos] = 'd';
+                            break;
+                        case 8:
+                            playersJogando[id+3].HP = 20;
+                            playersJogando[8].playerX = 1;
+                            playersJogando[8].playerY = 27;
+                            mapa[1][27] = 8;
+                            mudaMatriz.oldx = 1;
+                            mudaMatriz.oldy = 27;
+                            mudaMatriz.newx = 1;
+                            mudaMatriz.newy = 27;
                             mudaMatriz.idMoved = pacote.teamPos;
                             mudaMatriz.olhando[pacote.teamPos] = 'd';
                             break;

@@ -57,7 +57,7 @@ typedef struct{
 	short int teamPos;
 	short int tipoPacote;				// 0 -> msg inicial (nickname), 1 - > movimento
     char playerName[16];
-    int HP;
+    short int HP;
     char mov;
     short int playerX;
     short int playerY;
@@ -76,7 +76,7 @@ typedef struct{
 typedef struct{
 	//int tipoPacote; nao precisa, pois o server mandara pro client e o client nao precisa ter um switch case de opcoes de moves.
 	short int tag;
-	int HP;
+	short int HP;
 	short int oldx;
 	short int oldy;
 	short int newx;
@@ -84,16 +84,6 @@ typedef struct{
 	short int idMoved;
 	char olhando[9];
 }Moves;
-
-///1 2 3 -> time vermelho
-// 1 -> [22][1];
-// 2 -> [21][1];
-// 3 -> [20][1];
-// 4 5 6 -> time azul
-// 4 -> [1][30];
-// 5 -> [1][29];
-// 6 -> [1][28];
-
 
 //Funções Centrais da Allegro
 bool coreInit();

@@ -294,7 +294,7 @@ int main(){
                             //sendMsgToClient(&pacote, sizeof(pacote), chegou.client_id);
                             break;
                     }
-                    broadcast(&pacoteProClient, sizeof(pacoteProClient));
+                    broadcast(&mudaMatriz, sizeof(mudaMatriz));
                     // for(i=0; i<6; i++){
                     //     if(isValidId(i) && i != chegou.client_id){
                     //         sendMsgToClient(&mudaMatriz, sizeof(mudaMatriz), i);

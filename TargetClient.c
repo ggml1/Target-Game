@@ -16,7 +16,7 @@ void printaCreditos();
 void printaMenuOpcoes(int option);
 void printaHelp();
 void printaInicio();
-void printaMenuTeamSelection();
+void printaMenuTeamSelection(bool notReady);
 void printaNomes(Lobby *nomes);
 
 int main(int argc, char const *argv[]){
@@ -381,10 +381,9 @@ int main(int argc, char const *argv[]){
                 }
             }
 
-            printaMenuTeamSelection();
+            printaMenuTeamSelection(notReady);
             printaNomes(&nomes);
 
-            if(notReady) al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2, 610, ALLEGRO_ALIGN_CENTRE, "WAITING FOR PLAYERS...");
             al_flip_display();
             al_clear_to_color(al_map_rgb(0,0,0));
             FPSLimit();
@@ -1068,15 +1067,17 @@ void printaInicio()
     al_draw_textf(font_3, al_map_rgb(255,255,255), LARGURA/2 - 181, 50, 0, "TARGET");
 }
 
-void printaMenuTeamSelection()
+void printaMenuTeamSelection(bool notReady)
 {
     al_draw_bitmap(menuNormal, 0, 0, 0);
     al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 20, ALLEGRO_ALIGN_CENTRE, "TEAM LOBBY");
-    al_draw_text(font_1, al_map_rgb(255,  0,  0), LARGURA/2 - 300, 110, ALLEGRO_ALIGN_CENTRE, "RED TEAM");
-    al_draw_text(font_1, al_map_rgb(  0,  0,255), LARGURA/2 + 260, 110, ALLEGRO_ALIGN_CENTRE, "BLUE TEAM");
+    al_draw_text(font_1, al_map_rgb(255,  0,  0), LARGURA/2 - 325, 110, ALLEGRO_ALIGN_CENTRE, "RED TEAM");
+    al_draw_text(font_1, al_map_rgb(  0,  0,255), LARGURA/2 + 330, 110, ALLEGRO_ALIGN_CENTRE, "BLUE TEAM");
     al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2, 640, ALLEGRO_ALIGN_CENTRE, "PRESS ESC TO RETURN TO MENU");
     al_draw_rectangle(LARGURA/3 - 310, 160,      LARGURA/3, 600, al_map_rgb(0, 0, 0), 5);
     al_draw_rectangle(LARGURA   - 345, 160,   LARGURA - 20, 600, al_map_rgb(0, 0, 0), 5);
+    if(notReady) al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2, 610, ALLEGRO_ALIGN_CENTRE, "WAITING FOR PLAYERS...");
+    else al_draw_text(font_2, al_map_rgb(0,255,0), LARGURA/2, 610, ALLEGRO_ALIGN_CENTRE, "EVERYONE IS READY!");
 }
 
 void printaNomes(Lobby *nomes)

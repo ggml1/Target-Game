@@ -1327,7 +1327,7 @@ void printaMapa(short int map[][32], Moves *Alteracoes)
                                 al_draw_bitmap(blue, TILE*j, TILE*i, 0);
                                 break;
 
-                            case 30: // LAPIDE, OK.
+                            case 30: // LAPIDE, OK.  //LAPIDE NAO PEGA. VIROU CAVEIRA. ??
                                 if(j > 15){
                                     if( ( j>=27 && j<=29 ) && (i>=1 && i<=3) ){
                                         al_draw_bitmap(blue, TILE*j, TILE*i, 0);
@@ -1349,7 +1349,7 @@ void printaMapa(short int map[][32], Moves *Alteracoes)
                             case 10:
                                 if(j > 15){
                                     al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
-                                    al_draw_bitmap_region(Dungeon_B, 10*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0); //15
+                                    al_draw_bitmap_region(Dungeon_B, 10*TILE, 15*TILE, 32, 32, TILE*j, TILE*i, 0);
                                 } else{
                                     al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     al_draw_bitmap_region(Dungeon_B, 10*TILE, 14*TILE, 32, 32, TILE*j, TILE*i, 0);

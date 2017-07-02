@@ -194,7 +194,15 @@ int main(){
                             if(playersJogando[teamPos].HP <= 0){
                                 mudaMatriz.tag = 4;
                                 sendMsgToClient(&mudaMatriz, sizeof(mudaMatriz), teamPos - 3);
+                                (naoComeca == true) ? (printf("O estado atual de naoComeca eh true.\n")) : (printf("O estado atual de naoComeca eh false\n"));
                                 disconnectClient(teamPos - 3);
+                                x = playersJogando[3+chegou.client_id].playerX;
+                                y = playersJogando[3+chegou.client_id].playerY;
+                                mudaMatriz.tag = 3;
+                                mudaMatriz.newx = x;
+                                mudaMatriz.newy = y;
+                                mudaMatriz.idMoved = 30;
+                                broadcast(&mudaMatriz, sizeof(mudaMatriz));
                             } else{
                                 mudaMatriz.tag = 2;
                                 mudaMatriz.HP = playersJogando[teamPos].HP;
@@ -376,7 +384,8 @@ int main(){
         if(chegou.status == DISCONNECT_MSG)
         {
             if(naoComeca == true){
-                printf("o id %d quer se disconectar\n", chegou.client_id);
+                printf("O player de ID %d quer se desconectar.\n", chegou.client_id);
+
                 posicao[id][0] = -1;
                 posicao[id][1] = -1;
                 posicao[id][2] = -1;
@@ -386,12 +395,10 @@ int main(){
             } else{
                 x = playersJogando[3+chegou.client_id].playerX;
                 y = playersJogando[3+chegou.client_id].playerY;
-                (y > 15) ? (mapa[x][y] = 2, mudaMatriz.idMoved = 2) : (mapa[x][y] = 0, mudaMatriz.idMoved = 0); //ajeitar
-                mudaMatriz.oldx = x;
-                mudaMatriz.oldy = y;
+                mudaMatriz.tag = 3;
                 mudaMatriz.newx = x;
                 mudaMatriz.newy = y;
-                //mudaMatriz.idMoved = 0;
+                mudaMatriz.idMoved = 30;
                 broadcast(&mudaMatriz, sizeof(mudaMatriz));
                 chegou.status = NO_MESSAGE;
             }

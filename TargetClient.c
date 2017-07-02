@@ -575,7 +575,7 @@ void mostraTelaMorte()
     while(vdd){
         startTimer();
         while(!al_is_event_queue_empty(eventsQueue)){
-            printf("O jogo ja comecou! Nao foi possivel se conectar.\n");
+            printf("Player morreu.\n");
             ALLEGRO_EVENT event;
             al_wait_for_event(eventsQueue, &event);
             if(event.type == ALLEGRO_EVENT_KEY_DOWN){
@@ -1327,10 +1327,29 @@ void printaMapa(short int map[][32], Moves *Alteracoes)
                                 al_draw_bitmap(blue, TILE*j, TILE*i, 0);
                                 break;
 
+                            case 30: // LAPIDE, OK.
+                                if(j > 15){
+                                    if( ( j>=27 && j<=29 ) && (i>=1 && i<=3) ){
+                                        al_draw_bitmap(blue, TILE*j, TILE*i, 0);
+                                        al_draw_bitmap_region(Outside_B,   7*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    } else{
+                                        al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                        al_draw_bitmap_region(Outside_B,   7*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    }
+                                } else{
+                                    if( (j >=2 && j <=4) && (i>=20 && i<=22) ){
+                                        al_draw_bitmap(red, TILE*j, TILE*i, 0);
+                                        al_draw_bitmap_region(Outside_B,   7*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    } else{
+                                        al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                        al_draw_bitmap_region(Outside_B,   7*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    }
+                                }
+
                             case 10:
                                 if(j > 15){
                                     al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
-                                    al_draw_bitmap_region(Dungeon_B, 10*TILE, 15*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    al_draw_bitmap_region(Dungeon_B, 10*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0); //15
                                 } else{
                                     al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
                                     al_draw_bitmap_region(Dungeon_B, 10*TILE, 14*TILE, 32, 32, TILE*j, TILE*i, 0);
@@ -1359,11 +1378,9 @@ void printaMapa(short int map[][32], Moves *Alteracoes)
                             case 13:
                                 if(j > 15){
                                     al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
-                                    // al_draw_bitmap_region(Outside_B,   7*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);       --> LAPIDE
                                     al_draw_bitmap_region(Inside_C, 15*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
                                 } else{
                                     al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
-                                    // al_draw_bitmap_region(Outside_B,   7*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);       --> LAPIDE
                                     al_draw_bitmap_region(Inside_C, 14*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
                                 }
                                 break;    

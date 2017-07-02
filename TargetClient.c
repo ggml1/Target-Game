@@ -1452,11 +1452,11 @@ void printaMenuOpcoes(int option)
 
 void printaHelp()
 {
+    //al_draw_bitmap(spaceTecla,     5*TILE, 11*TILE + 10, 0);
     al_draw_bitmap(menuNormal, 0, 0, 0);
     al_draw_text(font_1, al_map_rgb(0,0,0), LARGURA/2, 50, ALLEGRO_ALIGN_CENTRE , "HELP");
     al_draw_text(font_1, al_map_rgb(255,0,0), 100 , 120, ALLEGRO_ALIGN_LEFT , "01. MOVES");
     al_draw_text(font_2, al_map_rgb(0,0,0), 250, 200, ALLEGRO_ALIGN_CENTRE , "UP");
-    // al_draw_bitmap(spaceTecla,     5*TILE, 11*TILE + 10, 0);
     al_draw_bitmap(upKey,     4*TILE + 20,  5*TILE + 15, 0);
     al_draw_bitmap(downKey,  15*TILE + 15,  5*TILE + 20, 0);
     al_draw_bitmap(leftKey,   4*TILE + 20,       8*TILE, 0);

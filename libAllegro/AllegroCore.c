@@ -301,4 +301,11 @@ bool loadGraphics()
         return false;
     }
     return true;
+
+    spaceTecla = al_load_bitmap("Resources/Etc/space.png");
+    if(!spaceTecla){
+        fprintf(stderr, "Falha ao carregar a space.\n");
+        return false;
+    }
+    return true;
 }

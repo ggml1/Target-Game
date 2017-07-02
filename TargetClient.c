@@ -18,7 +18,6 @@ void printaHelp();
 void printaInicio();
 void printaMenuTeamSelection(bool notReady);
 void printaNomes(Lobby *nomes);
-void limpaPacote(Player *pacoteClient);
 
 int main(int argc, char const *argv[]){
 
@@ -60,33 +59,32 @@ int main(int argc, char const *argv[]){
     short int i, j, k;
     short int aux;    
     short int map[24][32] = {{1,  1,   1,  1,  1,   1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-                    {1,  1,   1,  1,  1,   1, 1, 1, 1, 1, 1, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  9, 56, 56, 56,  9, -1},
-                    {1,  1,   1,  1,  1,   1, 1, 1, 1, 1, 0, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, 91, 56, 56, 56, 91, -1},
-                    {1,  1,   1,  0,  0,   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  2,  2,  2,  2, -1, -1,  2,  2,  2,  2, 92, 56, 56, 56, 92, -1},
-                    {1,  1,   1,  0,  0,   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2, -1, -1,  2,  2,  2,  2,  2,  2,  2,  2, -1},
-                    {1,  1,   1,  0,  0,  10, 0, 0, 0, 0, 0, 1, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2, -1,  2,  2,  2,  2,  2,  2,  2,  2, -1},
-                    {1,  1,   1,  0,  0,   0, 0, 0, 0, 0, 0, 1, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, -1},
-                    {1,  1,   1,  0,  0,   0, 0, 0, 0, 0, 0, 1, 1, 1, 1,  1, -1, -1,  2,  2,  2,  2,  2,  2,  2, -1,  2,  2,  2,  2,  2, -1},
-                    {1,  1,   1,  0,  0,   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2,  2,  2,  2, -1, -1,  2,  2,  2,  2, -1},
-                    {1,  1,   1,  1,  1,   1, 1, 1, 0, 0, 0, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, -1, -1,  2,  2,  2, -1},
-                    {1,  1,   1,  1,  1,   1, 1, 1, 0, 0, 0, 0, 1, 1, 1,  1, -1, -1,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, -1},
-                    {1,  0,   0,  0,  0,   0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 11, 11, -1,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, -1},
-                    {1,  0,   0,  0,  0,   0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 12, 12, -1,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, -1},
-                    {1,  0,   0,  0,  0,   0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 13, 13, -1, -1, -1,  2,  2,  2,  2, -1, -1, -1, -1, -1, -1, -1, -1},
-                    {1,  0,   0,  0,  1,   1, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2,  2,  2, -1, -1, -1, -1, -1, -1, -1, -1},
-                    {1,  0,   0,  0,  0,   1, 1, 0, 0, 0, 0, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, -1, -1, -1},
-                    {1,  0,   0,  0,  0,   0, 1, 0, 0, 0, 0, 0, 0, 1, 1,  1, -1, -1, -1, -1,  2,  2,  2,  2,  2,  2,  2,  2,  2, -1, -1, -1},
-                    {1,  0,   0,  0,  0,   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  2,  2,  2, -1,  2,  2,  2,  2,  2,  2,  2,  2,  2,- 1, -1, -1},
-                    {1,  0,   0,  0,  0,   0, 0, 0, 0, 1, 0, 0, 0, 0, 0,  0,  2,  2,  2, -1,  2,  2,  2,  2,  2,  2, 10,  2,  2, -1, -1, -1},
-                    {1,  0,   0,  0,  0,   0, 0, 0, 0, 1, 1, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, -1, -1, -1},
-                    {1, -92, 55, 55, 55, -92, 0, 0, 0, 0, 1, 1, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, -1, -1, -1},
-                    {1, -91, 55, 55, 55, -91, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-                    {1,  -9, 55, 55, 55,  -9, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-                    {1,   1,  1,  1,  1,   1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}};
-    short int playerHP = 20;
+                             {1,  1,   1,  1,  1,   1, 1, 1, 1, 1, 1, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  9, 56, 56, 56,  9, -1},
+                             {1,  1,   1,  1,  1,   1, 1, 1, 1, 1, 0, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, 91, 56, 56, 56, 91, -1},
+                             {1,  1,   1,  0,  0,   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  2,  2,  2,  2, -1, -1,  2,  2,  2,  2, 92, 56, 56, 56, 92, -1},
+                             {1,  1,   1,  0,  0,   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2, -1, -1,  2,  2,  2,  2,  2,  2,  2,  2, -1},
+                             {1,  1,   1,  0,  0,  10, 0, 0, 0, 0, 0, 1, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2, -1,  2,  2,  2,  2,  2,  2,  2,  2, -1},
+                             {1,  1,   1,  0,  0,   0, 0, 0, 0, 0, 0, 1, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, -1},
+                             {1,  1,   1,  0,  0,   0, 0, 0, 0, 0, 0, 1, 1, 1, 1,  1, -1, -1,  2,  2,  2,  2,  2,  2,  2, -1,  2,  2,  2,  2,  2, -1},
+                             {1,  1,   1,  0,  0,   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2,  2,  2,  2, -1, -1,  2,  2,  2,  2, -1},
+                             {1,  1,   1,  1,  1,   1, 1, 1, 0, 0, 0, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, -1, -1,  2,  2,  2, -1},
+                             {1,  1,   1,  1,  1,   1, 1, 1, 0, 0, 0, 0, 1, 1, 1,  1, -1, -1,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, -1},
+                             {1,  0,   0,  0,  0,   0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 11, 11, -1,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, -1},
+                             {1,  0,   0,  0,  0,   0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 12, 12, -1,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, -1},
+                             {1,  0,   0,  0,  0,   0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 13, 13, -1, -1, -1,  2,  2,  2,  2, -1, -1, -1, -1, -1, -1, -1, -1},
+                             {1,  0,   0,  0,  1,   1, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2,  2,  2, -1, -1, -1, -1, -1, -1, -1, -1},
+                             {1,  0,   0,  0,  0,   1, 1, 0, 0, 0, 0, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, -1, -1, -1},
+                             {1,  0,   0,  0,  0,   0, 1, 0, 0, 0, 0, 0, 0, 1, 1,  1, -1, -1, -1, -1,  2,  2,  2,  2,  2,  2,  2,  2,  2, -1, -1, -1},
+                             {1,  0,   0,  0,  0,   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  2,  2,  2, -1,  2,  2,  2,  2,  2,  2,  2,  2,  2,- 1, -1, -1},
+                             {1,  0,   0,  0,  0,   0, 0, 0, 0, 1, 0, 0, 0, 0, 0,  0,  2,  2,  2, -1,  2,  2,  2,  2,  2,  2, 10,  2,  2, -1, -1, -1},
+                             {1,  0,   0,  0,  0,   0, 0, 0, 0, 1, 1, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, -1, -1, -1},
+                             {1, -92, 55, 55, 55, -92, 0, 0, 0, 0, 1, 1, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, -1, -1, -1},
+                             {1, -91, 55, 55, 55, -91, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+                             {1,  -9, 55, 55, 55,  -9, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+                             {1,   1,  1,  1,  1,   1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}};
+    short int playerHP;
 
     Player pacoteClient, EU;
-    Naksa pacoteDoServer;
     Moves Alteracoes;
     Lobby nomes;
     
@@ -137,23 +135,23 @@ int main(int argc, char const *argv[]){
                         case ALLEGRO_KEY_ENTER:                  // APERTOU ENTER E VAI ESCOLHER A OPCAO 
                             switch(option){
                 				case 0: 
-                				menuConnection = true;
-                				menu = false;
-                				break;
+                    				menuConnection = true;
+                    				menu = false;
+                				    break;
                 				
                 				case 1:
-                				help = true;
-                				menu = false;
-                				break;
+                    				help = true;
+                    				menu = false;
+                				    break;
 
                 				case 2:
-                				credits = true;
-                				menu = false;
-                				break;
+                    				credits = true;
+                    				menu = false;
+                				    break;
                 		
                 				case 3:
-                				allegroEnd();
-                				break;
+                				    allegroEnd();
+                				    break;
     			            }
                             break;
                         case ALLEGRO_KEY_ESCAPE:
@@ -403,10 +401,9 @@ int main(int argc, char const *argv[]){
                 
             }
 
-            if(recvMsgFromServer(&nomes, DONT_WAIT) != NO_MESSAGE){
+            if(recvMsgFromServer(&nomes, DONT_WAIT) == sizeof(nomes)){
                 if(nomes.comecaJogo == true){
                     teamSelection = false;
-                    limpaPacote(&pacoteClient);
                     receberMapa = true;
                 } else{
                     for(i=0; i<6; i++){
@@ -444,6 +441,7 @@ int main(int argc, char const *argv[]){
                 // printf("Valor antigo: %d\n Valor novo: %d\n", map[Alteracoes.oldx][Alteracoes.oldy], map[Alteracoes.newx][Alteracoes.newy]);
             }
             for(i=0; i<6; i++) Alteracoes.olhando[3+i] = 'd';
+            playerHP = 20;
             receberMapa = false;
             gameOn = true;
         }
@@ -490,9 +488,13 @@ int main(int argc, char const *argv[]){
                     if(Alteracoes.oldy < 16){
                         if((Alteracoes.oldy>=2 && Alteracoes.oldy<=4) && (Alteracoes.oldx>=20 && Alteracoes.oldx<=22)) map[Alteracoes.oldx][Alteracoes.oldy] = 55;
                         else map[Alteracoes.oldx][Alteracoes.oldy] = 0;
-                    } else map[Alteracoes.oldx][Alteracoes.oldy] = 2;
+                    } else{
+                        if((Alteracoes.oldy>=27 && Alteracoes.oldy<=29) && (Alteracoes.oldx>=1 && Alteracoes.oldx<=3)) map[Alteracoes.oldx][Alteracoes.oldy] = 56; 
+                        else map[Alteracoes.oldx][Alteracoes.oldy] = 2;
+                    }
                     map[Alteracoes.newx][Alteracoes.newy] = Alteracoes.idMoved;
-                } else{
+                } 
+                else{
                     playerHP += Alteracoes.HP;
                 }
                 // printf("Posicoes:\nAntiga: %d %d\nNova: %d %d\n", Alteracoes.oldx, Alteracoes.oldy, Alteracoes.newx, Alteracoes.newy);
@@ -634,9 +636,15 @@ void printaMapa(short int map[][32], Moves *Alteracoes)
                                 switch(Alteracoes->olhando[3]){
                                     case 'u':
                                         if(j > 15){
-                                            al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
-                                            al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
-                                            al_draw_bitmap_region(tileSet, 0*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            if( ( j>=27 && j<=29 ) && (i>=1 && i<=3) ){
+                                                al_draw_bitmap(blue, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap_region(tileSet, 0*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            } else{
+                                                al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap_region(tileSet, 0*TILE, 9*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            }
                                         } else{
                                             if( (j >=2 && j <=4) && (i>=20 && i<=21) ){
                                                 al_draw_bitmap(red, TILE*j, TILE*i, 0);
@@ -651,9 +659,15 @@ void printaMapa(short int map[][32], Moves *Alteracoes)
                                         break;
                                     case 'd':
                                         if(j > 15){
-                                            al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
-                                            al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
-                                            al_draw_bitmap_region(tileSet, 0*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            if( ( j>=27 && j<=29 ) && (i>=1 && i<=3) ){
+                                                al_draw_bitmap(blue, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap_region(tileSet, 0*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            } else{
+                                                al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap_region(tileSet, 0*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            }
                                         } else{
                                             if( (j >=2 && j <=4) && (i>=20 && i<=22) ){
                                                 al_draw_bitmap(red, TILE*j, TILE*i, 0);
@@ -668,9 +682,15 @@ void printaMapa(short int map[][32], Moves *Alteracoes)
                                         break;
                                     case 'l':
                                         if(j > 15){
-                                            al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
-                                            al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
-                                            al_draw_bitmap_region(tileSet, 0*TILE, 7*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            if( ( j>=27 && j<=29 ) && (i>=1 && i<=3) ){
+                                                al_draw_bitmap(blue, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap_region(tileSet, 0*TILE, 8*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            } else{
+                                                al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap_region(tileSet, 0*TILE, 7*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            }
                                         } else{
                                             if( (j >=2 && j <=4) && (i>=20 && i<=22) ){
                                                 al_draw_bitmap(red, TILE*j, TILE*i, 0);
@@ -685,9 +705,15 @@ void printaMapa(short int map[][32], Moves *Alteracoes)
                                         break;
                                     case 'r':
                                         if(j > 15){
-                                            al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
-                                            al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
-                                            al_draw_bitmap_region(tileSet, 0*TILE, 8*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            if( ( j>=27 && j<=29 ) && (i>=1 && i<=3) ){
+                                                al_draw_bitmap(blue, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap_region(tileSet, 0*TILE, 8*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            } else{
+                                                al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap_region(tileSet, 0*TILE, 8*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                            }
                                         } else{
                                             if( (j >=2 && j <=4) && (i>=20 && i<=22) ){
                                                 al_draw_bitmap(red, TILE*j, TILE*i, 0);
@@ -1094,11 +1120,15 @@ void printaHelp()
     al_draw_text(font_1, al_map_rgb(0,0,0), LARGURA/2, 50, ALLEGRO_ALIGN_CENTRE , "HELP");
     al_draw_text(font_1, al_map_rgb(255,0,0), 100 , 120, ALLEGRO_ALIGN_LEFT , "01. MOVES");
     al_draw_text(font_2, al_map_rgb(0,0,0), 250, 200, ALLEGRO_ALIGN_CENTRE , "UP");
-    al_draw_bitmap(upKey, 0, 0, 0);
+    // al_draw_bitmap(spaceTecla,     5*TILE, 11*TILE + 10, 0);
+    al_draw_bitmap(upKey,     4*TILE + 20,  5*TILE + 15, 0);
+    al_draw_bitmap(downKey,  15*TILE + 15,  5*TILE + 20, 0);
+    al_draw_bitmap(leftKey,   4*TILE + 20,       8*TILE, 0);
+    al_draw_bitmap(rightKey, 15*TILE + 15,  7*TILE + 25, 0);
     al_draw_text(font_2, al_map_rgb(0,0,0), 600, 200, ALLEGRO_ALIGN_CENTRE , "DOWN");
     al_draw_text(font_2, al_map_rgb(0,0,0), 250, 270, ALLEGRO_ALIGN_CENTRE , "LEFT");
     al_draw_text(font_2, al_map_rgb(0,0,0), 600, 270, ALLEGRO_ALIGN_CENTRE , "RIGHT");
-    al_draw_text(font_2, al_map_rgb(0,0,0), 250, 340, ALLEGRO_ALIGN_CENTRE , "SPACE BAR");
+    al_draw_text(font_2, al_map_rgb(0,0,0), 250, 345, ALLEGRO_ALIGN_CENTRE , "SPACE BAR");
     al_draw_text(font_1, al_map_rgb(255,0,0), 100, 420, ALLEGRO_ALIGN_LEFT, "02. OBJECTIVE");
     al_draw_text(font_2, al_map_rgb(0,0,0), 200, 500, ALLEGRO_ALIGN_LEFT, "YOU MUST DEFEAT THE ENEMY TARGET");
     al_draw_text(font_2, al_map_rgb(0,0,0), 200, 540,  ALLEGRO_ALIGN_LEFT, "BEFORE THE ENEMY TEAM DEFEAT YOURS.");
@@ -1218,16 +1248,4 @@ void printaNomes(Lobby *nomes)
             }
         }
     }
-}
-
-void limpaPacote(Player *pacoteClient)
-{
-    // int i, j;
-    // pacoteClient->mov = 'd';
-    // pacoteClient->tipoPacote = 2;
-    // for(i=0; i<24; i++){
-    //     for(j=0; j<32; j++){
-    //         pacoteClient->mapa[i][j] = 0;
-    //     }
-    // }
 }

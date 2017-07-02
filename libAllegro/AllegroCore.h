@@ -26,10 +26,6 @@ ALLEGRO_FONT *font_1;
 ALLEGRO_FONT *font_2;
 ALLEGRO_FONT *font_3;
 
-ALLEGRO_BITMAP *bit1;
-ALLEGRO_BITMAP *bit2;
-ALLEGRO_BITMAP *bit3;
-ALLEGRO_BITMAP *bit4;
 ALLEGRO_BITMAP *tileSet;
 ALLEGRO_BITMAP *menuInicio;
 ALLEGRO_BITMAP *menuOpcoes;
@@ -48,6 +44,10 @@ ALLEGRO_BITMAP *Shadow;
 ALLEGRO_BITMAP *TileC;
 ALLEGRO_BITMAP *red;
 ALLEGRO_BITMAP *blue;
+ALLEGRO_BITMAP *heart_14;
+ALLEGRO_BITMAP *heart_24;
+ALLEGRO_BITMAP *heart_34;
+ALLEGRO_BITMAP *heart_44;
 
 typedef struct{
 	int teamPos;
@@ -62,6 +62,8 @@ typedef struct{
 
 typedef struct{
 	//int tipoPacote; nao precisa, pois o server mandara pro client e o client nao precisa ter um switch case de opcoes de moves.
+	int tag;
+	int HP;
 	int oldx;
 	int oldy;
 	int newx;

@@ -167,32 +167,8 @@ bool Blink(){
     }
 }
 
-bool loadGraphics() // INICIA AS IMAGENS "1_bitmap", "2_bitmap", "3_bitmap", "4_bitmap" 
+bool loadGraphics() 
 {
-    bit1 = al_load_bitmap("Resources/Etc/1_bitmap.png");
-    if (!bit1){
-        fprintf(stderr, "Falha carregando 1_bitmap.png\n");
-        return false;
-    }
-   
-    bit2 = al_load_bitmap("Resources/Etc/2_bitmap.png");
-    if (!bit2){
-        fprintf(stderr, "Falha carregando 2_bitmap.png\n");
-        return false;
-    }
-    
-    bit3 = al_load_bitmap("Resources/Etc/3_bitmap.png");
-    if (!bit3){
-        fprintf(stderr, "Falha carregando 3_bitmap.png\n");
-        return false;
-    }
-    
-    bit4 = al_load_bitmap("Resources/Etc/4_bitmap.png");
-    if (!bit4){
-        fprintf(stderr, "Falha carregando 4_bitmap.png\n");
-        return false;
-    }
-
     tileSet = al_load_bitmap("Resources/Tilesets/tileset.png");
     if(!tileSet){
         fprintf(stderr, "Falha ao carregar o tileset.\n");
@@ -298,6 +274,30 @@ bool loadGraphics() // INICIA AS IMAGENS "1_bitmap", "2_bitmap", "3_bitmap", "4_
     blue = al_load_bitmap("Resources/Tilesets/blue.png");
     if(!blue){
         fprintf(stderr, "Falha ao carregar a blue.\n");
+        return false;
+    }
+
+    heart_14 = al_load_bitmap("Resources/Etc/heart_14.png");
+    if(!heart_14){
+        fprintf(stderr, "Falha ao carregar a heart_14.\n");
+        return false;
+    }
+
+    heart_24 = al_load_bitmap("Resources/Etc/heart_24.png");
+    if(!heart_24){
+        fprintf(stderr, "Falha ao carregar a heart_24.\n");
+        return false;
+    }
+
+    heart_34 = al_load_bitmap("Resources/Etc/heart_34.png");
+    if(!heart_34){
+        fprintf(stderr, "Falha ao carregar a heart_34.\n");
+        return false;
+    }
+
+    heart_44 = al_load_bitmap("Resources/Etc/heart_44.png");
+    if(!heart_44){
+        fprintf(stderr, "Falha ao carregar a heart_44.\n");
         return false;
     }
     return true;

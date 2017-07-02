@@ -53,12 +53,12 @@ int main(int argc, char const *argv[]){
     bool teamSelection = false;
     bool pisca = false;
     bool receberMapa = false;
-    int count = 0;
-    int option = 0;
-    int conecta = 0;
-    int flag = 0;
-    int i, j, k;
-    int aux;    
+    short int count = 0;
+    short int option = 0;
+    short int conecta = 0;
+    short int flag = 0;
+    short int i, j, k;
+    short int aux;    
     short int map[24][32] = {{1,  1,   1,  1,  1,   1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
                     {1,  1,   1,  1,  1,   1, 1, 1, 1, 1, 1, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  9, 56, 56, 56,  9, -1},
                     {1,  1,   1,  1,  1,   1, 1, 1, 1, 1, 0, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, 91, 56, 56, 56, 91, -1},
@@ -429,15 +429,20 @@ int main(int argc, char const *argv[]){
         while(receberMapa){
             pacoteClient.tipoPacote = 2;
             sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
-            //recvMsgFromServer(&pacoteDoServer, WAIT_FOR_IT);
             printf("Recebi pra entrar!\n");
-            // for(i=0; i<24; i++){
-            //     for(j=0; j<32; j++){
-            //         map[i][j] = pacoteDoServer.mapa[i][j];
-            //         printf("%5d", map[i][j]);
-            //     }
-            //     printf("\n");
-            // }
+            if(recvMsgFromServer(&Alteracoes, WAIT_FOR_IT) == sizeof(Alteracoes)){
+                if(Alteracoes.tag == 1){
+                    if(Alteracoes.oldy < 16){
+                        if((Alteracoes.oldy>=2 && Alteracoes.oldy<=4) && (Alteracoes.oldx>=20 && Alteracoes.oldx<=22)) map[Alteracoes.oldx][Alteracoes.oldy] = 55;
+                        else map[Alteracoes.oldx][Alteracoes.oldy] = 0;
+                    } else map[Alteracoes.oldx][Alteracoes.oldy] = 2;
+                    map[Alteracoes.newx][Alteracoes.newy] = Alteracoes.idMoved;
+                } else{
+                    playerHP += Alteracoes.HP;
+                }
+                // printf("Posicoes:\nAntiga: %d %d\nNova: %d %d\n", Alteracoes.oldx, Alteracoes.oldy, Alteracoes.newx, Alteracoes.newy);
+                // printf("Valor antigo: %d\n Valor novo: %d\n", map[Alteracoes.oldx][Alteracoes.oldy], map[Alteracoes.newx][Alteracoes.newy]);
+            }
             for(i=0; i<6; i++) Alteracoes.olhando[3+i] = 'd';
             receberMapa = false;
             gameOn = true;
@@ -481,7 +486,6 @@ int main(int argc, char const *argv[]){
                 }
             }
             if(recvMsgFromServer(&Alteracoes, DONT_WAIT) == sizeof(Alteracoes)){
-                // printf("Mudou a matriz!\n");
                 if(Alteracoes.tag == 1){
                     if(Alteracoes.oldy < 16){
                         if((Alteracoes.oldy>=2 && Alteracoes.oldy<=4) && (Alteracoes.oldx>=20 && Alteracoes.oldx<=22)) map[Alteracoes.oldx][Alteracoes.oldy] = 55;
@@ -510,7 +514,7 @@ int main(int argc, char const *argv[]){
 //------------------------------------------------------------------------------------------------------------------------------------------------------
 void printaVida(short int HP)
 {
-    int ciclo = 1, i, k;
+    short int ciclo = 1, i, k;
     for(i=0, k=0; i<HP; i++, k++){
         if(k == 4){
             k = 0;

@@ -56,8 +56,8 @@ int main(){
 
     bool sair = false; // CONDICAO DE ENCERRAMENTO DO CLIENT 
 
-    int qtdPlayers = 0;
-    int aux;
+    short int qtdPlayers = 0;
+    short int aux;
     struct msg_ret_t chegou;
     Player playerList[10], pacote, playersJogando[10];
     Naksa pacoteProClient;
@@ -201,12 +201,6 @@ int main(){
                             mudaMatriz.newy = 2;
                             mudaMatriz.idMoved = pacote.teamPos;
                             mudaMatriz.olhando[pacote.teamPos] = 'd';
-                            for(i=0; i<24; i++){
-                                for(j=0; j<32; j++){
-                                    pacoteProClient.mapa[i][j] = mapa[i][j];
-                                }
-                            }
-                            //sendMsgToClient(&pacote, sizeof(pacote), chegou.client_id);
                             break;
                         case 4:
                             playersJogando[4].playerX = 22;
@@ -218,12 +212,6 @@ int main(){
                             mudaMatriz.newy = 3;
                             mudaMatriz.idMoved = pacote.teamPos;
                             mudaMatriz.olhando[pacote.teamPos] = 'd';
-                            for(i=0; i<24; i++){
-                                for(j=0; j<32; j++){
-                                    pacoteProClient.mapa[i][j] = mapa[i][j];
-                                }
-                            }
-                            //sendMsgToClient(&pacote, sizeof(pacote), chegou.client_id);
                             break;
                         case 5:
                             playersJogando[5].playerX = 22;
@@ -235,12 +223,6 @@ int main(){
                             mudaMatriz.newy = 4;
                             mudaMatriz.idMoved = pacote.teamPos;
                             mudaMatriz.olhando[pacote.teamPos] = 'd';
-                            for(i=0; i<24; i++){
-                                for(j=0; j<32; j++){
-                                    pacoteProClient.mapa[i][j] = mapa[i][j];
-                                }
-                            }
-                            //sendMsgToClient(&pacote, sizeof(pacote), chegou.client_id);
                             break;
                         case 6:
                             playersJogando[6].playerX = 1;
@@ -252,12 +234,6 @@ int main(){
                             mudaMatriz.newy = 30;
                             mudaMatriz.idMoved = pacote.teamPos;
                             mudaMatriz.olhando[pacote.teamPos] = 'd';
-                            for(i=0; i<24; i++){
-                                for(j=0; j<32; j++){
-                                    pacoteProClient.mapa[i][j] = mapa[i][j];
-                                }
-                            }
-                            //sendMsgToClient(&pacote, sizeof(pacote), chegou.client_id);
                             break;
                         case 7:
                             playersJogando[7].playerX = 1;
@@ -269,12 +245,6 @@ int main(){
                             mudaMatriz.newy = 29;
                             mudaMatriz.idMoved = pacote.teamPos;
                             mudaMatriz.olhando[pacote.teamPos] = 'd';
-                            for(i=0; i<24; i++){
-                                for(j=0; j<32; j++){
-                                    pacoteProClient.mapa[i][j] = mapa[i][j];
-                                }
-                            }
-                            //sendMsgToClient(&pacote, sizeof(pacote), chegou.client_id);
                             break;
                         case 8:
                             playersJogando[8].playerX = 1;
@@ -286,20 +256,9 @@ int main(){
                             mudaMatriz.newy = 28;
                             mudaMatriz.idMoved = pacote.teamPos;
                             mudaMatriz.olhando[pacote.teamPos] = 'd';
-                            for(i=0; i<24; i++){
-                                for(j=0; j<32; j++){
-                                    pacoteProClient.mapa[i][j] = mapa[i][j];
-                                }
-                            }
-                            //sendMsgToClient(&pacote, sizeof(pacote), chegou.client_id);
                             break;
                     }
                     broadcast(&mudaMatriz, sizeof(mudaMatriz));
-                    // for(i=0; i<6; i++){
-                    //     if(isValidId(i) && i != chegou.client_id){
-                    //         sendMsgToClient(&mudaMatriz, sizeof(mudaMatriz), i);
-                    //     }
-                    // }
                     break;
                 
                 case teamSelection:
@@ -307,7 +266,6 @@ int main(){
                         status[id] = pacote.situacao;
                         naoComeca = true;
                         if(pacote.saiu == true){
-                            printf("entrei aqui no pacotesaiutrue\n");
                             disconnectClient(chegou.client_id);
                             for(i=0; i<6; i++){
                                 for(j=0; j<3; j++){
@@ -400,8 +358,6 @@ int main(){
                 chegou.status = NO_MESSAGE;
             }
         }
-
-        //if(naoComeca = true) broadcast(&nicknames, sizeof(nicknames));
 
         al_flip_display();
         al_clear_to_color(al_map_rgb(0, 0, 0));

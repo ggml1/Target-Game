@@ -409,7 +409,13 @@ int main(int argc, char const *argv[]){
                         }
                     }
                 }
-                if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
+                if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
+                    pacoteClient.saiu = true;
+                    pacoteClient.flag = 0;
+                    pacoteClient.tipoPacote = 3;
+                    sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                    allegroEnd();
+                }
 
                 
             }
@@ -1365,6 +1371,7 @@ void printaMapa(short int map[][32], Moves *Alteracoes)
                 }
             }
 }
+
 void printaTelaConexao(char *nickname, char *ipOficial, int flag)
 {
     al_draw_bitmap(menuNormal, 0, 0, 0);

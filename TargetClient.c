@@ -9,8 +9,8 @@
 void menuErroSocket();
 void menuErroServerFull();
 void menuErroConnectionFailure();
-void printaMapa(int map[][32], Moves *Alteracoes);
-void printaVida(int HP);
+void printaMapa(short int map[][32], Moves *Alteracoes);
+void printaVida(short int HP);
 void printaTelaConexao(char *nickname, char *ipOficial, int flag);
 void printaCreditos();
 void printaMenuOpcoes(int option);
@@ -59,8 +59,8 @@ int main(int argc, char const *argv[]){
     int flag = 0;
     int i, j, k;
     int aux;    
-    int map[24][32];
-    int playerHP = 20;
+    short int map[24][32];
+    short int playerHP = 20;
 
     Player pacoteClient, EU;
     Naksa pacoteDoServer;
@@ -485,7 +485,7 @@ int main(int argc, char const *argv[]){
 //------------------------------------------------------------------------------------------------------------------------------------------------------
 //-----AQUI ESTA FORA DA MAIN - FUNCOES AUXILIARES!
 //------------------------------------------------------------------------------------------------------------------------------------------------------
-void printaVida(int HP)
+void printaVida(short int HP)
 {
     int ciclo = 1, i, k;
     for(i=0, k=0; i<HP; i++, k++){
@@ -582,7 +582,7 @@ void menuErroConnectionFailure()
     }
 }
 
-void printaMapa(int map[][32], Moves *Alteracoes)
+void printaMapa(short int map[][32], Moves *Alteracoes)
 {
     int i, j;
     for(i=0; i<24; i++){

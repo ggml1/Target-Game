@@ -50,6 +50,9 @@ ALLEGRO_BITMAP *heart_34;
 ALLEGRO_BITMAP *heart_44;
 
 typedef struct{
+	int esq_dir;
+	int flag;
+	bool situacao;
 	int teamPos;
 	int tipoPacote;				// 0 -> msg inicial (nickname), 1 - > movimento
     char playerName[16];
@@ -59,6 +62,14 @@ typedef struct{
     int playerY;
     int mapa[24][32];
 }Player;
+
+typedef struct{
+	int posicao[6][3];
+	char nicks[6][10];
+	int qtdPlayers;
+	int situacao[6];
+	int aux;
+}Lobby;
 
 typedef struct{
 	//int tipoPacote; nao precisa, pois o server mandara pro client e o client nao precisa ter um switch case de opcoes de moves.

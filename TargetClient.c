@@ -4,6 +4,7 @@
 #define LARGURA 1024
 #define ALTURA 768
 #define TILE 32
+#define FATOR 50
 
 void menuErroSocket();
 void menuErroServerFull();
@@ -15,6 +16,8 @@ void printaCreditos();
 void printaMenuOpcoes(int option);
 void printaHelp();
 void printaInicio();
+void printaMenuTeamSelection();
+void printaNomes(Lobby *nomes);
 
 int main(int argc, char const *argv[]){
 
@@ -60,6 +63,7 @@ int main(int argc, char const *argv[]){
 
     Player pacoteClient, pacoteDoServer, EU;
     Moves Alteracoes;
+    Lobby nomes;
     
 //-------------------------------------------------------------------------------------
     
@@ -280,9 +284,8 @@ int main(int argc, char const *argv[]){
                                     break;
                                 case 1:
                                     menuConnection = false;
-                                    //teamSelection = true;
-                                    receberMapa = true;
-                                    pacoteClient.tipoPacote = 0;
+                                    teamSelection = true;
+                                    //receberMapa = true;
                                     strcpy(pacoteClient.playerName, nickname);
                                     break;
                             }
@@ -299,7 +302,14 @@ int main(int argc, char const *argv[]){
             }
         }
 //------------------------------------------------------------------------------------------------------------------------------------------------------
-        if(conecta == 1) sendMsgToServer(&pacoteClient, sizeof(pacoteClient));   ///PRIMEIRA MSG DO PLAYER PARA O SERVER, "OFICIALIZA" A CONEXAO E EVITA BUGS
+        if(teamSelection){
+            pacoteClient.tipoPacote = 3;
+            pacoteClient.mov = 0;
+            pacoteClient.flag = 0;
+            pacoteClient.esq_dir = 'z';
+            pacoteClient.situacao = false;
+            sendMsgToServer(&pacoteClient, sizeof(pacoteClient));   ///PRIMEIRA MSG DO PLAYER PARA O SERVER, "OFICIALIZA" A CONEXAO E EVITA BUGS
+        }
 //------------------------------------------------------------------------------------------------------------------------------------------------------
         while(teamSelection){
             bool notReady = true;
@@ -309,19 +319,52 @@ int main(int argc, char const *argv[]){
                 al_wait_for_event(eventsQueue, &event);
                 if(event.type == ALLEGRO_EVENT_KEY_CHAR){
                     if(event.keyboard.keycode == ALLEGRO_KEY_ESCAPE){
-                        teamSelection = false;
-                        menuConnection = true;
-                        flag = 0;
-                        strcpy(ipOficial, "0.0.0.0");
-                        strcpy(ipTemp, "");
-                        strcpy(nickname, "<seu_nick>");
-                        strcpy(nicknameTemp, "");
+                        if(pacoteClient.situacao == false){
+                            teamSelection = false;
+                            menuConnection = true;
+                            flag = 0;
+                            strcpy(ipOficial, "0.0.0.0");
+                            strcpy(ipTemp, "");
+                            strcpy(nickname, "<seu_nick>");
+                            strcpy(nicknameTemp, "");
+                        } else{
+                            pacoteClient.situacao = false;
+                            pacoteClient.flag = 1;
+                            sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                        }
                     }
                     if(event.keyboard.keycode == ALLEGRO_KEY_LEFT){
+                        if(pacoteClient.situacao == false){
+                            pacoteClient.flag = 0;
 
+                            if(nomes.aux == 0) pacoteClient.mov--;
+                            else pacoteClient.mov = pacoteClient.mov - 2;
+
+                            pacoteClient.esq_dir = 'l';
+
+                            if(pacoteClient.mov < -1) pacoteClient.mov = -1;
+                            sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                        }
                     }
                     if(event.keyboard.keycode == ALLEGRO_KEY_RIGHT){
+                        if(pacoteClient.situacao == false){
+                            pacoteClient.flag = 0;
 
+                            if(nomes.aux == 0) pacoteClient.mov++;
+                            else pacoteClient.mov += 2;
+
+                            pacoteClient.esq_dir = 'r';
+
+                            if(pacoteClient.mov > 1) pacoteClient.mov = 1;
+                            sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                        }
+                    }
+                    if(event.keyboard.keycode == ALLEGRO_KEY_ENTER){
+                        if(pacoteClient.mov != 0){
+                            pacoteClient.flag = 1;
+                            pacoteClient.situacao = true;
+                            sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                        }
                     }
                 }
                 if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
@@ -329,12 +372,19 @@ int main(int argc, char const *argv[]){
                 
             }
 
-            al_draw_bitmap(menuNormal, 0, 0, 0);
-            al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 20, ALLEGRO_ALIGN_CENTRE, "TEAM LOBBY");
-            al_draw_text(font_1, al_map_rgb(255,  0,  0), LARGURA/2 - 300, 110, ALLEGRO_ALIGN_CENTRE, "RED TEAM");
-            al_draw_text(font_1, al_map_rgb(  0,  0,255), LARGURA/2 + 260, 110, ALLEGRO_ALIGN_CENTRE, "BLUE TEAM");
+            if(recvMsgFromServer(&nomes, DONT_WAIT) != NO_MESSAGE){
+                for(i=0; i<6; i++){
+                    for(j=0; j<3; j++){
+                        printf("%d ", nomes.posicao[i][j]);
+                    }
+                    printf("\n");
+                }
+            }
+
+            printaMenuTeamSelection();
+            printaNomes(&nomes);
+
             if(notReady) al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2, 610, ALLEGRO_ALIGN_CENTRE, "WAITING FOR PLAYERS...");
-            al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2, 640, ALLEGRO_ALIGN_CENTRE, "PRESS ESC TO RETURN TO MENU");
             al_flip_display();
             al_clear_to_color(al_map_rgb(0,0,0));
             FPSLimit();
@@ -355,7 +405,7 @@ int main(int argc, char const *argv[]){
             gameOn = true;
         }
 //------------------------------------------------------------------------------------------------------------------------------------------------------
-       while(gameOn){
+        while(gameOn){
             startTimer();
             while(!al_is_event_queue_empty(eventsQueue)){
                 ALLEGRO_EVENT event;
@@ -395,7 +445,7 @@ int main(int argc, char const *argv[]){
                 // printf("Mudou a matriz!\n");
                 if(Alteracoes.tag == 1){
                     if(Alteracoes.oldy < 16){
-                        if( (Alteracoes.oldy>=2 && Alteracoes.oldy<=4) && (Alteracoes.oldx>=20 && Alteracoes.oldx<=22) ) map[Alteracoes.oldx][Alteracoes.oldy] = 55;
+                        if((Alteracoes.oldy>=2 && Alteracoes.oldy<=4) && (Alteracoes.oldx>=20 && Alteracoes.oldx<=22)) map[Alteracoes.oldx][Alteracoes.oldy] = 55;
                         else map[Alteracoes.oldx][Alteracoes.oldy] = 0;
                     } else map[Alteracoes.oldx][Alteracoes.oldy] = 2;
                     map[Alteracoes.newx][Alteracoes.newy] = Alteracoes.idMoved;
@@ -955,13 +1005,13 @@ void printaCreditos()
     al_draw_bitmap(menuNormal, 0, 0, 0);
     al_draw_text(font_1, al_map_rgb(0, 0, 0), LARGURA / 2 , 50, ALLEGRO_ALIGN_CENTRE , "CREDITS");
     al_draw_text(font_1, al_map_rgb(255, 0, 0), 100, 200, ALLEGRO_ALIGN_LEFT , "01. STUDENTS");
-    al_draw_text(font_2, al_map_rgb(0,0,0), 200, 270, ALLEGRO_ALIGN_CENTRE , "RAFAEL VASCONCELOS");
-    al_draw_text(font_2, al_map_rgb(0,0,0), 520, 270, ALLEGRO_ALIGN_CENTRE , "GABRIEL GOMES");
-    al_draw_text(font_2, al_map_rgb(0,0,0), 200, 320, ALLEGRO_ALIGN_CENTRE , "MATHEUS CARACCIOLO");
-    al_draw_text(font_2, al_map_rgb(0,0,0), 520, 320, ALLEGRO_ALIGN_CENTRE , "ARTHUR BARA");
-    al_draw_text(font_2, al_map_rgb(0,0,0), 200, 370, ALLEGRO_ALIGN_CENTRE , "GABRIEL FONSECA");
-    al_draw_text(font_2, al_map_rgb(0,0,0), 520, 370, ALLEGRO_ALIGN_CENTRE , "BRUNO MOREIRA");
-    al_draw_text(font_2, al_map_rgb(0,0,0), 800, 270, ALLEGRO_ALIGN_CENTRE , "VICTOR BRUNO");
+    al_draw_text(font_2, al_map_rgb(0,0,0), 200, 270, ALLEGRO_ALIGN_CENTRE , "RAFAEL VASCONCELOS (RJAV)");
+    al_draw_text(font_2, al_map_rgb(0,0,0), 520, 270, ALLEGRO_ALIGN_CENTRE , "GABRIEL GOMES (GGML)");
+    al_draw_text(font_2, al_map_rgb(0,0,0), 200, 320, ALLEGRO_ALIGN_CENTRE , "MATHEUS CARACCIOLO (MCM2)");
+    al_draw_text(font_2, al_map_rgb(0,0,0), 520, 320, ALLEGRO_ALIGN_CENTRE , "ARTHUR HENRIQUE (AHTLC)");
+    al_draw_text(font_2, al_map_rgb(0,0,0), 200, 370, ALLEGRO_ALIGN_CENTRE , "GABRIEL FONSECA (GFSCA)");
+    al_draw_text(font_2, al_map_rgb(0,0,0), 520, 370, ALLEGRO_ALIGN_CENTRE , "BRUNO MOREIRA (BMMF)");
+    al_draw_text(font_2, al_map_rgb(0,0,0), 800, 270, ALLEGRO_ALIGN_CENTRE , "VICTOR BRUNO (VBMS)");
     al_draw_text(font_1, al_map_rgb(255, 0, 0), 100, 440, ALLEGRO_ALIGN_LEFT , "02. MONITOR");
     al_draw_text(font_2, al_map_rgb(0,0,0), 365, 510, ALLEGRO_ALIGN_LEFT, "HEITOR SAMMUEL (HSCS)");
     al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA / 2, 640, ALLEGRO_ALIGN_CENTRE, "PRESS ANY KEY TO RETURN TO MENU");
@@ -1000,12 +1050,12 @@ void printaHelp()
     al_draw_bitmap(menuNormal, 0, 0, 0);
     al_draw_text(font_1, al_map_rgb(0,0,0), LARGURA/2, 50, ALLEGRO_ALIGN_CENTRE , "HELP");
     al_draw_text(font_1, al_map_rgb(255,0,0), 100 , 120, ALLEGRO_ALIGN_LEFT , "01. MOVES");
-    al_draw_text(font_2, al_map_rgb(0,0,0), 200, 200, ALLEGRO_ALIGN_CENTRE , "UP");
+    al_draw_text(font_2, al_map_rgb(0,0,0), 250, 200, ALLEGRO_ALIGN_CENTRE , "UP");
     al_draw_bitmap(upKey, 0, 0, 0);
     al_draw_text(font_2, al_map_rgb(0,0,0), 600, 200, ALLEGRO_ALIGN_CENTRE , "DOWN");
-    al_draw_text(font_2, al_map_rgb(0,0,0), 200, 270, ALLEGRO_ALIGN_CENTRE , "LEFT");
+    al_draw_text(font_2, al_map_rgb(0,0,0), 250, 270, ALLEGRO_ALIGN_CENTRE , "LEFT");
     al_draw_text(font_2, al_map_rgb(0,0,0), 600, 270, ALLEGRO_ALIGN_CENTRE , "RIGHT");
-    al_draw_text(font_2, al_map_rgb(0,0,0), 200, 340, ALLEGRO_ALIGN_CENTRE , "SPACE BAR");
+    al_draw_text(font_2, al_map_rgb(0,0,0), 250, 340, ALLEGRO_ALIGN_CENTRE , "SPACE BAR");
     al_draw_text(font_1, al_map_rgb(255,0,0), 100, 420, ALLEGRO_ALIGN_LEFT, "02. OBJECTIVE");
     al_draw_text(font_2, al_map_rgb(0,0,0), 200, 500, ALLEGRO_ALIGN_LEFT, "YOU MUST DEFEAT THE ENEMY TARGET");
     al_draw_text(font_2, al_map_rgb(0,0,0), 200, 540,  ALLEGRO_ALIGN_LEFT, "BEFORE THE ENEMY TEAM DEFEAT YOURS.");
@@ -1016,4 +1066,111 @@ void printaInicio()
 {
     al_draw_bitmap(menuInicio, 0, 0, 0);
     al_draw_textf(font_3, al_map_rgb(255,255,255), LARGURA/2 - 181, 50, 0, "TARGET");
+}
+
+void printaMenuTeamSelection()
+{
+    al_draw_bitmap(menuNormal, 0, 0, 0);
+    al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 20, ALLEGRO_ALIGN_CENTRE, "TEAM LOBBY");
+    al_draw_text(font_1, al_map_rgb(255,  0,  0), LARGURA/2 - 300, 110, ALLEGRO_ALIGN_CENTRE, "RED TEAM");
+    al_draw_text(font_1, al_map_rgb(  0,  0,255), LARGURA/2 + 260, 110, ALLEGRO_ALIGN_CENTRE, "BLUE TEAM");
+    al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2, 640, ALLEGRO_ALIGN_CENTRE, "PRESS ESC TO RETURN TO MENU");
+    al_draw_rectangle(LARGURA/3 - 310, 160,      LARGURA/3, 600, al_map_rgb(0, 0, 0), 5);
+    al_draw_rectangle(LARGURA   - 345, 160,   LARGURA - 20, 600, al_map_rgb(0, 0, 0), 5);
+}
+
+void printaNomes(Lobby *nomes)
+{
+    int i, j;
+    for(i = 0; i < 6; i++){
+        for(j = 0; j < 3; j++){
+            switch(nomes->posicao[i][j]){
+                case 0:
+                    if(j == 0){
+                        al_draw_textf(font_1,al_map_rgb(255,0,0), (LARGURA/3) - 160, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[0]);
+                        if(nomes->situacao[0] == true)
+                        al_draw_text(font_1,al_map_rgb(0,0,0),(LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "X");
+                    }
+                    else if(j == 1)
+                        al_draw_textf(font_1,al_map_rgb(0,0,0), (LARGURA/3)*2 - 175, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[0]);
+                    else{
+                        al_draw_textf(font_1,al_map_rgb(0,0,255), (LARGURA/3)*3 - 180, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[0]);
+                        if(nomes->situacao[0] == true)
+                        al_draw_text(font_1,al_map_rgb(0,0,0),(LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "X");
+                    }
+
+                    break;
+                case 1:
+                    if(j == 0){
+                        al_draw_textf(font_1,al_map_rgb(255,0,0), (LARGURA/3) - 160, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[1]);
+                        if(nomes->situacao[1] == true)
+                        al_draw_text(font_1,al_map_rgb(0,0,0),(LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "X");
+                    }
+                    else if(j == 1)
+                        al_draw_textf(font_1,al_map_rgb(0,0,0), (LARGURA/3)*2 - 175, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[1]);
+                    else{
+                        al_draw_textf(font_1,al_map_rgb(0,0,255), (LARGURA/3)*3 - 180, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[1]);
+                        if(nomes->situacao[1] == true)
+                        al_draw_text(font_1,al_map_rgb(0,0,0),(LARGURA/3)*2 - 25 , 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "X");
+                    }
+                    break;
+                case 2:
+                    if(j == 0){
+                        al_draw_textf(font_1,al_map_rgb(255,0,0), (LARGURA/3) - 160, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[2]);
+                        if(nomes->situacao[2] == true)
+                        al_draw_text(font_1,al_map_rgb(0,0,0),(LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "X");
+                    }
+                    else if(j == 1)
+                        al_draw_textf(font_1,al_map_rgb(0,0,0), (LARGURA/3)*2 - 175, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[2]);
+                    else{
+                        al_draw_textf(font_1,al_map_rgb(0,0,255), (LARGURA/3)*3 - 180, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[2]);
+                        if(nomes->situacao[2] == true)
+                        al_draw_text(font_1,al_map_rgb(0,0,0),(LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "X");
+                    }
+                    break;
+                case 3:
+                    if(j == 0){
+                        al_draw_textf(font_1,al_map_rgb(255,0,0), (LARGURA/3) - 160, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[3]);
+                        if(nomes->situacao[3] == true)
+                        al_draw_text(font_1,al_map_rgb(0,0,0),(LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "X");
+                    }
+                    else if(j == 1)
+                        al_draw_textf(font_1,al_map_rgb(0,0,0), (LARGURA/3)*2 - 175, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[3]);
+                    else{
+                        al_draw_textf(font_1,al_map_rgb(0,0,255), (LARGURA/3)*3 - 180, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[3]);
+                        if(nomes->situacao[3] == true)
+                        al_draw_text(font_1,al_map_rgb(0,0,0),(LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "X");
+                    }
+                    break;
+                case 4:
+                    if(j == 0){
+                        al_draw_textf(font_1,al_map_rgb(255,0,0), (LARGURA/3) - 160, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[4]);
+                        if(nomes->situacao[4] == true)
+                        al_draw_text(font_1,al_map_rgb(0,0,0),(LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "X");
+                    }
+                    else if(j == 1)
+                        al_draw_textf(font_1,al_map_rgb(0,0,0), (LARGURA/3)*2 - 175, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[4]);
+                    else{
+                        al_draw_textf(font_1,al_map_rgb(0,0,255), (LARGURA/3)*3 - 180, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[4]);
+                        if(nomes->situacao[4] == true)
+                        al_draw_text(font_1,al_map_rgb(0,0,0),(LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "X");
+                    }
+                    break;
+                case 5:
+                    if(j == 0){
+                        al_draw_textf(font_1,al_map_rgb(255,0,0), (LARGURA/3) - 160, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[5]);
+                        if(nomes->situacao[5] == true)
+                        al_draw_text(font_1,al_map_rgb(0,0,0),(LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "X");
+                    }
+                    else if(j == 1)
+                        al_draw_textf(font_1,al_map_rgb(0,0,0), (LARGURA/3)*2 - 175, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[5]);
+                    else{
+                        al_draw_textf(font_1,al_map_rgb(0,0,255), (LARGURA/3)*3 - 180, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[5]);
+                        if(nomes->situacao[5] == true)
+                        al_draw_text(font_1,al_map_rgb(0,0,0),(LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "X");
+                    }
+                    break;
+            }
+        }
+    }
 }

@@ -3,7 +3,8 @@
 
 #define playerFlagMSG 0
 #define playerAction 1
-#define playerLogIn 2   
+#define playerLogIn 2  
+#define teamSelection 3 
 
 int mapa[24][32] = {{1,  1,   1,  1,  1,   1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
                     {1,  1,   1,  1,  1,   1, 1, 1, 1, 1, 1, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  9, 56, 56, 56,  9, -1},
@@ -29,6 +30,15 @@ int mapa[24][32] = {{1,  1,   1,  1,  1,   1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, -1,
                     {1, -91, 55, 55, 55, -91, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
                     {1,  -9, 55, 55, 55,  -9, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
                     {1,   1,  1,  1,  1,   1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}};
+
+int posicao[6][3] = {{-1, -1, -1},
+                     {-1, -1, -1},
+                     {-1, -1, -1},
+                     {-1, -1, -1},
+                     {-1, -1, -1},
+                     {-1, -1, -1}};
+
+bool status[6] = { 0 };
  
 int main(){
     if(!coreInit()) //INICIA OS MODULOS PRINCIPAIS DO ALLEGRO
@@ -46,10 +56,13 @@ int main(){
 
     bool sair = false; // CONDICAO DE ENCERRAMENTO DO CLIENT 
 
-    int qtdPlayers = 0; 
+    int qtdPlayers = 0;
+    int aux;
     struct msg_ret_t chegou;
     Player playerList[10], pacote, playersJogando[10];
     Moves mudaMatriz;
+    Lobby nicknames;
+    nicknames.qtdPlayers = 0;
 
     int i, j, x, y;
     
@@ -283,6 +296,57 @@ int main(){
                             sendMsgToClient(&mudaMatriz, sizeof(mudaMatriz), i);
                         }
                     }
+                    break;
+                
+                case teamSelection:
+                    if(pacote.flag == 0){
+                        switch(pacote.mov){
+                            case -1:
+                                aux = 0;
+                                for(i=0; i<6; i++){
+                                    if(posicao[i][0] == -1) aux++;
+                                }
+                                //printf("%d\n", aux);
+                                if(aux >= 4){
+                                    nicknames.aux = 0;
+                                    //printf("entrei\n");
+                                    posicao[id][0] = id;
+                                    posicao[id][-1] = -1;
+                                } else nicknames.aux = 1;
+                                break;
+                            case 0:
+                                nicknames.aux = 0;
+                                posicao[id][1] = id;
+                                if(pacote.esq_dir == 'r') posicao[id][0] = -1;
+                                else if(pacote.esq_dir == 'l') posicao[id][2] = -1;
+                                break;
+                            case 1:
+                                aux = 0;
+                                for(i=0; i<6; i++){
+                                    if(posicao[i][2] == -1) aux++;
+                                }
+                                //printf("%d\n", aux);
+                                if(aux >= 4){
+                                    //printf("entrei\n");
+                                    nicknames.aux = 0;
+                                    posicao[id][2] = id;
+                                    posicao[id][1] = -1;
+                                } else nicknames.aux = 1;
+                                break;
+                        }
+                    } else if(pacote.flag == 1) status[id] = pacote.situacao;
+                        //printf("%d\n", nicknames.qtdPlayers);
+                        nicknames.qtdPlayers++;
+                        for(i=0; i<6; i++){
+                            nicknames.situacao[i] = status[i];
+                            for(j=0; j<3; j++){
+                                nicknames.posicao[i][j] = posicao[i][j];
+                                printf("NOME : %s, Time : %d \n", nicknames.nicks[i] ,pacote.mov);
+                            }
+                            printf("\n");
+                        }
+                        strcpy(nicknames.nicks[id], pacote.playerName);
+                        broadcast(&nicknames, sizeof(nicknames));
                     break;
             }
             chegou.status = NO_MESSAGE;

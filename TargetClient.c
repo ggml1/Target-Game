@@ -493,9 +493,12 @@ int main(int argc, char const *argv[]){
                         else map[Alteracoes.oldx][Alteracoes.oldy] = 2;
                     }
                     map[Alteracoes.newx][Alteracoes.newy] = Alteracoes.idMoved;
-                } 
+                }
+                else if(Alteracoes.tag == 3){
+                    map[Alteracoes.newx][Alteracoes.newy] = Alteracoes.idMoved;
+                }
                 else{
-                    playerHP += Alteracoes.HP;
+                    playerHP = Alteracoes.HP;
                 }
                 // printf("Posicoes:\nAntiga: %d %d\nNova: %d %d\n", Alteracoes.oldx, Alteracoes.oldy, Alteracoes.newx, Alteracoes.newy);
                 // printf("Valor antigo: %d\n Valor novo: %d\n", map[Alteracoes.oldx][Alteracoes.oldy], map[Alteracoes.newx][Alteracoes.newy]);
@@ -517,24 +520,26 @@ int main(int argc, char const *argv[]){
 void printaVida(short int HP)
 {
     short int ciclo = 1, i, k;
-    for(i=0, k=0; i<HP; i++, k++){
-        if(k == 4){
-            k = 0;
-            ciclo++;
-        }
-        switch(k){
-            case 0:
-                al_draw_bitmap(heart_14, ciclo*TILE, 1*TILE, 0);
-                break;
-            case 1:
-                al_draw_bitmap(heart_24, ciclo*TILE, 1*TILE, 0);
-                break;
-            case 2:
-                al_draw_bitmap(heart_34, ciclo*TILE, 1*TILE, 0);
-                break;
-            case 3:
-                al_draw_bitmap(heart_44, ciclo*TILE, 1*TILE, 0);
-                break;
+    if(HP){
+        for(i=0, k=0; i<HP; i++, k++){
+            if(k == 4){
+                k = 0;
+                ciclo++;
+            }
+            switch(k){
+                case 0:
+                    al_draw_bitmap(heart_14, ciclo*TILE, 1*TILE, 0);
+                    break;
+                case 1:
+                    al_draw_bitmap(heart_24, ciclo*TILE, 1*TILE, 0);
+                    break;
+                case 2:
+                    al_draw_bitmap(heart_34, ciclo*TILE, 1*TILE, 0);
+                    break;
+                case 3:
+                    al_draw_bitmap(heart_44, ciclo*TILE, 1*TILE, 0);
+                    break;
+            }
         }
     }
 }

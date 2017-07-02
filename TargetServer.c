@@ -56,6 +56,7 @@ int main(){
 
     bool sair = false; // CONDICAO DE ENCERRAMENTO DO CLIENT 
 
+    short int idsValidos, idsReady;
     short int qtdPlayers = 0;
     short int aux;
     struct msg_ret_t chegou;
@@ -189,7 +190,7 @@ int main(){
                                 disconnectClient(pacote.teamPos - 3);
                             } else{
                                 mudaMatriz.tag = 2;
-                                mudaMatriz.HP = -1;
+                                mudaMatriz.HP = playersJogando[pacote.teamPos].HP;
                                 sendMsgToClient(&mudaMatriz, sizeof(mudaMatriz), chegou.client_id);
                             }
                             break;
@@ -200,6 +201,7 @@ int main(){
 
                 case playerLogIn: /////////////////////////////////////////////////////////////////////2
                     //player logou no server. hora de mostrar onde ele fica.
+                    mudaMatriz.tag = 3;
                     pacote.teamPos = 3 + chegou.client_id;
                     switch(pacote.teamPos){
                         case 3:
@@ -207,6 +209,7 @@ int main(){
                             playersJogando[3].playerX = 22;
                             playersJogando[3].playerY = 2;
                             mapa[22][2] = 3;
+                            mudaMatriz.HP = 20;
                             mudaMatriz.oldx = 22;
                             mudaMatriz.oldy = 2;
                             mudaMatriz.newx = 22;
@@ -219,6 +222,7 @@ int main(){
                             playersJogando[4].playerX = 22;
                             playersJogando[4].playerY = 3;
                             mapa[22][3] = 4;
+                            mudaMatriz.HP = 20;
                             mudaMatriz.oldx = 22;
                             mudaMatriz.oldy = 3;
                             mudaMatriz.newx = 22;
@@ -231,6 +235,7 @@ int main(){
                             playersJogando[5].playerX = 22;
                             playersJogando[5].playerY = 4;
                             mapa[22][4] = 5;
+                            mudaMatriz.HP = 20;
                             mudaMatriz.oldx = 22;
                             mudaMatriz.oldy = 4;
                             mudaMatriz.newx = 22;
@@ -243,6 +248,7 @@ int main(){
                             playersJogando[6].playerX = 1;
                             playersJogando[6].playerY = 29;
                             mapa[1][29] = 6;
+                            mudaMatriz.HP = 20;
                             mudaMatriz.oldx = 1;
                             mudaMatriz.oldy = 29;
                             mudaMatriz.newx = 1;
@@ -255,6 +261,7 @@ int main(){
                             playersJogando[7].playerX = 1;
                             playersJogando[7].playerY = 28;
                             mapa[1][28] = 7;
+                            mudaMatriz.HP = 20;
                             mudaMatriz.oldx = 1;
                             mudaMatriz.oldy = 28;
                             mudaMatriz.newx = 1;
@@ -267,6 +274,7 @@ int main(){
                             playersJogando[8].playerX = 1;
                             playersJogando[8].playerY = 27;
                             mapa[1][27] = 8;
+                            mudaMatriz.HP = 20;
                             mudaMatriz.oldx = 1;
                             mudaMatriz.oldy = 27;
                             mudaMatriz.newx = 1;
@@ -343,14 +351,18 @@ int main(){
                             printf("\n");
                         }
                         strcpy(nicknames.nicks[id], pacote.playerName);
-                        for(i=0; i<6; i++){
-                            if(isValidId(i) && status[i] == false){
-                                naoComeca = true;
+                        for(i=0, idsValidos = 0, idsReady = 0; i<6; i++){
+                            if(isValidId(i)){ // && status[i] == false
+                                idsValidos++;
+                                if(status[i] == true) idsReady++;
                             }
                         }
-                        if(naoComeca == false) nicknames.comecaJogo = true;
+                        if(idsValidos == idsReady){
+                            naoComeca = false;
+                            nicknames.comecaJogo = true;
+                        }
                         broadcast(&nicknames, sizeof(nicknames));
-                    break;
+                    break;                                                                                                                                                                 
             }
             chegou.status = NO_MESSAGE;
         }
@@ -358,14 +370,16 @@ int main(){
         {
             if(naoComeca == true){
                 printf("o id %d quer se disconectar\n", chegou.client_id);
-                posicao[id][pacote.mov + 1] = -1;
+                posicao[id][0] = -1;
+                posicao[id][1] = -1;
+                posicao[id][2] = -1;
                 
                 broadcast(&nicknames, sizeof(nicknames));
                 chegou.status = NO_MESSAGE;
             } else{
                 x = playersJogando[3+chegou.client_id].playerX;
                 y = playersJogando[3+chegou.client_id].playerY;
-                (y > 15) ? (mapa[x][y] = 2, mudaMatriz.idMoved = 2) : (mapa[x][y] = 0, mudaMatriz.idMoved = 0);
+                (y > 15) ? (mapa[x][y] = 2, mudaMatriz.idMoved = 2) : (mapa[x][y] = 0, mudaMatriz.idMoved = 0); //ajeitar
                 mudaMatriz.oldx = x;
                 mudaMatriz.oldy = y;
                 mudaMatriz.newx = x;

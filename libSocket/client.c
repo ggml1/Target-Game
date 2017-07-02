@@ -3,6 +3,7 @@
 #include <termios.h>
 #include <poll.h>
 
+#define GAME_ALREADY_STARTED -5
 #define GETCH_TIMEOUT 100
 int network_socket;
 fd_set sock_fd_set;
@@ -47,6 +48,8 @@ int connectToServer(const char *server_IP){
 		printf("Too many clients connected!");
 		return 0;
 		//exit(EXIT_FAILURE);
+	} else if(server_response == GAME_ALREADY_STARTED){   // MODIFIED
+		return -3;
 	}
 
 	FD_ZERO (&sock_fd_set);

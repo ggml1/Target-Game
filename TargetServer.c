@@ -64,6 +64,7 @@ int main(){
     Moves mudaMatriz;
     Lobby nicknames;
     nicknames.comecaJogo = false;
+    bool naoComeca = true;
 
     short int i, j, x, y;
 
@@ -77,9 +78,12 @@ int main(){
     while(!sair)
     {
         startTimer();
-        int id = acceptConnection();
-        bool naoComeca = false;
-        if(id != NO_CONNECTION) printf("Alguem se Conectou com ID %d\n", id);
+        int id;
+        if(naoComeca == false) id = acceptConnection(0);
+        else id = acceptConnection(1);
+        if(id != NO_CONNECTION){
+            printf("-----Alguem se conectou com ID %d.\n", id);
+        }
         
         chegou = recvMsg(&pacote);
         if(chegou.status == MESSAGE_OK)
@@ -309,7 +313,7 @@ int main(){
                                     for(i=0; i<6; i++){
                                         if(posicao[i][0] == -1) aux++;
                                     }
-                                    if(aux >= 4){
+                                    if(aux >= 4){ //&& naoComeca != false
                                         nicknames.aux = 0;
                                         posicao[id][0] = id;
                                         posicao[id][1] = -1;

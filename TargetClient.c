@@ -6,6 +6,7 @@
 #define TILE 32
 #define FATOR 50
 
+void menuGameJaComecou();
 void menuErroSocket();
 void menuErroServerFull();
 void menuErroConnectionFailure();
@@ -275,6 +276,16 @@ int main(int argc, char const *argv[]){
                         if(event.keyboard.keycode == ALLEGRO_KEY_ENTER && strlen(nickname) >= 5){
                             conecta = connectToServer(ipOficial);
                             switch(conecta){
+                                case -3:
+                                    menuGameJaComecou();
+                                    menu = true;
+                                    menuConnection = false;
+                                    flag = 0;
+                                    strcpy(ipOficial, "0.0.0.0");
+                                    strcpy(ipTemp, "");
+                                    strcpy(nickname, "<seu_nick>");
+                                    strcpy(nicknameTemp, "");
+                                    break;
                                 case -2:
                                     menuErroSocket();
                                     menu = true;
@@ -544,6 +555,29 @@ void printaVida(short int HP)
     }
 }
 
+void menuGameJaComecou()
+{
+    int vdd = 1;
+    while(vdd){
+        startTimer();
+        while(!al_is_event_queue_empty(eventsQueue)){
+            printf("O jogo ja comecou! Nao foi possivel se conectar.\n");
+            ALLEGRO_EVENT event;
+            al_wait_for_event(eventsQueue, &event);
+            if(event.type == ALLEGRO_EVENT_KEY_DOWN){
+                vdd = 0;
+            }
+            if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
+        }
+        al_draw_bitmap(menuNormal, 0, 0, 0);
+        al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 20, ALLEGRO_ALIGN_CENTRE, "CONNECTION");
+        al_draw_text(font_1, al_map_rgb(255,0,0), LARGURA/2 + 10, 315, ALLEGRO_ALIGN_CENTRE, "OOPS! THE GAME HAS ALREADY STARTED.");
+        al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2 - 20, 361, ALLEGRO_ALIGN_CENTRE, "PRESS ANY KEY TO RETURN AND TRY AGAIN.");
+        al_flip_display();
+        al_clear_to_color(al_map_rgb(0,0,0));
+        FPSLimit();
+    }
+}
 void menuErroSocket()
 {
     int vdd = 1;

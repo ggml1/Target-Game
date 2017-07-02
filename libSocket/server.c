@@ -1,6 +1,8 @@
 #include "server.h"
 #include "default.h"
 
+#define GAME_ALREADY_STARTED -5
+
 
 struct server_view_client{
 	int sockid;
@@ -85,7 +87,7 @@ Returns:
 	otherwise returns a id to the new user (this id has to be used when a message is needed to be sent to a specific client)
 	0 <= id < max_clients (no of clients set in "serverInit")
 */
-int acceptConnection(){
+int acceptConnection(int naoComeca){   //MODIFIED
 	struct timeval timeout = {0, SELECT_TIMEOUT};
 	fd_set readfds = server_fd_set;
 
@@ -108,6 +110,11 @@ int acceptConnection(){
 	}
 	if(clients_connected == actual_max_clients){ // there are too many clients connected
 		return_msg = TOO_MANY_CLIENTS;
+		write(new_sock, &return_msg, sizeof(int));
+		close(new_sock);
+	}
+	else if(naoComeca == 0){
+		return_msg = GAME_ALREADY_STARTED;
 		write(new_sock, &return_msg, sizeof(int));
 		close(new_sock);
 	}

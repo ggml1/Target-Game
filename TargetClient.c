@@ -19,6 +19,8 @@ void printaHelp();
 void printaInicio();
 void printaMenuTeamSelection(bool notReady);
 void printaNomes(Lobby *nomes);
+void mostraTelaMorte();
+
 
 int main(int argc, char const *argv[]){
 
@@ -507,6 +509,10 @@ int main(int argc, char const *argv[]){
                 }
                 else if(Alteracoes.tag == 3){
                     map[Alteracoes.newx][Alteracoes.newy] = Alteracoes.idMoved;
+                } else if(Alteracoes.tag == 4){
+                    mostraTelaMorte();
+                    gameOn = false;
+                    menu = true;
                 }
                 else{
                     playerHP = Alteracoes.HP;
@@ -515,8 +521,10 @@ int main(int argc, char const *argv[]){
                 // printf("Valor antigo: %d\n Valor novo: %d\n", map[Alteracoes.oldx][Alteracoes.oldy], map[Alteracoes.newx][Alteracoes.newy]);
             }
 
-            printaMapa(map, &Alteracoes);
-            printaVida(playerHP);
+            if(gameOn){
+                printaMapa(map, &Alteracoes);
+                printaVida(playerHP);
+            }
 
             al_flip_display();
             al_clear_to_color(al_map_rgb(0,0,0));
@@ -555,6 +563,30 @@ void printaVida(short int HP)
     }
 }
 
+void mostraTelaMorte()
+{
+    int vdd = 1;
+    while(vdd){
+        startTimer();
+        while(!al_is_event_queue_empty(eventsQueue)){
+            printf("O jogo ja comecou! Nao foi possivel se conectar.\n");
+            ALLEGRO_EVENT event;
+            al_wait_for_event(eventsQueue, &event);
+            if(event.type == ALLEGRO_EVENT_KEY_DOWN){
+                vdd = 0;
+            }
+            if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
+        }
+        al_draw_bitmap(menuNormal, 0, 0, 0);
+        al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 50, ALLEGRO_ALIGN_CENTRE, "GAME OVER");
+        al_draw_text(font_1, al_map_rgb(255,0,0), LARGURA/2 + 10, 345, ALLEGRO_ALIGN_CENTRE, "SORRY, BUT YOU DIED. HOPE YOU HAD FUN.");
+        al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2 - 20, 391, ALLEGRO_ALIGN_CENTRE, "PRESS ANY KEY TO RETURN AND TRY AGAIN.");
+        al_flip_display();
+        al_clear_to_color(al_map_rgb(0,0,0));
+        FPSLimit();
+    }
+}
+
 void menuGameJaComecou()
 {
     int vdd = 1;
@@ -570,7 +602,7 @@ void menuGameJaComecou()
             if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
         }
         al_draw_bitmap(menuNormal, 0, 0, 0);
-        al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 20, ALLEGRO_ALIGN_CENTRE, "CONNECTION");
+        al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 50, ALLEGRO_ALIGN_CENTRE, "CONNECTION");
         al_draw_text(font_1, al_map_rgb(255,0,0), LARGURA/2 + 10, 315, ALLEGRO_ALIGN_CENTRE, "OOPS! THE GAME HAS ALREADY STARTED.");
         al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2 - 20, 361, ALLEGRO_ALIGN_CENTRE, "PRESS ANY KEY TO RETURN AND TRY AGAIN.");
         al_flip_display();
@@ -578,6 +610,7 @@ void menuGameJaComecou()
         FPSLimit();
     }
 }
+
 void menuErroSocket()
 {
     int vdd = 1;
@@ -593,7 +626,7 @@ void menuErroSocket()
             if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
         }
         al_draw_bitmap(menuNormal, 0, 0, 0);
-        al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 20, ALLEGRO_ALIGN_CENTRE, "CONNECTION");
+        al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 50, ALLEGRO_ALIGN_CENTRE, "CONNECTION");
         al_draw_text(font_1, al_map_rgb(255,0,0), LARGURA/2 + 10, 315, ALLEGRO_ALIGN_CENTRE, "OOPS! SOCKET ERROR.");
         al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2 - 20, 361, ALLEGRO_ALIGN_CENTRE, "PRESS ANY KEY TO RETURN AND TRY AGAIN.");
         al_flip_display();
@@ -617,7 +650,7 @@ void menuErroServerFull()
             if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
         }
         al_draw_bitmap(menuNormal, 0, 0, 0);
-        al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 20, ALLEGRO_ALIGN_CENTRE, "CONNECTION");
+        al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 50, ALLEGRO_ALIGN_CENTRE, "CONNECTION");
         al_draw_text(font_1, al_map_rgb(255,0,0), LARGURA/2 + 10, 315, ALLEGRO_ALIGN_CENTRE, "OOPS! SERVER IS FULL.");
         al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2 - 20, 361, ALLEGRO_ALIGN_CENTRE, "PRESS ANY KEY TO RETURN");
         al_flip_display();
@@ -641,7 +674,7 @@ void menuErroConnectionFailure()
             if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
         }
         al_draw_bitmap(menuNormal, 0, 0, 0);
-        al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 20, ALLEGRO_ALIGN_CENTRE, "CONNECTION");
+        al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 50, ALLEGRO_ALIGN_CENTRE, "CONNECTION");
         al_draw_text(font_1, al_map_rgb(255,0,0), LARGURA/2 + 10, 315, ALLEGRO_ALIGN_CENTRE, "OOPS! CONNECTION FAILURE.");
         al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2 - 20, 361, ALLEGRO_ALIGN_CENTRE, "PRESS ANY KEY TO RETURN AND TRY AGAIN.");
         al_flip_display();

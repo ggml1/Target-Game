@@ -53,23 +53,22 @@ ALLEGRO_BITMAP *spaceTecla;
 typedef struct{
 	short int esq_dir;
 	short int flag;
-	bool situacao;
-	short int teamPos;
 	short int tipoPacote;				// 0 -> msg inicial (nickname), 1 - > movimento
-    char playerName[16];
     short int HP;
-    char mov;
     short int playerX;
     short int playerY;
+    char playerName[16];
+    char mov;
+	bool situacao;	
     bool saiu;
 }Player;
 
 typedef struct{
 	short int posicao[6][3];
-	char nicks[6][10];
 	short int qtdPlayers;
 	short int situacao[6];
 	short int aux;
+	char nicks[6][10];
 	bool comecaJogo;
 }Lobby;
 

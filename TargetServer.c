@@ -65,6 +65,7 @@ int main(){
     Lobby nicknames;
     nicknames.comecaJogo = false;
     bool naoComeca = true;
+    short int teamPos;
 
     short int i, j, x, y;
 
@@ -96,14 +97,14 @@ int main(){
                     break;
 
                 case playerAction: //1
-                    pacote.teamPos = 3 + chegou.client_id;
+                    teamPos = 3 + chegou.client_id;
                     if(pacote.mov != 's') mudaMatriz.tag = 1;
                     switch(pacote.mov){
                         case 'u':
-                            x = playersJogando[pacote.teamPos].playerX;
-                            y = playersJogando[pacote.teamPos].playerY;
+                            x = playersJogando[teamPos].playerX;
+                            y = playersJogando[teamPos].playerY;
                             if(mapa[x - 1][y] == 0 || mapa[x - 1][y] == 2 || mapa[x - 1][y] == 55 || mapa[x - 1][y] == 56){
-                                mudaMatriz.idMoved = pacote.teamPos;
+                                mudaMatriz.idMoved = teamPos;
                                 mudaMatriz.oldx = x;
                                 mudaMatriz.oldy = y;
                                 if(y < 16){
@@ -116,16 +117,16 @@ int main(){
                                 x--;
                                 mudaMatriz.newx = x;
                                 mudaMatriz.newy = y;
-                                mudaMatriz.olhando[pacote.teamPos] = 'u';
-                                mapa[x][y] = pacote.teamPos;
-                                playersJogando[pacote.teamPos].playerX--;
+                                mudaMatriz.olhando[teamPos] = 'u';
+                                mapa[x][y] = teamPos;
+                                playersJogando[teamPos].playerX--;
                             }
                             break;
                         case 'd':
-                            x = playersJogando[pacote.teamPos].playerX;
-                            y = playersJogando[pacote.teamPos].playerY;
+                            x = playersJogando[teamPos].playerX;
+                            y = playersJogando[teamPos].playerY;
                             if(mapa[x + 1][y] == 0 || mapa[x + 1][y] == 2 || mapa[x + 1][y] == 55 || mapa[x + 1][y] == 56){
-                                mudaMatriz.idMoved = pacote.teamPos;
+                                mudaMatriz.idMoved = teamPos;
                                 mudaMatriz.oldx = x;
                                 mudaMatriz.oldy = y;
                                 if(y < 16){
@@ -138,16 +139,16 @@ int main(){
                                 x++;
                                 mudaMatriz.newx = x;
                                 mudaMatriz.newy = y;
-                                mudaMatriz.olhando[pacote.teamPos] = 'd';
-                                mapa[x][y] = pacote.teamPos;
-                                playersJogando[pacote.teamPos].playerX++;
+                                mudaMatriz.olhando[teamPos] = 'd';
+                                mapa[x][y] = teamPos;
+                                playersJogando[teamPos].playerX++;
                             }
                             break;
                         case 'l':
-                            x = playersJogando[pacote.teamPos].playerX;
-                            y = playersJogando[pacote.teamPos].playerY;
+                            x = playersJogando[teamPos].playerX;
+                            y = playersJogando[teamPos].playerY;
                             if(mapa[x][y - 1] == 0 || mapa[x][y - 1] == 2 || mapa[x][y - 1] == 55 || mapa[x][y - 1] == 56){
-                                mudaMatriz.idMoved = pacote.teamPos;
+                                mudaMatriz.idMoved = teamPos;
                                 mudaMatriz.oldx = x;
                                 mudaMatriz.oldy = y;
                                 if(y < 16){
@@ -160,16 +161,16 @@ int main(){
                                 y--;
                                 mudaMatriz.newx = x;
                                 mudaMatriz.newy = y;
-                                mudaMatriz.olhando[pacote.teamPos] = 'l';
-                                mapa[x][y] = pacote.teamPos;
-                                playersJogando[pacote.teamPos].playerY--;
+                                mudaMatriz.olhando[teamPos] = 'l';
+                                mapa[x][y] = teamPos;
+                                playersJogando[teamPos].playerY--;
                             }
                             break;
                         case 'r':
-                            x = playersJogando[pacote.teamPos].playerX;
-                            y = playersJogando[pacote.teamPos].playerY;
+                            x = playersJogando[teamPos].playerX;
+                            y = playersJogando[teamPos].playerY;
                             if(mapa[x][y + 1] == 0 || mapa[x][y + 1] == 2 || mapa[x][y + 1] == 55 || mapa[x][y + 1] == 56){
-                                mudaMatriz.idMoved = pacote.teamPos;
+                                mudaMatriz.idMoved = teamPos;
                                 mudaMatriz.oldx = x;
                                 mudaMatriz.oldy = y;
                                 if(y < 16){
@@ -182,19 +183,21 @@ int main(){
                                 y++;
                                 mudaMatriz.newx = x;
                                 mudaMatriz.newy = y;
-                                mudaMatriz.olhando[pacote.teamPos] = 'r';
-                                mapa[x][y] = pacote.teamPos;
-                                playersJogando[pacote.teamPos].playerY++;
+                                mudaMatriz.olhando[teamPos] = 'r';
+                                mapa[x][y] = teamPos;
+                                playersJogando[teamPos].playerY++;
                             }
                             break;
                         case 's':
-                            playersJogando[pacote.teamPos].HP--;
-                            printf("A vida atual do player eh %d\n", playersJogando[pacote.teamPos].HP);
-                            if(playersJogando[pacote.teamPos].HP <= 0){
-                                disconnectClient(pacote.teamPos - 3);
+                            playersJogando[teamPos].HP--;
+                            printf("A vida atual do player eh %d\n", playersJogando[teamPos].HP);
+                            if(playersJogando[teamPos].HP <= 0){
+                                mudaMatriz.tag = 4;
+                                sendMsgToClient(&mudaMatriz, sizeof(mudaMatriz), teamPos - 3);
+                                disconnectClient(teamPos - 3);
                             } else{
                                 mudaMatriz.tag = 2;
-                                mudaMatriz.HP = playersJogando[pacote.teamPos].HP;
+                                mudaMatriz.HP = playersJogando[teamPos].HP;
                                 sendMsgToClient(&mudaMatriz, sizeof(mudaMatriz), chegou.client_id);
                             }
                             break;
@@ -206,8 +209,8 @@ int main(){
                 case playerLogIn: /////////////////////////////////////////////////////////////////////2
                     //player logou no server. hora de mostrar onde ele fica.
                     mudaMatriz.tag = 3;
-                    pacote.teamPos = 3 + chegou.client_id;
-                    switch(pacote.teamPos){
+                    teamPos = 3 + chegou.client_id;
+                    switch(teamPos){
                         case 3:
                             playersJogando[id+3].HP = 20;
                             playersJogando[3].playerX = 22;
@@ -218,8 +221,8 @@ int main(){
                             mudaMatriz.oldy = 2;
                             mudaMatriz.newx = 22;
                             mudaMatriz.newy = 2;
-                            mudaMatriz.idMoved = pacote.teamPos;
-                            mudaMatriz.olhando[pacote.teamPos] = 'd';
+                            mudaMatriz.idMoved = teamPos;
+                            mudaMatriz.olhando[teamPos] = 'd';
                             break;
                         case 4:
                             playersJogando[id+3].HP = 20;
@@ -231,8 +234,8 @@ int main(){
                             mudaMatriz.oldy = 3;
                             mudaMatriz.newx = 22;
                             mudaMatriz.newy = 3;
-                            mudaMatriz.idMoved = pacote.teamPos;
-                            mudaMatriz.olhando[pacote.teamPos] = 'd';
+                            mudaMatriz.idMoved = teamPos;
+                            mudaMatriz.olhando[teamPos] = 'd';
                             break;
                         case 5:
                             playersJogando[id+3].HP = 20;        
@@ -244,8 +247,8 @@ int main(){
                             mudaMatriz.oldy = 4;
                             mudaMatriz.newx = 22;
                             mudaMatriz.newy = 4;
-                            mudaMatriz.idMoved = pacote.teamPos;
-                            mudaMatriz.olhando[pacote.teamPos] = 'd';
+                            mudaMatriz.idMoved = teamPos;
+                            mudaMatriz.olhando[teamPos] = 'd';
                             break;
                         case 6:
                             playersJogando[id+3].HP = 20;
@@ -257,8 +260,8 @@ int main(){
                             mudaMatriz.oldy = 29;
                             mudaMatriz.newx = 1;
                             mudaMatriz.newy = 29;
-                            mudaMatriz.idMoved = pacote.teamPos;
-                            mudaMatriz.olhando[pacote.teamPos] = 'd';
+                            mudaMatriz.idMoved = teamPos;
+                            mudaMatriz.olhando[teamPos] = 'd';
                             break;
                         case 7:
                             playersJogando[id+3].HP = 20;
@@ -270,8 +273,8 @@ int main(){
                             mudaMatriz.oldy = 28;
                             mudaMatriz.newx = 1;
                             mudaMatriz.newy = 28;
-                            mudaMatriz.idMoved = pacote.teamPos;
-                            mudaMatriz.olhando[pacote.teamPos] = 'd';
+                            mudaMatriz.idMoved = teamPos;
+                            mudaMatriz.olhando[teamPos] = 'd';
                             break;
                         case 8:
                             playersJogando[id+3].HP = 20;
@@ -283,8 +286,8 @@ int main(){
                             mudaMatriz.oldy = 27;
                             mudaMatriz.newx = 1;
                             mudaMatriz.newy = 27;
-                            mudaMatriz.idMoved = pacote.teamPos;
-                            mudaMatriz.olhando[pacote.teamPos] = 'd';
+                            mudaMatriz.idMoved = teamPos;
+                            mudaMatriz.olhando[teamPos] = 'd';
                             break;
                     }
                     broadcast(&mudaMatriz, sizeof(mudaMatriz));

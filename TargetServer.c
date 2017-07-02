@@ -38,7 +38,7 @@ int posicao[6][3] = {{-1, -1, -1},
                      {-1, -1, -1},
                      {-1, -1, -1}};
 
-bool status[6] = { 0 };
+bool status[6];
  
 int main(){
     if(!coreInit()) //INICIA OS MODULOS PRINCIPAIS DO ALLEGRO
@@ -60,11 +60,14 @@ int main(){
     int aux;
     struct msg_ret_t chegou;
     Player playerList[10], pacote, playersJogando[10];
+    Naksa pacoteProClient;
     Moves mudaMatriz;
     Lobby nicknames;
-    nicknames.qtdPlayers = 0;
+    nicknames.comecaJogo = false;
 
     int i, j, x, y;
+
+    for(i=0; i<6; i++) status[i] = false;
     
     serverInit(6); // INICIALIZA O SERVER E PERMITE NO MAX. 6 CLIENTS
     
@@ -72,7 +75,7 @@ int main(){
     {
         startTimer();
         int id = acceptConnection();
-
+        bool naoComeca = false;
         if(id != NO_CONNECTION) printf("Alguem se Conectou com ID %d\n", id);
         
         chegou = recvMsg(&pacote);
@@ -200,10 +203,10 @@ int main(){
                             mudaMatriz.olhando[pacote.teamPos] = 'd';
                             for(i=0; i<24; i++){
                                 for(j=0; j<32; j++){
-                                    pacote.mapa[i][j] = mapa[i][j];
+                                    pacoteProClient.mapa[i][j] = mapa[i][j];
                                 }
                             }
-                            sendMsgToClient(&pacote, sizeof(pacote), chegou.client_id);
+                            //sendMsgToClient(&pacote, sizeof(pacote), chegou.client_id);
                             break;
                         case 4:
                             playersJogando[4].playerX = 22;
@@ -217,10 +220,10 @@ int main(){
                             mudaMatriz.olhando[pacote.teamPos] = 'd';
                             for(i=0; i<24; i++){
                                 for(j=0; j<32; j++){
-                                    pacote.mapa[i][j] = mapa[i][j];
+                                    pacoteProClient.mapa[i][j] = mapa[i][j];
                                 }
                             }
-                            sendMsgToClient(&pacote, sizeof(pacote), chegou.client_id);
+                            //sendMsgToClient(&pacote, sizeof(pacote), chegou.client_id);
                             break;
                         case 5:
                             playersJogando[5].playerX = 22;
@@ -234,10 +237,10 @@ int main(){
                             mudaMatriz.olhando[pacote.teamPos] = 'd';
                             for(i=0; i<24; i++){
                                 for(j=0; j<32; j++){
-                                    pacote.mapa[i][j] = mapa[i][j];
+                                    pacoteProClient.mapa[i][j] = mapa[i][j];
                                 }
                             }
-                            sendMsgToClient(&pacote, sizeof(pacote), chegou.client_id);
+                            //sendMsgToClient(&pacote, sizeof(pacote), chegou.client_id);
                             break;
                         case 6:
                             playersJogando[6].playerX = 1;
@@ -251,10 +254,10 @@ int main(){
                             mudaMatriz.olhando[pacote.teamPos] = 'd';
                             for(i=0; i<24; i++){
                                 for(j=0; j<32; j++){
-                                    pacote.mapa[i][j] = mapa[i][j];
+                                    pacoteProClient.mapa[i][j] = mapa[i][j];
                                 }
                             }
-                            sendMsgToClient(&pacote, sizeof(pacote), chegou.client_id);
+                            //sendMsgToClient(&pacote, sizeof(pacote), chegou.client_id);
                             break;
                         case 7:
                             playersJogando[7].playerX = 1;
@@ -268,10 +271,10 @@ int main(){
                             mudaMatriz.olhando[pacote.teamPos] = 'd';
                             for(i=0; i<24; i++){
                                 for(j=0; j<32; j++){
-                                    pacote.mapa[i][j] = mapa[i][j];
+                                    pacoteProClient.mapa[i][j] = mapa[i][j];
                                 }
                             }
-                            sendMsgToClient(&pacote, sizeof(pacote), chegou.client_id);
+                            //sendMsgToClient(&pacote, sizeof(pacote), chegou.client_id);
                             break;
                         case 8:
                             playersJogando[8].playerX = 1;
@@ -285,67 +288,92 @@ int main(){
                             mudaMatriz.olhando[pacote.teamPos] = 'd';
                             for(i=0; i<24; i++){
                                 for(j=0; j<32; j++){
-                                    pacote.mapa[i][j] = mapa[i][j];
+                                    pacoteProClient.mapa[i][j] = mapa[i][j];
                                 }
                             }
-                            sendMsgToClient(&pacote, sizeof(pacote), chegou.client_id);
+                            //sendMsgToClient(&pacote, sizeof(pacote), chegou.client_id);
                             break;
                     }
-                    for(i=0; i<6; i++){
-                        if(isValidId(i) && i != chegou.client_id){
-                            sendMsgToClient(&mudaMatriz, sizeof(mudaMatriz), i);
-                        }
-                    }
+                    broadcast(&pacoteProClient, sizeof(pacoteProClient));
+                    // for(i=0; i<6; i++){
+                    //     if(isValidId(i) && i != chegou.client_id){
+                    //         sendMsgToClient(&mudaMatriz, sizeof(mudaMatriz), i);
+                    //     }
+                    // }
                     break;
                 
                 case teamSelection:
                     if(pacote.flag == 0){
-                        switch(pacote.mov){
-                            case -1:
-                                aux = 0;
-                                for(i=0; i<6; i++){
-                                    if(posicao[i][0] == -1) aux++;
+                        status[id] = pacote.situacao;
+                        naoComeca = true;
+                        if(pacote.saiu == true){
+                            printf("entrei aqui no pacotesaiutrue\n");
+                            disconnectClient(chegou.client_id);
+                            for(i=0; i<6; i++){
+                                for(j=0; j<3; j++){
+                                    if(posicao[i][j] == chegou.client_id){
+                                        posicao[i][j] = -1;
+                                    }
+                                    nicknames.posicao[i][j] = posicao[i][j];
                                 }
-                                //printf("%d\n", aux);
-                                if(aux >= 4){
+                            }
+                            broadcast(&nicknames, sizeof(nicknames));
+                        } else{
+                            status[id] = pacote.situacao;
+                            switch(pacote.mov){
+                                case -1:
+                                    aux = 0;
+                                    for(i=0; i<6; i++){
+                                        if(posicao[i][0] == -1) aux++;
+                                    }
+                                    if(aux >= 4){
+                                        nicknames.aux = 0;
+                                        posicao[id][0] = id;
+                                        posicao[id][1] = -1;
+                                    } else nicknames.aux = 1;
+                                    break;
+                                case 0:
                                     nicknames.aux = 0;
-                                    //printf("entrei\n");
-                                    posicao[id][0] = id;
-                                    posicao[id][-1] = -1;
-                                } else nicknames.aux = 1;
-                                break;
-                            case 0:
-                                nicknames.aux = 0;
-                                posicao[id][1] = id;
-                                if(pacote.esq_dir == 'r') posicao[id][0] = -1;
-                                else if(pacote.esq_dir == 'l') posicao[id][2] = -1;
-                                break;
-                            case 1:
-                                aux = 0;
-                                for(i=0; i<6; i++){
-                                    if(posicao[i][2] == -1) aux++;
-                                }
-                                //printf("%d\n", aux);
-                                if(aux >= 4){
-                                    //printf("entrei\n");
-                                    nicknames.aux = 0;
-                                    posicao[id][2] = id;
-                                    posicao[id][1] = -1;
-                                } else nicknames.aux = 1;
-                                break;
+                                    posicao[id][1] = id;
+                                    if(pacote.esq_dir == 'r') posicao[id][0] = -1;
+                                    else if(pacote.esq_dir == 'l') posicao[id][2] = -1;
+                                    break;
+                                case 1:
+                                    aux = 0;
+                                    for(i=0; i<6; i++){
+                                        if(posicao[i][2] == -1) aux++;
+                                    }
+                                    if(aux >= 4){
+                                        nicknames.aux = 0;
+                                        posicao[id][2] = id;
+                                        posicao[id][1] = -1;
+                                    } else nicknames.aux = 1;
+                                    break;
+                            }
                         }
-                    } else if(pacote.flag == 1) status[id] = pacote.situacao;
-                        //printf("%d\n", nicknames.qtdPlayers);
-                        nicknames.qtdPlayers++;
+                    } else if(pacote.flag == 1){
+                        status[id] = pacote.situacao;
+                        }
                         for(i=0; i<6; i++){
                             nicknames.situacao[i] = status[i];
-                            for(j=0; j<3; j++){
-                                nicknames.posicao[i][j] = posicao[i][j];
-                                printf("NOME : %s, Time : %d \n", nicknames.nicks[i] ,pacote.mov);
+                            if(!isValidId(i)){
+                                for(j=0; j<3; j++) nicknames.posicao[i][j] = -1;
+                            } else{
+                                for(j=0; j<3; j++){
+                                    printf("Nicknames ta recebendo [%d] na posicao [%d][%d]\n", posicao[i][j], i, j);
+                                    nicknames.posicao[i][j] = posicao[i][j];
+                                    printf("NOME : %s, Time : %d \n", nicknames.nicks[i], pacote.mov);
+                                }
                             }
                             printf("\n");
                         }
                         strcpy(nicknames.nicks[id], pacote.playerName);
+                        for(i=0; i<6; i++){
+                            if(isValidId(i) && status[i] == false){
+                                naoComeca = true;
+                            }
+                        }
+                        if(naoComeca == false) nicknames.comecaJogo = true;
                         broadcast(&nicknames, sizeof(nicknames));
                     break;
             }
@@ -353,17 +381,27 @@ int main(){
         }
         if(chegou.status == DISCONNECT_MSG)
         {
-            x = playersJogando[3+chegou.client_id].playerX;
-            y = playersJogando[3+chegou.client_id].playerY;
-            (y > 15) ? (mapa[x][y] = 2, mudaMatriz.idMoved = 2) : (mapa[x][y] = 0, mudaMatriz.idMoved = 0);
-            mudaMatriz.oldx = x;
-            mudaMatriz.oldy = y;
-            mudaMatriz.newx = x;
-            mudaMatriz.newy = y;
-            //mudaMatriz.idMoved = 0;
-            broadcast(&mudaMatriz, sizeof(mudaMatriz));
-            chegou.status = NO_MESSAGE;
+            if(naoComeca == true){
+                printf("o id %d quer se disconectar\n", chegou.client_id);
+                posicao[id][pacote.mov + 1] = -1;
+                
+                broadcast(&nicknames, sizeof(nicknames));
+                chegou.status = NO_MESSAGE;
+            } else{
+                x = playersJogando[3+chegou.client_id].playerX;
+                y = playersJogando[3+chegou.client_id].playerY;
+                (y > 15) ? (mapa[x][y] = 2, mudaMatriz.idMoved = 2) : (mapa[x][y] = 0, mudaMatriz.idMoved = 0);
+                mudaMatriz.oldx = x;
+                mudaMatriz.oldy = y;
+                mudaMatriz.newx = x;
+                mudaMatriz.newy = y;
+                //mudaMatriz.idMoved = 0;
+                broadcast(&mudaMatriz, sizeof(mudaMatriz));
+                chegou.status = NO_MESSAGE;
+            }
         }
+
+        //if(naoComeca = true) broadcast(&nicknames, sizeof(nicknames));
 
         al_flip_display();
         al_clear_to_color(al_map_rgb(0, 0, 0));

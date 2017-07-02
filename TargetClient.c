@@ -18,6 +18,7 @@ void printaHelp();
 void printaInicio();
 void printaMenuTeamSelection(bool notReady);
 void printaNomes(Lobby *nomes);
+void limpaPacote(Player *pacoteClient);
 
 int main(int argc, char const *argv[]){
 
@@ -61,7 +62,8 @@ int main(int argc, char const *argv[]){
     int map[24][32];
     int playerHP = 20;
 
-    Player pacoteClient, pacoteDoServer, EU;
+    Player pacoteClient, EU;
+    Naksa pacoteDoServer;
     Moves Alteracoes;
     Lobby nomes;
     
@@ -304,11 +306,13 @@ int main(int argc, char const *argv[]){
 //------------------------------------------------------------------------------------------------------------------------------------------------------
         if(teamSelection){
             pacoteClient.tipoPacote = 3;
+            pacoteClient.saiu = false;
             pacoteClient.mov = 0;
             pacoteClient.flag = 0;
-            pacoteClient.esq_dir = 'z';
+            pacoteClient.esq_dir = 'm';
             pacoteClient.situacao = false;
             sendMsgToServer(&pacoteClient, sizeof(pacoteClient));   ///PRIMEIRA MSG DO PLAYER PARA O SERVER, "OFICIALIZA" A CONEXAO E EVITA BUGS
+            recvMsgFromServer(&nomes, WAIT_FOR_IT);
         }
 //------------------------------------------------------------------------------------------------------------------------------------------------------
         while(teamSelection){
@@ -320,6 +324,10 @@ int main(int argc, char const *argv[]){
                 if(event.type == ALLEGRO_EVENT_KEY_CHAR){
                     if(event.keyboard.keycode == ALLEGRO_KEY_ESCAPE){
                         if(pacoteClient.situacao == false){
+                            pacoteClient.saiu = true;
+                            pacoteClient.flag = 0;
+                            pacoteClient.tipoPacote = 3;
+                            sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
                             teamSelection = false;
                             menuConnection = true;
                             flag = 0;
@@ -329,7 +337,7 @@ int main(int argc, char const *argv[]){
                             strcpy(nicknameTemp, "");
                         } else{
                             pacoteClient.situacao = false;
-                            pacoteClient.flag = 1;
+                            pacoteClient.flag = 0;
                             sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
                         }
                     }
@@ -373,11 +381,17 @@ int main(int argc, char const *argv[]){
             }
 
             if(recvMsgFromServer(&nomes, DONT_WAIT) != NO_MESSAGE){
-                for(i=0; i<6; i++){
-                    for(j=0; j<3; j++){
-                        printf("%d ", nomes.posicao[i][j]);
+                if(nomes.comecaJogo == true){
+                    teamSelection = false;
+                    limpaPacote(&pacoteClient);
+                    receberMapa = true;
+                } else{
+                    for(i=0; i<6; i++){
+                        for(j=0; j<3; j++){
+                            printf("%d ", nomes.posicao[i][j]);
+                        }
+                        printf("\n");
                     }
-                    printf("\n");
                 }
             }
 
@@ -397,7 +411,9 @@ int main(int argc, char const *argv[]){
             for(i=0; i<24; i++){
                 for(j=0; j<32; j++){
                     map[i][j] = pacoteDoServer.mapa[i][j];
+                    printf("%5d", map[i][j]);
                 }
+                printf("\n");
             }
             for(i=0; i<6; i++) Alteracoes.olhando[3+i] = 'd';
             receberMapa = false;
@@ -405,6 +421,7 @@ int main(int argc, char const *argv[]){
         }
 //------------------------------------------------------------------------------------------------------------------------------------------------------
         while(gameOn){
+
             startTimer();
             while(!al_is_event_queue_empty(eventsQueue)){
                 ALLEGRO_EVENT event;
@@ -440,7 +457,7 @@ int main(int argc, char const *argv[]){
                     }
                 }
             }
-            if(recvMsgFromServer(&Alteracoes, DONT_WAIT) != NO_MESSAGE){
+            if(recvMsgFromServer(&Alteracoes, DONT_WAIT) == sizeof(Alteracoes)){
                 // printf("Mudou a matriz!\n");
                 if(Alteracoes.tag == 1){
                     if(Alteracoes.oldy < 16){
@@ -1174,4 +1191,16 @@ void printaNomes(Lobby *nomes)
             }
         }
     }
+}
+
+void limpaPacote(Player *pacoteClient)
+{
+    // int i, j;
+    // pacoteClient->mov = 'd';
+    // pacoteClient->tipoPacote = 2;
+    // for(i=0; i<24; i++){
+    //     for(j=0; j<32; j++){
+    //         pacoteClient->mapa[i][j] = 0;
+    //     }
+    // }
 }

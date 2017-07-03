@@ -486,7 +486,7 @@ int main(int argc, char const *argv[]){
                 ALLEGRO_EVENT event;
                 al_wait_for_event(eventsQueue, &event);
                 if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
-                if(event.type == ALLEGRO_EVENT_KEY_CHAR){
+                if(event.type == ALLEGRO_EVENT_KEY_DOWN && playerHP > 0){
                     switch(event.keyboard.keycode){
                         case ALLEGRO_KEY_UP:
                             pacoteClient.mov = 'u';

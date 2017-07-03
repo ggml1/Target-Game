@@ -50,6 +50,30 @@ ALLEGRO_BITMAP *heart_34;
 ALLEGRO_BITMAP *heart_44;
 ALLEGRO_BITMAP *spaceTecla;
 ALLEGRO_BITMAP *telaMorte;
+ALLEGRO_BITMAP *bmagicr;
+ALLEGRO_BITMAP *bmagicl;
+ALLEGRO_BITMAP *bmagicu;
+ALLEGRO_BITMAP *bmagicd;
+ALLEGRO_BITMAP *rmagicr;
+ALLEGRO_BITMAP *rmagicl;
+ALLEGRO_BITMAP *rmagicd;
+ALLEGRO_BITMAP *rmagicu;
+ALLEGRO_BITMAP *barrowu;
+ALLEGRO_BITMAP *barrowl;
+ALLEGRO_BITMAP *barrowd;
+ALLEGRO_BITMAP *barrowr;
+ALLEGRO_BITMAP *rarrowu;
+ALLEGRO_BITMAP *rarrowl;
+ALLEGRO_BITMAP *rarrowd;
+ALLEGRO_BITMAP *rarrowr;
+ALLEGRO_BITMAP *bslashu;
+ALLEGRO_BITMAP *bslashd;
+ALLEGRO_BITMAP *bslashr;
+ALLEGRO_BITMAP *bslashl;
+ALLEGRO_BITMAP *rslashu;
+ALLEGRO_BITMAP *rslashr;
+ALLEGRO_BITMAP *rslashl;
+ALLEGRO_BITMAP *rslashd;
 
 typedef struct{
 	short int esq_dir;
@@ -62,6 +86,8 @@ typedef struct{
     char mov;
 	bool situacao;	
     bool saiu;
+    short int playerID;
+    short int playerHit;
 }Player;
 
 typedef struct{
@@ -75,6 +101,7 @@ typedef struct{
 
 typedef struct{
 	//int tipoPacote; nao precisa, pois o server mandara pro client e o client nao precisa ter um switch case de opcoes de moves.
+	short int qualFlecha;
 	short int tag;
 	short int HP;
 	short int oldx;
@@ -83,6 +110,7 @@ typedef struct{
 	short int newy;
 	short int idMoved;
 	char olhando[9];
+	char olhandoFlecha;
 }Moves;
 
 //Funções Centrais da Allegro

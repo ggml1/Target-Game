@@ -20,7 +20,9 @@ void printaInicio();
 void printaMenuTeamSelection(bool notReady);
 void printaNomes(Lobby *nomes);
 void mostraTelaMorte();
-
+void printaAtaque(char direcao, short int newx, short int newy);
+void printaFlechaRed(short int x, short int y, short int coeficiente, char direcao);
+void printaFlechaBlue(short int x, short int y, short int coeficiente, char direcaoFlecha);
 
 int main(int argc, char const *argv[]){
 
@@ -45,6 +47,11 @@ int main(int argc, char const *argv[]){
         return -1;
  
     //PROGRAM == false (CONDICAO PARA O JOGO FECHAR)
+    char direcao;
+    char direcaoFlecha[2];
+    bool flecha[2];
+    flecha[1] = false;
+    flecha[0] = false;
 	bool program = true;
     bool inicio = true;
     bool menu = false;
@@ -55,6 +62,8 @@ int main(int argc, char const *argv[]){
     bool teamSelection = false;
     bool pisca = false;
     bool receberMapa = false;
+    short int coeficiente[2] = { 0 };
+    short int xFlecha[2], yFlecha[2];
     short int count = 0;
     short int option = 0;
     short int conecta = 0;
@@ -495,10 +504,10 @@ int main(int argc, char const *argv[]){
                             sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
                             break;
                         case ALLEGRO_KEY_SPACE:
-                             pacoteClient.mov = 's';
-                             pacoteClient.tipoPacote = 1;
-                             sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
-                             break;
+                            pacoteClient.mov = 's';
+                            pacoteClient.tipoPacote = 1;
+                            sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                            break;
                     }
                 }
             }
@@ -519,9 +528,8 @@ int main(int argc, char const *argv[]){
                     mostraTelaMorte();
                     gameOn = false;
                     menu = true;
-                }
-                else{
-                    playerHP = Alteracoes.HP;
+                } else if(Alteracoes.tag == 5){
+                    playerHP--;
                 }
                 // printf("Posicoes:\nAntiga: %d %d\nNova: %d %d\n", Alteracoes.oldx, Alteracoes.oldy, Alteracoes.newx, Alteracoes.newy);
                 // printf("Valor antigo: %d\n Valor novo: %d\n", map[Alteracoes.oldx][Alteracoes.oldy], map[Alteracoes.newx][Alteracoes.newy]);
@@ -530,6 +538,159 @@ int main(int argc, char const *argv[]){
             if(gameOn){
                 printaMapa(map, &Alteracoes);
                 printaVida(playerHP);
+                if(Alteracoes.tag == 6){
+                   direcao = Alteracoes.olhando[Alteracoes.idMoved];
+                   printaAtaque(direcao, Alteracoes.newx, Alteracoes.newy);
+                   Alteracoes.tag = 0; 
+                } else if(Alteracoes.tag == 7){
+                    flecha[Alteracoes.qualFlecha] = true;
+                    xFlecha[Alteracoes.qualFlecha] = Alteracoes.newx;
+                    yFlecha[Alteracoes.qualFlecha] = Alteracoes.newy;
+                    direcaoFlecha[Alteracoes.qualFlecha] = Alteracoes.olhandoFlecha;
+                    coeficiente[Alteracoes.qualFlecha] = 0;
+                    Alteracoes.tag = 0;
+                }
+                for(i=0; i<2; i++){
+                    if(flecha[i] == true){
+                        coeficiente[i] += 10;
+                        if(coeficiente[i] > 32){
+                            coeficiente[i] = 0;
+                            switch(direcaoFlecha[i]){
+                                case 'u':
+                                    xFlecha[i]--;
+                                    break;
+                                case 'd':
+                                    xFlecha[i]++;
+                                    break;
+                                case 'r':
+                                    yFlecha[i]++;
+                                    break;
+                                case 'l':
+                                    yFlecha[i]--;
+                                    break;
+                            }
+                        }
+                        if(map[xFlecha[i]][yFlecha[i]] == 1 || map[xFlecha[i]][yFlecha[i]] == -1 || map[xFlecha[i]][yFlecha[i]] == 10 || map[xFlecha[i]][yFlecha[i]] == 30) flecha[i] = false;
+                        switch(map[xFlecha[i]][yFlecha[i]]){
+                            case 3:
+                                pacoteClient.playerHit = 3;
+                                pacoteClient.tipoPacote = 10;
+                                switch(direcaoFlecha[i]){
+                                    case 'u':
+                                        xFlecha[i]--;
+                                        break;
+                                    case 'd':
+                                        xFlecha[i]++;
+                                        break;
+                                    case 'r':
+                                        yFlecha[i]++;
+                                        break;
+                                    case 'l':
+                                        yFlecha[i]--;
+                                        break;
+                                }
+                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                break;
+                            case 4:
+                                pacoteClient.playerHit = 4;
+                                pacoteClient.tipoPacote = 10;
+                                switch(direcaoFlecha[i]){
+                                    case 'u':
+                                        xFlecha[i]--;
+                                        break;
+                                    case 'd':
+                                        xFlecha[i]++;
+                                        break;
+                                    case 'r':
+                                        yFlecha[i]++;
+                                        break;
+                                    case 'l':
+                                        yFlecha[i]--;
+                                        break;
+                                }
+                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                break;
+                            case 5:
+                                pacoteClient.playerHit = 5;
+                                pacoteClient.tipoPacote = 10;
+                                switch(direcaoFlecha[i]){
+                                    case 'u':
+                                        xFlecha[i]--;
+                                        break;
+                                    case 'd':
+                                        xFlecha[i]++;
+                                        break;
+                                    case 'r':
+                                        yFlecha[i]++;
+                                        break;
+                                    case 'l':
+                                        yFlecha[i]--;
+                                        break;
+                                }
+                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                break;
+                            case 6:
+                                pacoteClient.playerHit = 6;
+                                pacoteClient.tipoPacote = 10;
+                                switch(direcaoFlecha[i]){
+                                    case 'u':
+                                        xFlecha[i]--;
+                                        break;
+                                    case 'd':
+                                        xFlecha[i]++;
+                                        break;
+                                    case 'r':
+                                        yFlecha[i]++;
+                                        break;
+                                    case 'l':
+                                        yFlecha[i]--;
+                                        break;
+                                }
+                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                break;
+                            case 7:
+                                pacoteClient.playerHit = 7;
+                                pacoteClient.tipoPacote = 10;
+                                switch(direcaoFlecha[i]){
+                                    case 'u':
+                                        xFlecha[i]--;
+                                        break;
+                                    case 'd':
+                                        xFlecha[i]++;
+                                        break;
+                                    case 'r':
+                                        yFlecha[i]++;
+                                        break;
+                                    case 'l':
+                                        yFlecha[i]--;
+                                        break;
+                                }
+                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                break;
+                            case 8:
+                                pacoteClient.playerHit = 8;
+                                pacoteClient.tipoPacote = 10;
+                                switch(direcaoFlecha[i]){
+                                    case 'u':
+                                        xFlecha[i]--;
+                                        break;
+                                    case 'd':
+                                        xFlecha[i]++;
+                                        break;
+                                    case 'r':
+                                        yFlecha[i]++;
+                                        break;
+                                    case 'l':
+                                        yFlecha[i]--;
+                                        break;
+                                }
+                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                break;
+                        }
+                        if(flecha[0] == true) printaFlechaRed(xFlecha[0], yFlecha[0], coeficiente[0], direcaoFlecha[0]);
+                        if(flecha[1] == true) printaFlechaBlue(xFlecha[1], yFlecha[1], coeficiente[1], direcaoFlecha[1]);
+                    }
+                }
             }
 
             al_flip_display();
@@ -542,6 +703,60 @@ int main(int argc, char const *argv[]){
 //------------------------------------------------------------------------------------------------------------------------------------------------------
 //-----AQUI ESTA FORA DA MAIN - FUNCOES AUXILIARES!
 //------------------------------------------------------------------------------------------------------------------------------------------------------
+void printaFlechaBlue(short int x, short int y, short int coeficiente, char direcaoFlecha)
+{
+    switch(direcaoFlecha){
+        case 'u':
+            al_draw_bitmap(barrowu, TILE*y, TILE*x - coeficiente, 0);
+            break;
+        case 'd':
+            al_draw_bitmap(barrowd, TILE*y, TILE*x + coeficiente, 0);
+            break;
+        case 'r':
+            al_draw_bitmap(barrowr, TILE*y + coeficiente, TILE*x, 0);
+            break;
+        case 'l':
+            al_draw_bitmap(barrowl, TILE*y - coeficiente, TILE*x, 0);
+            break;
+    }
+}
+
+void printaFlechaRed(short int x, short int y, short int coeficiente, char direcaoFlecha)
+{
+    switch(direcaoFlecha){
+        case 'u':
+            al_draw_bitmap(rarrowu, TILE*y, TILE*x - coeficiente, 0);
+            break;
+        case 'd':
+            al_draw_bitmap(rarrowd, TILE*y, TILE*x + coeficiente, 0);
+            break;
+        case 'r':
+            al_draw_bitmap(rarrowr, TILE*y + coeficiente, TILE*x, 0);
+            break;
+        case 'l':
+            al_draw_bitmap(rarrowl, TILE*y - coeficiente, TILE*x, 0);
+            break;
+    }
+}
+
+void printaAtaque(char direcao, short int newx, short int newy)
+{
+    switch(direcao){
+        case 'u':
+            al_draw_bitmap(rslashu, TILE*newy - 32, TILE*newx - 32, 0);
+            break;
+        case 'd':
+            al_draw_bitmap(rslashd, TILE*newy - 32, TILE*newx + 32, 0);
+            break;
+        case 'l':
+            al_draw_bitmap(rslashl, TILE*newy - 32, TILE*newx - 32, 0);
+            break;
+        case 'r':
+            al_draw_bitmap(rslashr, TILE*newy + 32, TILE*newx - 32, 0);
+            break;
+    }
+}
+
 void printaVida(short int HP)
 {
     short int ciclo = 1, i, k;
@@ -1452,7 +1667,6 @@ void printaMenuOpcoes(int option)
 
 void printaHelp()
 {
-    //al_draw_bitmap(spaceTecla,     5*TILE, 11*TILE + 10, 0);
     al_draw_bitmap(menuNormal, 0, 0, 0);
     al_draw_text(font_1, al_map_rgb(0,0,0), LARGURA/2, 50, ALLEGRO_ALIGN_CENTRE , "HELP");
     al_draw_text(font_1, al_map_rgb(255,0,0), 100 , 120, ALLEGRO_ALIGN_LEFT , "01. MOVES");
@@ -1461,6 +1675,7 @@ void printaHelp()
     al_draw_bitmap(downKey,  15*TILE + 15,  5*TILE + 20, 0);
     al_draw_bitmap(leftKey,   4*TILE + 20,       8*TILE, 0);
     al_draw_bitmap(rightKey, 15*TILE + 15,  7*TILE + 25, 0);
+    al_draw_bitmap(spaceTecla,     5*TILE, 11*TILE + 10, 0);
     al_draw_text(font_2, al_map_rgb(0,0,0), 600, 200, ALLEGRO_ALIGN_CENTRE , "DOWN");
     al_draw_text(font_2, al_map_rgb(0,0,0), 250, 270, ALLEGRO_ALIGN_CENTRE , "LEFT");
     al_draw_text(font_2, al_map_rgb(0,0,0), 600, 270, ALLEGRO_ALIGN_CENTRE , "RIGHT");

@@ -300,19 +300,162 @@ bool loadGraphics()
         fprintf(stderr, "Falha ao carregar a heart_44.\n");
         return false;
     }
-    return true;
 
     spaceTecla = al_load_bitmap("Resources/Etc/space.png");
     if(!spaceTecla){
         fprintf(stderr, "Falha ao carregar a space.\n");
         return false;
     }
-    return true;
 
     telaMorte = al_load_bitmap("Resources/Etc/telaMorte.png");
     if(!telaMorte){
         fprintf(stderr, "Falha ao carregar a telaMorte.\n");
         return false;
+    }
+
+        bmagicr = al_load_bitmap("Resources/Attacks/blue_bullet_right.png");
+    if(!bmagicr){
+        fprintf(stderr, "Falha ao carregar a 1.\n");
+        return false;
+    }
+
+    bmagicu = al_load_bitmap("Resources/Attacks/blue_bullet_up.png");
+    if(!bmagicu){
+        fprintf(stderr, "Falha ao carregar a 2.\n");
+        return false;
+    }
+
+    bmagicl = al_load_bitmap("Resources/Attacks/blue_bullet_left.png");
+    if(!bmagicl){
+        fprintf(stderr, "Falha ao carregar a 3.\n");
+        return false;
+    }
+
+    bmagicd = al_load_bitmap("Resources/Attacks/blue_bullet_down.png");
+    if(!bmagicd){
+        fprintf(stderr, "Falha ao carregar a 4.\n");
+        return false;
+    }
+
+    rmagicr = al_load_bitmap("Resources/Attacks/red_bullet_right.png");
+    if(!rmagicr){
+        fprintf(stderr, "Falha ao carregar a 5.\n");
+        return false;
+    }
+
+    rmagicd = al_load_bitmap("Resources/Attacks/red_bullet_down.png");
+    if(!rmagicd){
+        fprintf(stderr, "Falha ao carregar a 6.\n");
+        return false;
+    }
+
+    rmagicl = al_load_bitmap("Resources/Attacks/red_bullet_left.png");
+    if(!rmagicl){
+        fprintf(stderr, "Falha ao carregar a 7.\n");
+        return false;
+    }
+
+    rmagicu = al_load_bitmap("Resources/Attacks/red_bullet_up.png");
+    if(!rmagicu){
+        fprintf(stderr, "Falha ao carregar a 8.\n");
+        return false;
+    }
+
+    bslashr = al_load_bitmap("Resources/Attacks/BLUE_espadada_right.png");
+    if(!bslashr){
+        fprintf(stderr, "Falha ao carregar a 9.\n");
+        return false;
+    }
+
+    bslashu = al_load_bitmap("Resources/Attacks/BLUE_espadada_up.png");
+    if(!bslashu){
+        fprintf(stderr, "Falha ao carregar a 10.\n");
+        return false;
+    }
+
+    bslashl = al_load_bitmap("Resources/Attacks/BLUE_espadada_left.png");
+    if(!bslashl){
+        fprintf(stderr, "Falha ao carregar a 11.\n");
+        return false;
+    }
+
+    bslashd = al_load_bitmap("Resources/Attacks/BLUE_espadada_down.png");
+    if(!bslashd){
+        fprintf(stderr, "Falha ao carregar a 12.\n");
+        return false;
+    }
+
+    rslashr = al_load_bitmap("Resources/Attacks/RED_espadada_right.png");
+    if(!rslashr){
+        fprintf(stderr, "Falha ao carregar a 13.\n");
+        return false;
+    }
+
+    rslashu = al_load_bitmap("Resources/Attacks/RED_espadada_up.png");
+    if(!rslashu){
+        fprintf(stderr, "Falha ao carregar a 14.\n");
+        return false;
+    }  
+
+    rslashd = al_load_bitmap("Resources/Attacks/RED_espadada_down.png");
+    if(!rslashd){
+        fprintf(stderr, "Falha ao carregar a 15.\n");
+        return false;
+    }
+
+    rslashl = al_load_bitmap("Resources/Attacks/RED_espadada_left.png");
+    if(!rslashl){
+        fprintf(stderr, "Falha ao carregar a 16.\n");
+        return false;
+    }
+
+    barrowr = al_load_bitmap("Resources/Attacks/BLUE_flecha32bits_right.png");
+    if(!barrowr){
+        fprintf(stderr, "Falha ao carregar a 17.\n");
+        return false;
+    }
+
+    barrowd = al_load_bitmap("Resources/Attacks/BLUE_flecha32bits_down.png");
+    if(!barrowd){
+        fprintf(stderr, "Falha ao carregar a 18.\n");
+        return false;
+    }
+
+    barrowl = al_load_bitmap("Resources/Attacks/BLUE_flecha32bits_left.png");
+    if(!barrowl){
+        fprintf(stderr, "Falha ao carregar a 19.\n");
+        return false;
+    }
+
+    barrowu = al_load_bitmap("Resources/Attacks/BLUE_flecha32bits_up.png");
+    if(!barrowu){
+        fprintf(stderr, "Falha ao carregar a 20.\n");
+        return false;
+    }
+
+    rarrowr = al_load_bitmap("Resources/Attacks/RED_flecha32bits_right.png");
+    if(!rarrowr){
+        fprintf(stderr, "Falha ao carregar a 21.\n");
+        return false;
+    }
+
+    rarrowd = al_load_bitmap("Resources/Attacks/RED_flecha32bits_down.png");
+    if(!rarrowd){
+        fprintf(stderr, "Falha ao carregar a 22.\n");
+        return false;
+    }
+
+    rarrowl = al_load_bitmap("Resources/Attacks/RED_flecha32bits_left.png");
+    if(!rarrowl){
+        fprintf(stderr, "Falha ao carregar a 23.\n");
+        return false;
+    }
+
+    rarrowu = al_load_bitmap("Resources/Attacks/RED_flecha32bits_up.png");
+    if(!rarrowu){
+        fprintf(stderr, "Falha ao carregar a 24.\n");
+        return false;
+
     }
     return true;
 }

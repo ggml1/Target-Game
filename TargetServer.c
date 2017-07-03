@@ -670,6 +670,22 @@ int main(){
                                 break;
                         }
                     }
+                    for(i=0; i<6; i++){
+                        if(isValidId(i) && playersJogando[teamPos[i]].HP <= 0){
+                            printf("O player de ID [%d] morreu.\n", i);
+                            mudaMatriz.tag = 4;
+                            sendMsgToClient(&mudaMatriz, sizeof(mudaMatriz), i);
+                            //(naoComeca == true) ? (printf("O estado atual de naoComeca eh true.\n")) : (printf("O estado atual de naoComeca eh false\n"));
+                            disconnectClient(i);
+                            x = playersJogando[teamPos[i]].playerX;
+                            y = playersJogando[teamPos[i]].playerY;
+                            mudaMatriz.tag = 3;
+                            mudaMatriz.newx = x;
+                            mudaMatriz.newy = y;
+                            mudaMatriz.idMoved = 30;
+                            broadcast(&mudaMatriz, sizeof(mudaMatriz));
+                        }
+                    }
                     break;
             
                 case playerAtingidoMagia:
@@ -714,6 +730,22 @@ int main(){
                                 mudaMatriz.HP = playersJogando[8].HP;
                                 sendMsgToClient(&mudaMatriz, sizeof(mudaMatriz), playersJogando[8].playerID);
                                 break;
+                        }
+                    }
+                    for(i=0; i<6; i++){
+                        if(isValidId(i) && playersJogando[teamPos[i]].HP <= 0){
+                            printf("O player de ID [%d] morreu.\n", i);
+                            mudaMatriz.tag = 4;
+                            sendMsgToClient(&mudaMatriz, sizeof(mudaMatriz), i);
+                            //(naoComeca == true) ? (printf("O estado atual de naoComeca eh true.\n")) : (printf("O estado atual de naoComeca eh false\n"));
+                            disconnectClient(i);
+                            x = playersJogando[teamPos[i]].playerX;
+                            y = playersJogando[teamPos[i]].playerY;
+                            mudaMatriz.tag = 3;
+                            mudaMatriz.newx = x;
+                            mudaMatriz.newy = y;
+                            mudaMatriz.idMoved = 30;
+                            broadcast(&mudaMatriz, sizeof(mudaMatriz));
                         }
                     }
                     break;

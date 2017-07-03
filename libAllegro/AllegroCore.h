@@ -113,6 +113,7 @@ typedef struct{
 	char olhando[9];
 	char olhandoFlecha;
 	char olhandoMagia;
+	short int botaBoneco;
 }Moves;
 
 //Funções Centrais da Allegro

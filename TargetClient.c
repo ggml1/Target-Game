@@ -66,8 +66,8 @@ int main(int argc, char const *argv[]){
     bool teamSelection = false;
     bool pisca = false;
     bool receberMapa = false;
-    short int coeficiente[2] = { -24 };
-    short int coeficienteMagia[2] = { -24 };
+    short int coeficiente[2] = { -12 };
+    short int coeficienteMagia[2] = { -12 };
     short int xFlecha[2], yFlecha[2], xMagia[2], yMagia[2];
     short int count = 0;
     short int option = 0;
@@ -466,7 +466,7 @@ int main(int argc, char const *argv[]){
                         if((Alteracoes.oldy>=2 && Alteracoes.oldy<=4) && (Alteracoes.oldx>=20 && Alteracoes.oldx<=22)) map[Alteracoes.oldx][Alteracoes.oldy] = 55;
                         else map[Alteracoes.oldx][Alteracoes.oldy] = 0;
                     } else map[Alteracoes.oldx][Alteracoes.oldy] = 2;
-                    map[Alteracoes.newx][Alteracoes.newy] = Alteracoes.idMoved;
+                    map[Alteracoes.newx][Alteracoes.newy] = Alteracoes.botaBoneco;
                 } else{
                     playerHP += Alteracoes.HP;
                 }
@@ -474,7 +474,7 @@ int main(int argc, char const *argv[]){
                 // printf("Valor antigo: %d\n Valor novo: %d\n", map[Alteracoes.oldx][Alteracoes.oldy], map[Alteracoes.newx][Alteracoes.newy]);
             }
             for(i=0; i<6; i++) Alteracoes.olhando[3+i] = 'd';
-            playerHP = 32;
+            playerHP = 48;
             receberMapa = false;
             gameOn = true;
         }
@@ -525,9 +525,9 @@ int main(int argc, char const *argv[]){
                         if((Alteracoes.oldy>=27 && Alteracoes.oldy<=29) && (Alteracoes.oldx>=1 && Alteracoes.oldx<=3)) map[Alteracoes.oldx][Alteracoes.oldy] = 56; 
                         else map[Alteracoes.oldx][Alteracoes.oldy] = 2;
                     }
-                    map[Alteracoes.newx][Alteracoes.newy] = Alteracoes.idMoved;
+                    map[Alteracoes.newx][Alteracoes.newy] = Alteracoes.botaBoneco;
                 }
-                else if(Alteracoes.tag == 3) map[Alteracoes.newx][Alteracoes.newy] = Alteracoes.idMoved;
+                else if(Alteracoes.tag == 3) map[Alteracoes.newx][Alteracoes.newy] = Alteracoes.botaBoneco;
                 else if(Alteracoes.tag == 4){
                     mostraTelaMorte();
                     gameOn = false;
@@ -563,9 +563,9 @@ int main(int argc, char const *argv[]){
                 }
                 for(i=0; i<2; i++){
                     if(flecha[i] == true){
-                        coeficiente[i] += 12;
+                        coeficiente[i] += 24;
                         if(coeficiente[i] > 32){
-                            coeficiente[i] = -24;
+                            coeficiente[i] = -12;
                             switch(direcaoFlecha[i]){
                                 case 'u':
                                     xFlecha[i]--;
@@ -582,142 +582,135 @@ int main(int argc, char const *argv[]){
                             }
                         }
                         if(map[xFlecha[i]][yFlecha[i]] == 1 || map[xFlecha[i]][yFlecha[i]] == -1 || map[xFlecha[i]][yFlecha[i]] == 10 || map[xFlecha[i]][yFlecha[i]] == 30) flecha[i] = false;
-                        switch(map[xFlecha[i]][yFlecha[i]]){
-                            case 3:
-                                if(i == 0) pacoteClient.timeFlecha = 0;
-                                else pacoteClient.timeFlecha = 1;
-                                pacoteClient.playerHit = 3;
-                                pacoteClient.tipoPacote = 10;
-                                switch(direcaoFlecha[i]){
-                                    case 'u':
-                                        xFlecha[i]--;
-                                        break;
-                                    case 'd':
-                                        xFlecha[i]++;
-                                        break;
-                                    case 'r':
-                                        yFlecha[i]++;
-                                        break;
-                                    case 'l':
-                                        yFlecha[i]--;
-                                        break;
-                                }
-                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
-                                break;
-                            case 4:
-                                if(i == 0) pacoteClient.timeFlecha = 0;
-                                else pacoteClient.timeFlecha = 1;
-                                pacoteClient.playerHit = 4;
-                                pacoteClient.tipoPacote = 10;
-                                switch(direcaoFlecha[i]){
-                                    case 'u':
-                                        xFlecha[i]--;
-                                        break;
-                                    case 'd':
-                                        xFlecha[i]++;
-                                        break;
-                                    case 'r':
-                                        yFlecha[i]++;
-                                        break;
-                                    case 'l':
-                                        yFlecha[i]--;
-                                        break;
-                                }
-                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
-                                break;
-                            case 5:
-                                if(i == 0) pacoteClient.timeFlecha = 0;
-                                else pacoteClient.timeFlecha = 1;
-                                pacoteClient.playerHit = 5;
-                                pacoteClient.tipoPacote = 10;
-                                switch(direcaoFlecha[i]){
-                                    case 'u':
-                                        xFlecha[i]--;
-                                        break;
-                                    case 'd':
-                                        xFlecha[i]++;
-                                        break;
-                                    case 'r':
-                                        yFlecha[i]++;
-                                        break;
-                                    case 'l':
-                                        yFlecha[i]--;
-                                        break;
-                                }
-                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
-                                break;
-                            case 6:
-                                if(i == 0) pacoteClient.timeFlecha = 0;
-                                else pacoteClient.timeFlecha = 1;
-                                pacoteClient.playerHit = 6;
-                                pacoteClient.tipoPacote = 10;
-                                switch(direcaoFlecha[i]){
-                                    case 'u':
-                                        xFlecha[i]--;
-                                        break;
-                                    case 'd':
-                                        xFlecha[i]++;
-                                        break;
-                                    case 'r':
-                                        yFlecha[i]++;
-                                        break;
-                                    case 'l':
-                                        yFlecha[i]--;
-                                        break;
-                                }
-                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
-                                break;
-                            case 7:
-                                if(i == 0) pacoteClient.timeFlecha = 0;
-                                else pacoteClient.timeFlecha = 1;
-                                pacoteClient.playerHit = 7;
-                                pacoteClient.tipoPacote = 10;
-                                switch(direcaoFlecha[i]){
-                                    case 'u':
-                                        xFlecha[i]--;
-                                        break;
-                                    case 'd':
-                                        xFlecha[i]++;
-                                        break;
-                                    case 'r':
-                                        yFlecha[i]++;
-                                        break;
-                                    case 'l':
-                                        yFlecha[i]--;
-                                        break;
-                                }
-                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
-                                break;
-                            case 8:
-                                if(i == 0) pacoteClient.timeFlecha = 0;
-                                else pacoteClient.timeFlecha = 1;
-                                pacoteClient.playerHit = 8;
-                                pacoteClient.tipoPacote = 10;
-                                switch(direcaoFlecha[i]){
-                                    case 'u':
-                                        xFlecha[i]--;
-                                        break;
-                                    case 'd':
-                                        xFlecha[i]++;
-                                        break;
-                                    case 'r':
-                                        yFlecha[i]++;
-                                        break;
-                                    case 'l':
-                                        yFlecha[i]--;
-                                        break;
-                                }
-                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
-                                break;
+                        if(i == 1){
+                            switch(map[xFlecha[i]][yFlecha[i]]){
+                                case 3:
+                                    pacoteClient.playerHit = 3;
+                                    pacoteClient.tipoPacote = 10;
+                                    switch(direcaoFlecha[i]){
+                                        case 'u':
+                                            xFlecha[i]--;
+                                            break;
+                                        case 'd':
+                                            xFlecha[i]++;
+                                            break;
+                                        case 'r':
+                                            yFlecha[i]++;
+                                            break;
+                                        case 'l':
+                                            yFlecha[i]--;
+                                            break;
+                                    }
+                                    sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                    break;
+                                case 4:
+                                    pacoteClient.playerHit = 4;
+                                    pacoteClient.tipoPacote = 10;
+                                    switch(direcaoFlecha[i]){
+                                        case 'u':
+                                            xFlecha[i]--;
+                                            break;
+                                        case 'd':
+                                            xFlecha[i]++;
+                                            break;
+                                        case 'r':
+                                            yFlecha[i]++;
+                                            break;
+                                        case 'l':
+                                            yFlecha[i]--;
+                                            break;
+                                    }
+                                    sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                    break;
+                                case 5:
+                                    pacoteClient.playerHit = 5;
+                                    pacoteClient.tipoPacote = 10;
+                                    switch(direcaoFlecha[i]){
+                                        case 'u':
+                                            xFlecha[i]--;
+                                            break;
+                                        case 'd':
+                                            xFlecha[i]++;
+                                            break;
+                                        case 'r':
+                                            yFlecha[i]++;
+                                            break;
+                                        case 'l':
+                                            yFlecha[i]--;
+                                            break;
+                                    }
+                                    sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                    break;
+                            }
+                        } else{
+                            switch(map[xFlecha[i]][yFlecha[i]]){
+                                case 6:
+                                    pacoteClient.playerHit = 6;
+                                    pacoteClient.tipoPacote = 10;
+                                    switch(direcaoFlecha[i]){
+                                        case 'u':
+                                            xFlecha[i]--;
+                                            break;
+                                        case 'd':
+                                            xFlecha[i]++;
+                                            break;
+                                        case 'r':
+                                            yFlecha[i]++;
+                                            break;
+                                        case 'l':
+                                            yFlecha[i]--;
+                                            break;
+                                    }
+                                    sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                    break;
+                                case 7:
+                                    pacoteClient.playerHit = 7;
+                                    pacoteClient.tipoPacote = 10;
+                                    switch(direcaoFlecha[i]){
+                                        case 'u':
+                                            xFlecha[i]--;
+                                            break;
+                                        case 'd':
+                                            xFlecha[i]++;
+                                            break;
+                                        case 'r':
+                                            yFlecha[i]++;
+                                            break;
+                                        case 'l':
+                                            yFlecha[i]--;
+                                            break;
+                                    }
+                                    sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                    break;
+                                case 8:
+                                    pacoteClient.playerHit = 8;
+                                    pacoteClient.tipoPacote = 10;
+                                    switch(direcaoFlecha[i]){
+                                        case 'u':
+                                            xFlecha[i]--;
+                                            break;
+                                        case 'd':
+                                            xFlecha[i]++;
+                                            break;
+                                        case 'r':
+                                            yFlecha[i]++;
+                                            break;
+                                        case 'l':
+                                            yFlecha[i]--;
+                                            break;
+                                    }
+                                    sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                    break;
+                            }
                         }
                         if(flecha[0] == true) printaFlechaRed(xFlecha[0], yFlecha[0], coeficiente[0], direcaoFlecha[0]);
                         if(flecha[1] == true) printaFlechaBlue(xFlecha[1], yFlecha[1], coeficiente[1], direcaoFlecha[1]);
                     }
                     if(magia[i] == true){
                         printf("entrou no print da magia\n");
-                        coeficienteMagia[i] += 12;
+                        coeficienteMagia[i] += 24;
                         if(coeficienteMagia[i] > 32){
-                            coeficienteMagia[i] = -24;
+                            coeficienteMagia[i] = -12;
                             switch(direcaoMagia[i]){
                                 case 'u':
                                     xMagia[i]--;
@@ -734,128 +727,133 @@ int main(int argc, char const *argv[]){
                             }
                         }
                         if(map[xMagia[i]][yMagia[i]] == 1 || map[xMagia[i]][yMagia[i]] == -1 || map[xMagia[i]][yMagia[i]] == 10 || map[xMagia[i]][yMagia[i]] == 30) magia[i] = false;
-                        switch(map[xMagia[i]][yMagia[i]]){
-                            case 3:
-                                magia[i] = false;
-                                pacoteClient.playerHit = 3;
-                                pacoteClient.tipoPacote = 11;
-                                switch(direcaoMagia[i]){
-                                    case 'u':
-                                        xMagia[i]--;
-                                        break;
-                                    case 'd':
-                                        xMagia[i]++;
-                                        break;
-                                    case 'r':
-                                        yMagia[i]++;
-                                        break;
-                                    case 'l':
-                                        yMagia[i]--;
-                                        break;
+                        if(i == 1){
+                            switch(map[xMagia[i]][yMagia[i]]){
+                                case 3:
+                                    magia[i] = false;
+                                    pacoteClient.playerHit = 3;
+                                    pacoteClient.tipoPacote = 11;
+                                    switch(direcaoMagia[i]){
+                                        case 'u':
+                                            xMagia[i]--;
+                                            break;
+                                        case 'd':
+                                            xMagia[i]++;
+                                            break;
+                                        case 'r':
+                                            yMagia[i]++;
+                                            break;
+                                        case 'l':
+                                            yMagia[i]--;
+                                            break;
+                                    }
+                                    sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                    break;
+                                case 4:
+                                    magia[i] = false;
+                                    pacoteClient.playerHit = 4;
+                                    pacoteClient.tipoPacote = 11;
+                                    switch(direcaoMagia[i]){
+                                        case 'u':
+                                            xMagia[i]--;
+                                            break;
+                                        case 'd':
+                                            xMagia[i]++;
+                                            break;
+                                        case 'r':
+                                            yMagia[i]++;
+                                            break;
+                                        case 'l':
+                                            yMagia[i]--;
+                                            break;
+                                    }
+                                    sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                    break;
+                                case 5:
+                                    magia[i] = false;
+                                    pacoteClient.playerHit = 5;
+                                    pacoteClient.tipoPacote = 11;
+                                    switch(direcaoMagia[i]){
+                                        case 'u':
+                                            xMagia[i]--;
+                                            break;
+                                        case 'd':
+                                            xMagia[i]++;
+                                            break;
+                                        case 'r':
+                                            yMagia[i]++;
+                                            break;
+                                        case 'l':
+                                            yMagia[i]--;
+                                            break;
+                                    }
+                                    sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                    break;
                                 }
-                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
-                                break;
-                            case 4:
-                                //magia[i] = false;
-                                pacoteClient.playerHit = 4;
-                                pacoteClient.tipoPacote = 11;
-                                switch(direcaoMagia[i]){
-                                    case 'u':
-                                        xMagia[i]--;
-                                        break;
-                                    case 'd':
-                                        xMagia[i]++;
-                                        break;
-                                    case 'r':
-                                        yMagia[i]++;
-                                        break;
-                                    case 'l':
-                                        yMagia[i]--;
-                                        break;
+                            } else{
+                                switch(map[xMagia[i]][yMagia[i]]){
+                                    case 6:
+                                    magia[i] = false;
+                                    pacoteClient.playerHit = 6;
+                                    pacoteClient.tipoPacote = 11;
+                                    switch(direcaoMagia[i]){
+                                        case 'u':
+                                            xMagia[i]--;
+                                            break;
+                                        case 'd':
+                                            xMagia[i]++;
+                                            break;
+                                        case 'r':
+                                            yMagia[i]++;
+                                            break;
+                                        case 'l':
+                                            yMagia[i]--;
+                                            break;
+                                    }
+                                    sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                    break;
+                                case 7:
+                                    magia[i] = false;
+                                    pacoteClient.playerHit = 7;
+                                    pacoteClient.tipoPacote = 11;
+                                    switch(direcaoMagia[i]){
+                                        case 'u':
+                                            xMagia[i]--;
+                                            break;
+                                        case 'd':
+                                            xMagia[i]++;
+                                            break;
+                                        case 'r':
+                                            yMagia[i]++;
+                                            break;
+                                        case 'l':
+                                            yMagia[i]--;
+                                            break;
+                                    }
+                                    sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                    break;
+                                case 8:
+                                    magia[i] = false;
+                                    pacoteClient.playerHit = 8;
+                                    pacoteClient.tipoPacote = 11;
+                                    switch(direcaoMagia[i]){
+                                        case 'u':
+                                            xMagia[i]--;
+                                            break;
+                                        case 'd':
+                                            xMagia[i]++;
+                                            break;
+                                        case 'r':
+                                            yMagia[i]++;
+                                            break;
+                                        case 'l':
+                                            yMagia[i]--;
+                                            break;
+                                    }
+                                    sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                    break;
                                 }
-                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
-                                break;
-                            case 5:
-                                magia[i] = false;
-                                pacoteClient.playerHit = 5;
-                                pacoteClient.tipoPacote = 11;
-                                switch(direcaoMagia[i]){
-                                    case 'u':
-                                        xMagia[i]--;
-                                        break;
-                                    case 'd':
-                                        xMagia[i]++;
-                                        break;
-                                    case 'r':
-                                        yMagia[i]++;
-                                        break;
-                                    case 'l':
-                                        yMagia[i]--;
-                                        break;
-                                }
-                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
-                                break;
-                            case 6:
-                                magia[i] = false;
-                                pacoteClient.playerHit = 6;
-                                pacoteClient.tipoPacote = 11;
-                                switch(direcaoMagia[i]){
-                                    case 'u':
-                                        xMagia[i]--;
-                                        break;
-                                    case 'd':
-                                        xMagia[i]++;
-                                        break;
-                                    case 'r':
-                                        yMagia[i]++;
-                                        break;
-                                    case 'l':
-                                        yMagia[i]--;
-                                        break;
-                                }
-                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
-                                break;
-                            case 7:
-                                magia[i] = false;
-                                pacoteClient.playerHit = 7;
-                                pacoteClient.tipoPacote = 11;
-                                switch(direcaoMagia[i]){
-                                    case 'u':
-                                        xMagia[i]--;
-                                        break;
-                                    case 'd':
-                                        xMagia[i]++;
-                                        break;
-                                    case 'r':
-                                        yMagia[i]++;
-                                        break;
-                                    case 'l':
-                                        yMagia[i]--;
-                                        break;
-                                }
-                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
-                                break;
-                            case 8:
-                                magia[i] = false;
-                                pacoteClient.playerHit = 8;
-                                pacoteClient.tipoPacote = 11;
-                                switch(direcaoMagia[i]){
-                                    case 'u':
-                                        xMagia[i]--;
-                                        break;
-                                    case 'd':
-                                        xMagia[i]++;
-                                        break;
-                                    case 'r':
-                                        yMagia[i]++;
-                                        break;
-                                    case 'l':
-                                        yMagia[i]--;
-                                        break;
-                                }
-                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
-                                break;
-                        }
+                            }
                         if(flecha[0] == true) printaFlechaRed(xFlecha[0], yFlecha[0], coeficiente[0], direcaoFlecha[0]);
                         if(flecha[1] == true) printaFlechaBlue(xFlecha[1], yFlecha[1], coeficiente[1], direcaoFlecha[1]);
                         if(magia[0] == true) printaMagiaRed(xMagia[0], yMagia[0], coeficienteMagia[0], direcaoMagia[0]);

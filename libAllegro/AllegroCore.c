@@ -308,4 +308,11 @@ bool loadGraphics()
         return false;
     }
     return true;
+
+    telaMorte = al_load_bitmap("Resources/Etc/telaMorte.png");
+    if(!telaMorte){
+        fprintf(stderr, "Falha ao carregar a telaMorte.\n");
+        return false;
+    }
+    return true;
 }

@@ -330,7 +330,7 @@ int main(int argc, char const *argv[]){
                 }
                 if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
 
-                printaTelaConexao(nickname, ipOficial, flag);
+                if(menuConnection == true) printaTelaConexao(nickname, ipOficial, flag);
                 
                 al_flip_display();
                 al_clear_to_color(al_map_rgb(0,0,0));
@@ -583,7 +583,7 @@ void mostraTelaMorte()
             }
             if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
         }
-        al_draw_bitmap(menuNormal, 0, 0, 0);
+        al_draw_bitmap(telaMorte, 0, 0, 0);
         al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 50, ALLEGRO_ALIGN_CENTRE, "GAME OVER");
         al_draw_text(font_1, al_map_rgb(255,0,0), LARGURA/2 + 10, 345, ALLEGRO_ALIGN_CENTRE, "SORRY, BUT YOU DIED. HOPE YOU HAD FUN.");
         al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2 - 20, 391, ALLEGRO_ALIGN_CENTRE, "PRESS ANY KEY TO RETURN AND TRY AGAIN.");
@@ -763,7 +763,7 @@ void printaMapa(short int map[][32], Moves *Alteracoes)
                                             if( ( j>=27 && j<=29 ) && (i>=1 && i<=3) ){
                                                 al_draw_bitmap(blue, TILE*j, TILE*i, 0);
                                                 al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
-                                                al_draw_bitmap_region(tileSet, 0*TILE, 8*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap_region(tileSet, 0*TILE, 7*TILE, 32, 32, TILE*j, TILE*i, 0);
                                             } else{
                                                 al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
                                                 al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
@@ -1145,7 +1145,7 @@ void printaMapa(short int map[][32], Moves *Alteracoes)
                                     case 'l':
                                         if(j > 15){
                                             if( ( j>=27 && j<=29 ) && (i>=1 && i<=3) ){
-                                                al_draw_bitmap(red, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap(blue, TILE*j, TILE*i, 0);
                                                 al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
                                                 al_draw_bitmap_region(tileSet, 1*TILE, 3*TILE, 32, 32, TILE*j, TILE*i, 0);
                                             }else{
@@ -1168,7 +1168,7 @@ void printaMapa(short int map[][32], Moves *Alteracoes)
                                     case 'r':
                                         if(j > 15){
                                             if( ( j>=27 && j<=29 ) && (i>=1 && i<=3) ){
-                                                al_draw_bitmap(red, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap(blue, TILE*j, TILE*i, 0);
                                                 al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
                                                 al_draw_bitmap_region(tileSet, 1*TILE, 4*TILE, 32, 32, TILE*j, TILE*i, 0);
                                             }else{
@@ -1195,7 +1195,7 @@ void printaMapa(short int map[][32], Moves *Alteracoes)
                                     case 'u':
                                         if(j > 15){
                                             if( ( j>=27 && j<=29 ) && (i>=1 && i<=3) ){
-                                                al_draw_bitmap(red, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap(blue, TILE*j, TILE*i, 0);
                                                 al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
                                                 al_draw_bitmap_region(tileSet, 2*TILE, 5*TILE, 32, 32, TILE*j, TILE*i, 0);
                                             }else{
@@ -1218,7 +1218,7 @@ void printaMapa(short int map[][32], Moves *Alteracoes)
                                     case 'd':
                                         if(j > 15){
                                             if( ( j>=27 && j<=29 ) && (i>=1 && i<=3) ){
-                                                al_draw_bitmap(red, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap(blue, TILE*j, TILE*i, 0);
                                                 al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
                                                 al_draw_bitmap_region(tileSet, 2*TILE, 2*TILE, 32, 32, TILE*j, TILE*i, 0);
                                             }else{
@@ -1241,7 +1241,7 @@ void printaMapa(short int map[][32], Moves *Alteracoes)
                                     case 'l':
                                         if(j > 15){
                                             if( ( j>=27 && j<=29 ) && (i>=1 && i<=3) ){
-                                                al_draw_bitmap(red, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap(blue, TILE*j, TILE*i, 0);
                                                 al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
                                                 al_draw_bitmap_region(tileSet, 2*TILE, 3*TILE, 32, 32, TILE*j, TILE*i, 0);
                                             }else{
@@ -1264,7 +1264,7 @@ void printaMapa(short int map[][32], Moves *Alteracoes)
                                     case 'r':
                                         if(j > 15){
                                             if( ( j>=27 && j<=29 ) && (i>=1 && i<=3) ){
-                                                al_draw_bitmap(red, TILE*j, TILE*i, 0);
+                                                al_draw_bitmap(blue, TILE*j, TILE*i, 0);
                                                 al_draw_bitmap_region(Shadow, 0, 0, 32, 32, TILE*j, TILE*i, 0);
                                                 al_draw_bitmap_region(tileSet, 2*TILE, 4*TILE, 32, 32, TILE*j, TILE*i, 0);
                                             }else{

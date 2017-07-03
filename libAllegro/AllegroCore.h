@@ -49,6 +49,7 @@ ALLEGRO_BITMAP *heart_24;
 ALLEGRO_BITMAP *heart_34;
 ALLEGRO_BITMAP *heart_44;
 ALLEGRO_BITMAP *spaceTecla;
+ALLEGRO_BITMAP *telaMorte;
 
 typedef struct{
 	short int esq_dir;

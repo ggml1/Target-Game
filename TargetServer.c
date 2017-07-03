@@ -627,7 +627,7 @@ int main(){
                     break;                                                                                                                                                                 
                 
                 case playerAtingidoFlecha:
-                    if(teamPos[id] >= 6){ // ele eh do azul
+                    if(pacote.timeFlecha == 1){ // ele eh do azul
                         switch(pacote.playerHit){
                             case 3:
                                 playersJogando[3].HP-=2;

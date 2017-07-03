@@ -88,6 +88,7 @@ typedef struct{
     bool saiu;
     short int playerID;
     short int playerHit;
+    short int timeFlecha;
 }Player;
 
 typedef struct{

@@ -66,8 +66,8 @@ int main(int argc, char const *argv[]){
     bool teamSelection = false;
     bool pisca = false;
     bool receberMapa = false;
-    short int coeficiente[2] = { -12 };
-    short int coeficienteMagia[2] = { -12 };
+    short int coeficiente[2] = { -24 };
+    short int coeficienteMagia[2] = { -24 };
     short int xFlecha[2], yFlecha[2], xMagia[2], yMagia[2];
     short int count = 0;
     short int option = 0;
@@ -565,7 +565,7 @@ int main(int argc, char const *argv[]){
                     if(flecha[i] == true){
                         coeficiente[i] += 12;
                         if(coeficiente[i] > 32){
-                            coeficiente[i] = 0;
+                            coeficiente[i] = -24;
                             switch(direcaoFlecha[i]){
                                 case 'u':
                                     xFlecha[i]--;
@@ -584,6 +584,8 @@ int main(int argc, char const *argv[]){
                         if(map[xFlecha[i]][yFlecha[i]] == 1 || map[xFlecha[i]][yFlecha[i]] == -1 || map[xFlecha[i]][yFlecha[i]] == 10 || map[xFlecha[i]][yFlecha[i]] == 30) flecha[i] = false;
                         switch(map[xFlecha[i]][yFlecha[i]]){
                             case 3:
+                                if(i == 0) pacoteClient.timeFlecha = 0;
+                                else pacoteClient.timeFlecha = 1;
                                 pacoteClient.playerHit = 3;
                                 pacoteClient.tipoPacote = 10;
                                 switch(direcaoFlecha[i]){
@@ -603,6 +605,8 @@ int main(int argc, char const *argv[]){
                                 sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
                                 break;
                             case 4:
+                                if(i == 0) pacoteClient.timeFlecha = 0;
+                                else pacoteClient.timeFlecha = 1;
                                 pacoteClient.playerHit = 4;
                                 pacoteClient.tipoPacote = 10;
                                 switch(direcaoFlecha[i]){
@@ -622,6 +626,8 @@ int main(int argc, char const *argv[]){
                                 sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
                                 break;
                             case 5:
+                                if(i == 0) pacoteClient.timeFlecha = 0;
+                                else pacoteClient.timeFlecha = 1;
                                 pacoteClient.playerHit = 5;
                                 pacoteClient.tipoPacote = 10;
                                 switch(direcaoFlecha[i]){
@@ -641,6 +647,8 @@ int main(int argc, char const *argv[]){
                                 sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
                                 break;
                             case 6:
+                                if(i == 0) pacoteClient.timeFlecha = 0;
+                                else pacoteClient.timeFlecha = 1;
                                 pacoteClient.playerHit = 6;
                                 pacoteClient.tipoPacote = 10;
                                 switch(direcaoFlecha[i]){
@@ -660,6 +668,8 @@ int main(int argc, char const *argv[]){
                                 sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
                                 break;
                             case 7:
+                                if(i == 0) pacoteClient.timeFlecha = 0;
+                                else pacoteClient.timeFlecha = 1;
                                 pacoteClient.playerHit = 7;
                                 pacoteClient.tipoPacote = 10;
                                 switch(direcaoFlecha[i]){
@@ -679,6 +689,8 @@ int main(int argc, char const *argv[]){
                                 sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
                                 break;
                             case 8:
+                                if(i == 0) pacoteClient.timeFlecha = 0;
+                                else pacoteClient.timeFlecha = 1;
                                 pacoteClient.playerHit = 8;
                                 pacoteClient.tipoPacote = 10;
                                 switch(direcaoFlecha[i]){
@@ -705,7 +717,7 @@ int main(int argc, char const *argv[]){
                         printf("entrou no print da magia\n");
                         coeficienteMagia[i] += 12;
                         if(coeficienteMagia[i] > 32){
-                            coeficienteMagia[i] = 0;
+                            coeficienteMagia[i] = -24;
                             switch(direcaoMagia[i]){
                                 case 'u':
                                     xMagia[i]--;

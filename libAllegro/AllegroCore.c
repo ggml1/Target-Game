@@ -313,7 +313,7 @@ bool loadGraphics()
         return false;
     }
 
-        bmagicr = al_load_bitmap("Resources/Attacks/blue_bullet_right.png");
+    bmagicr = al_load_bitmap("Resources/Attacks/blue_bullet_right.png");
     if(!bmagicr){
         fprintf(stderr, "Falha ao carregar a 1.\n");
         return false;

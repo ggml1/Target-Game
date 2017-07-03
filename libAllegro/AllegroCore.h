@@ -111,6 +111,7 @@ typedef struct{
 	short int idMoved;
 	char olhando[9];
 	char olhandoFlecha;
+	char olhandoMagia;
 }Moves;
 
 //Funções Centrais da Allegro

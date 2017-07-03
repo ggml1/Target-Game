@@ -23,6 +23,8 @@ void mostraTelaMorte();
 void printaAtaque(char direcao, short int newx, short int newy);
 void printaFlechaRed(short int x, short int y, short int coeficiente, char direcao);
 void printaFlechaBlue(short int x, short int y, short int coeficiente, char direcaoFlecha);
+void printaMagiaBlue(short int x, short int y, short int coeficiente, char direcaoMagia);
+void printaMagiaRed(short int x, short int y, short int coeficiente, char direcaoMagia);
 
 int main(int argc, char const *argv[]){
 
@@ -48,10 +50,12 @@ int main(int argc, char const *argv[]){
  
     //PROGRAM == false (CONDICAO PARA O JOGO FECHAR)
     char direcao;
-    char direcaoFlecha[2];
-    bool flecha[2];
+    char direcaoFlecha[2], direcaoMagia[2];
+    bool flecha[2], magia[2];
     flecha[1] = false;
     flecha[0] = false;
+    magia[0] = false;
+    magia[1] = false;
 	bool program = true;
     bool inicio = true;
     bool menu = false;
@@ -62,8 +66,9 @@ int main(int argc, char const *argv[]){
     bool teamSelection = false;
     bool pisca = false;
     bool receberMapa = false;
-    short int coeficiente[2] = { 0 };
-    short int xFlecha[2], yFlecha[2];
+    short int coeficiente[2] = { -12 };
+    short int coeficienteMagia[2] = { -12 };
+    short int xFlecha[2], yFlecha[2], xMagia[2], yMagia[2];
     short int count = 0;
     short int option = 0;
     short int conecta = 0;
@@ -469,7 +474,7 @@ int main(int argc, char const *argv[]){
                 // printf("Valor antigo: %d\n Valor novo: %d\n", map[Alteracoes.oldx][Alteracoes.oldy], map[Alteracoes.newx][Alteracoes.newy]);
             }
             for(i=0; i<6; i++) Alteracoes.olhando[3+i] = 'd';
-            playerHP = 20;
+            playerHP = 32;
             receberMapa = false;
             gameOn = true;
         }
@@ -522,15 +527,13 @@ int main(int argc, char const *argv[]){
                     }
                     map[Alteracoes.newx][Alteracoes.newy] = Alteracoes.idMoved;
                 }
-                else if(Alteracoes.tag == 3){
-                    map[Alteracoes.newx][Alteracoes.newy] = Alteracoes.idMoved;
-                } else if(Alteracoes.tag == 4){
+                else if(Alteracoes.tag == 3) map[Alteracoes.newx][Alteracoes.newy] = Alteracoes.idMoved;
+                else if(Alteracoes.tag == 4){
                     mostraTelaMorte();
                     gameOn = false;
                     menu = true;
-                } else if(Alteracoes.tag == 5){
-                    playerHP--;
-                }
+                } else if(Alteracoes.tag == 5) playerHP = Alteracoes.HP;
+                
                 // printf("Posicoes:\nAntiga: %d %d\nNova: %d %d\n", Alteracoes.oldx, Alteracoes.oldy, Alteracoes.newx, Alteracoes.newy);
                 // printf("Valor antigo: %d\n Valor novo: %d\n", map[Alteracoes.oldx][Alteracoes.oldy], map[Alteracoes.newx][Alteracoes.newy]);
             }
@@ -538,6 +541,7 @@ int main(int argc, char const *argv[]){
             if(gameOn){
                 printaMapa(map, &Alteracoes);
                 printaVida(playerHP);
+
                 if(Alteracoes.tag == 6){
                    direcao = Alteracoes.olhando[Alteracoes.idMoved];
                    printaAtaque(direcao, Alteracoes.newx, Alteracoes.newy);
@@ -549,10 +553,17 @@ int main(int argc, char const *argv[]){
                     direcaoFlecha[Alteracoes.qualFlecha] = Alteracoes.olhandoFlecha;
                     coeficiente[Alteracoes.qualFlecha] = 0;
                     Alteracoes.tag = 0;
+                } else if(Alteracoes.tag == 8){
+                    magia[Alteracoes.qualFlecha] = true;
+                    xMagia[Alteracoes.qualFlecha] = Alteracoes.newx;
+                    yMagia[Alteracoes.qualFlecha] = Alteracoes.newy;
+                    direcaoMagia[Alteracoes.qualFlecha] = Alteracoes.olhandoMagia;
+                    coeficienteMagia[Alteracoes.qualFlecha] = 0;
+                    Alteracoes.tag = 0;
                 }
                 for(i=0; i<2; i++){
                     if(flecha[i] == true){
-                        coeficiente[i] += 10;
+                        coeficiente[i] += 12;
                         if(coeficiente[i] > 32){
                             coeficiente[i] = 0;
                             switch(direcaoFlecha[i]){
@@ -690,6 +701,154 @@ int main(int argc, char const *argv[]){
                         if(flecha[0] == true) printaFlechaRed(xFlecha[0], yFlecha[0], coeficiente[0], direcaoFlecha[0]);
                         if(flecha[1] == true) printaFlechaBlue(xFlecha[1], yFlecha[1], coeficiente[1], direcaoFlecha[1]);
                     }
+                    if(magia[i] == true){
+                        printf("entrou no print da magia\n");
+                        coeficienteMagia[i] += 12;
+                        if(coeficienteMagia[i] > 32){
+                            coeficienteMagia[i] = 0;
+                            switch(direcaoMagia[i]){
+                                case 'u':
+                                    xMagia[i]--;
+                                    break;
+                                case 'd':
+                                    xMagia[i]++;
+                                    break;
+                                case 'r':
+                                    yMagia[i]++;
+                                    break;
+                                case 'l':
+                                    yMagia[i]--;
+                                    break;
+                            }
+                        }
+                        if(map[xMagia[i]][yMagia[i]] == 1 || map[xMagia[i]][yMagia[i]] == -1 || map[xMagia[i]][yMagia[i]] == 10 || map[xMagia[i]][yMagia[i]] == 30) magia[i] = false;
+                        switch(map[xMagia[i]][yMagia[i]]){
+                            case 3:
+                                magia[i] = false;
+                                pacoteClient.playerHit = 3;
+                                pacoteClient.tipoPacote = 11;
+                                switch(direcaoMagia[i]){
+                                    case 'u':
+                                        xMagia[i]--;
+                                        break;
+                                    case 'd':
+                                        xMagia[i]++;
+                                        break;
+                                    case 'r':
+                                        yMagia[i]++;
+                                        break;
+                                    case 'l':
+                                        yMagia[i]--;
+                                        break;
+                                }
+                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                break;
+                            case 4:
+                                //magia[i] = false;
+                                pacoteClient.playerHit = 4;
+                                pacoteClient.tipoPacote = 11;
+                                switch(direcaoMagia[i]){
+                                    case 'u':
+                                        xMagia[i]--;
+                                        break;
+                                    case 'd':
+                                        xMagia[i]++;
+                                        break;
+                                    case 'r':
+                                        yMagia[i]++;
+                                        break;
+                                    case 'l':
+                                        yMagia[i]--;
+                                        break;
+                                }
+                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                break;
+                            case 5:
+                                magia[i] = false;
+                                pacoteClient.playerHit = 5;
+                                pacoteClient.tipoPacote = 11;
+                                switch(direcaoMagia[i]){
+                                    case 'u':
+                                        xMagia[i]--;
+                                        break;
+                                    case 'd':
+                                        xMagia[i]++;
+                                        break;
+                                    case 'r':
+                                        yMagia[i]++;
+                                        break;
+                                    case 'l':
+                                        yMagia[i]--;
+                                        break;
+                                }
+                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                break;
+                            case 6:
+                                magia[i] = false;
+                                pacoteClient.playerHit = 6;
+                                pacoteClient.tipoPacote = 11;
+                                switch(direcaoMagia[i]){
+                                    case 'u':
+                                        xMagia[i]--;
+                                        break;
+                                    case 'd':
+                                        xMagia[i]++;
+                                        break;
+                                    case 'r':
+                                        yMagia[i]++;
+                                        break;
+                                    case 'l':
+                                        yMagia[i]--;
+                                        break;
+                                }
+                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                break;
+                            case 7:
+                                magia[i] = false;
+                                pacoteClient.playerHit = 7;
+                                pacoteClient.tipoPacote = 11;
+                                switch(direcaoMagia[i]){
+                                    case 'u':
+                                        xMagia[i]--;
+                                        break;
+                                    case 'd':
+                                        xMagia[i]++;
+                                        break;
+                                    case 'r':
+                                        yMagia[i]++;
+                                        break;
+                                    case 'l':
+                                        yMagia[i]--;
+                                        break;
+                                }
+                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                break;
+                            case 8:
+                                magia[i] = false;
+                                pacoteClient.playerHit = 8;
+                                pacoteClient.tipoPacote = 11;
+                                switch(direcaoMagia[i]){
+                                    case 'u':
+                                        xMagia[i]--;
+                                        break;
+                                    case 'd':
+                                        xMagia[i]++;
+                                        break;
+                                    case 'r':
+                                        yMagia[i]++;
+                                        break;
+                                    case 'l':
+                                        yMagia[i]--;
+                                        break;
+                                }
+                                sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
+                                break;
+                        }
+                        if(flecha[0] == true) printaFlechaRed(xFlecha[0], yFlecha[0], coeficiente[0], direcaoFlecha[0]);
+                        if(flecha[1] == true) printaFlechaBlue(xFlecha[1], yFlecha[1], coeficiente[1], direcaoFlecha[1]);
+                        if(magia[0] == true) printaMagiaRed(xMagia[0], yMagia[0], coeficienteMagia[0], direcaoMagia[0]);
+                        if(magia[1] == true) printaMagiaBlue(xMagia[1], yMagia[1], coeficienteMagia[1], direcaoMagia[1]);
+                    }
                 }
             }
 
@@ -703,20 +862,54 @@ int main(int argc, char const *argv[]){
 //------------------------------------------------------------------------------------------------------------------------------------------------------
 //-----AQUI ESTA FORA DA MAIN - FUNCOES AUXILIARES!
 //------------------------------------------------------------------------------------------------------------------------------------------------------
+void printaMagiaBlue(short int x, short int y, short int coeficiente, char direcaoMagia)
+{
+    switch(direcaoMagia){
+        case 'u':
+            al_draw_bitmap(bmagicu, TILE*y, TILE*(x-1) - coeficiente, 0);
+            break;
+        case 'd':
+            al_draw_bitmap(bmagicd, TILE*y, TILE*(x+1) + coeficiente, 0);
+            break;
+        case 'r':
+            al_draw_bitmap(bmagicr, TILE*(y+1) + coeficiente, TILE*x, 0);
+            break;
+        case 'l':
+            al_draw_bitmap(bmagicl, TILE*(y-1) - coeficiente, TILE*x, 0);
+            break;
+    }
+}
+void printaMagiaRed(short int x, short int y, short int coeficiente, char direcaoMagia)
+{
+    switch(direcaoMagia){
+        case 'u':
+            al_draw_bitmap(rmagicu, TILE*y, TILE*(x-1) - coeficiente, 0);
+            break;
+        case 'd':
+            al_draw_bitmap(rmagicd, TILE*y, TILE*(x+1) + coeficiente, 0);
+            break;
+        case 'r':
+            al_draw_bitmap(rmagicr, TILE*(y+1) + coeficiente, TILE*x, 0);
+            break;
+        case 'l':
+            al_draw_bitmap(rmagicl, TILE*(y-1) - coeficiente, TILE*x, 0);
+            break;
+    }
+}
 void printaFlechaBlue(short int x, short int y, short int coeficiente, char direcaoFlecha)
 {
     switch(direcaoFlecha){
         case 'u':
-            al_draw_bitmap(barrowu, TILE*y, TILE*x - coeficiente, 0);
+            al_draw_bitmap(barrowu, TILE*y, TILE*(x-1) - coeficiente, 0);
             break;
         case 'd':
-            al_draw_bitmap(barrowd, TILE*y, TILE*x + coeficiente, 0);
+            al_draw_bitmap(barrowd, TILE*y, TILE*(x+1) + coeficiente, 0);
             break;
         case 'r':
-            al_draw_bitmap(barrowr, TILE*y + coeficiente, TILE*x, 0);
+            al_draw_bitmap(barrowr, TILE*(y+1) + coeficiente, TILE*x, 0);
             break;
         case 'l':
-            al_draw_bitmap(barrowl, TILE*y - coeficiente, TILE*x, 0);
+            al_draw_bitmap(barrowl, TILE*(y-1) - coeficiente, TILE*x, 0);
             break;
     }
 }
@@ -725,16 +918,16 @@ void printaFlechaRed(short int x, short int y, short int coeficiente, char direc
 {
     switch(direcaoFlecha){
         case 'u':
-            al_draw_bitmap(rarrowu, TILE*y, TILE*x - coeficiente, 0);
+            al_draw_bitmap(rarrowu, TILE*y, TILE*(x-1) - coeficiente, 0);
             break;
         case 'd':
-            al_draw_bitmap(rarrowd, TILE*y, TILE*x + coeficiente, 0);
+            al_draw_bitmap(rarrowd, TILE*y, TILE*(x+1) + coeficiente, 0);
             break;
         case 'r':
-            al_draw_bitmap(rarrowr, TILE*y + coeficiente, TILE*x, 0);
+            al_draw_bitmap(rarrowr, TILE*(y+1) + coeficiente, TILE*x, 0);
             break;
         case 'l':
-            al_draw_bitmap(rarrowl, TILE*y - coeficiente, TILE*x, 0);
+            al_draw_bitmap(rarrowl, TILE*(y-1) - coeficiente, TILE*x, 0);
             break;
     }
 }

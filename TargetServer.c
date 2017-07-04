@@ -54,11 +54,8 @@ int main(){
 
     if(!fontInit()) //FONTES
         return -1;
-
-    bool server = true;
     
 
-    while(server){
         bool sair = false; // CONDICAO DE ENCERRAMENTO DO CLIENT 
         bool naoComeca = true;
 
@@ -425,8 +422,7 @@ int main(){
                                                 }
                                         }
                                         serverReset();
-                                        sair = true;
-                                        } // aqui a gente avisa pra galera que o alvo do time vermelho morreu, logo, o time vermelho perde e o time azul ganha
+                                        }
                                         if(teamPos[i] == nicknames.teamTarget[1]){
                                             for(j=0; j<6; j++){
                                                 if(teamPos[j] <= 5 && isValidId(j)){
@@ -440,8 +436,7 @@ int main(){
                                                 }
                                         }
                                         serverReset();
-                                        sair = true;
-                                        } else{ // aqui a gente avisa pra galera que o alvo do time azul morreu, logo, o time vermelho ganha e o time azul perde
+                                        } else{
                                             x = playersJogando[teamPos[i]].playerX;
                                             y = playersJogando[teamPos[i]].playerY;
                                             mudaMatriz.tag = 3;
@@ -568,7 +563,7 @@ int main(){
                                         for(i=0; i<6; i++){
                                             if(posicao[i][0] == -1) aux++;
                                         }
-                                        if(aux >= 4){ //&& naoComeca != false
+                                        if(aux >= 4){
                                             nicknames.aux = 0;
                                             posicao[id][0] = id;
                                             posicao[id][1] = -1;
@@ -611,7 +606,7 @@ int main(){
                             }
                             strcpy(nicknames.nicks[id], pacote.playerName);
                             for(i=0, idsValidos = 0, idsReady = 0; i<6; i++){
-                                if(isValidId(i)){ // && status[i] == false
+                                if(isValidId(i)){
                                     idsValidos++;
                                     if(status[i] == true) idsReady++;
                                 }
@@ -667,18 +662,18 @@ int main(){
                                 if(contadorVermelho > 0){
                                     nicknames.flagTarget = 1;
                                     nicknames.teamTarget[0] = 3 + rand()%contadorVermelho;
-                                    printf("O rand do red deu %d\n.", nicknames.teamTarget[0]);
-                                    for(p=3; p<=5; p++){
-                                        sendMsgToClient(&nicknames, sizeof(nicknames), playersJogando[p].playerID);
+                                    printf("O rand do red deu %d\nO contador vermelho eh %d\n.", nicknames.teamTarget[0], contadorVermelho);
+                                    for(p=0; p<contadorVermelho; p++){
+                                        sendMsgToClient(&nicknames, sizeof(nicknames), playersJogando[p+3].playerID);
                                     }
                                 }
                                 srand(time(NULL));
                                 if(contadorAzul > 0){
                                     nicknames.flagTarget = 2;
                                     nicknames.teamTarget[1] = 6 + rand()%contadorAzul;
-                                    printf("O rand do red deu %d\n.", nicknames.teamTarget[1]);
-                                    for(p=6; p<=8; p++){
-                                        sendMsgToClient(&nicknames, sizeof(nicknames), playersJogando[p].playerID);
+                                    printf("O rand do red deu %d\nO contador azul eh %d\n.", nicknames.teamTarget[1], contadorAzul);
+                                    for(p=0; p<contadorAzul; p++){
+                                        sendMsgToClient(&nicknames, sizeof(nicknames), playersJogando[p+6].playerID);
                                     }
                                 }
                             } else{
@@ -777,8 +772,7 @@ int main(){
                                         }
                                     }
                                     serverReset();
-                                    sair = true;
-                                } // aqui a gente avisa pra galera que o alvo do time vermelho morreu, logo, o time vermelho perde e o time azul ganha
+                                }
                                 if(teamPos[i] == nicknames.teamTarget[1]){
                                     for(j=0; j<6; j++){
                                         if(teamPos[j] <= 5 && isValidId(j)){
@@ -792,9 +786,7 @@ int main(){
                                         }
                                     }
                                     serverReset();
-                                    sair = true;
-                                } else{ // aqui a gente avisa pra galera que o alvo do time azul morreu, logo, o time vermelho ganha e o time azul perde
-                                //(naoComeca == true) ? (printf("O estado atual de naoComeca eh true.\n")) : (printf("O estado atual de naoComeca eh false\n"));
+                                } else{
                                     x = playersJogando[teamPos[i]].playerX;
                                     y = playersJogando[teamPos[i]].playerY;
                                     mudaMatriz.tag = 3;
@@ -866,8 +858,7 @@ int main(){
                                             }
                                     }
                                     serverReset();
-                                    sair = true;
-                                    } // aqui a gente avisa pra galera que o alvo do time vermelho morreu, logo, o time vermelho perde e o time azul ganha
+                                    }
                                     if(teamPos[i] == nicknames.teamTarget[1]){
                                         for(j=0; j<6; j++){
                                             if(teamPos[j] <= 5 && isValidId(j)){
@@ -881,8 +872,7 @@ int main(){
                                             }
                                     }
                                     serverReset();
-                                    sair = true;
-                                    } else{ // aqui a gente avisa pra galera que o alvo do time azul morreu, logo, o time vermelho ganha e o time azul perde
+                                    } else{
                                         x = playersJogando[teamPos[i]].playerX;
                                         y = playersJogando[teamPos[i]].playerY;
                                         mudaMatriz.tag = 3;
@@ -928,8 +918,7 @@ int main(){
             FPSLimit();
         }
 
-    }
-    //allegroEnd(); // FINALIZA O ALLEGRO, FECHA A PAGINA E ACABA COM A FILA DE EVENTOS
+    allegroEnd(); // FINALIZA O ALLEGRO, FECHA A PAGINA E ACABA COM A FILA DE EVENTOS
 
     return 0;
     

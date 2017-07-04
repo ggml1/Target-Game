@@ -567,9 +567,6 @@ int main(int argc, char const *argv[]){
                         strcpy(nickname, "<seu_nick>");
                         strcpy(nicknameTemp, "");
                     }
-                
-                // printf("Posicoes:\nAntiga: %d %d\nNova: %d %d\n", Alteracoes.oldx, Alteracoes.oldy, Alteracoes.newx, Alteracoes.newy);
-                // printf("Valor antigo: %d\n Valor novo: %d\n", map[Alteracoes.oldx][Alteracoes.oldy], map[Alteracoes.newx][Alteracoes.newy]);
             }
 
             if(gameOn == true && playerHP > 0){
@@ -746,7 +743,6 @@ int main(int argc, char const *argv[]){
                         if(flecha[1] == true) printaFlechaBlue(xFlecha[1], yFlecha[1], coeficiente[1], direcaoFlecha[1]);
                     }
                     if(magia[i] == true){
-                        printf("entrou no print da magia\n");
                         coeficienteMagia[i] += 32;
                         if(coeficienteMagia[i] > 32){
                             coeficienteMagia[i] = 0;
@@ -2026,11 +2022,11 @@ void printaHelp()
     al_draw_bitmap(downKey,  15*TILE + 15,  5*TILE + 20, 0);
     al_draw_bitmap(leftKey,   4*TILE + 20,       8*TILE, 0);
     al_draw_bitmap(rightKey, 15*TILE + 15,  7*TILE + 25, 0);
-    al_draw_bitmap(spaceTecla,     5*TILE + 110, 11*TILE - 5, 0);   ///5*tile + 0
+    al_draw_bitmap(spaceTecla,     5*TILE + 110, 11*TILE - 5, 0);
     al_draw_text(font_2, al_map_rgb(0,0,0), 600, 200, ALLEGRO_ALIGN_CENTRE , "DOWN");
     al_draw_text(font_2, al_map_rgb(0,0,0), 250, 270, ALLEGRO_ALIGN_CENTRE , "LEFT");
     al_draw_text(font_2, al_map_rgb(0,0,0), 600, 270, ALLEGRO_ALIGN_CENTRE , "RIGHT");
-    al_draw_text(font_2, al_map_rgb(0,0,0), 360, 315, ALLEGRO_ALIGN_CENTRE , "SPACE BAR");  ///250
+    al_draw_text(font_2, al_map_rgb(0,0,0), 360, 315, ALLEGRO_ALIGN_CENTRE , "SPACE BAR");
     al_draw_text(font_1, al_map_rgb(255,0,0), 100, 420, ALLEGRO_ALIGN_LEFT, "02. OBJECTIVE");
     al_draw_text(font_2, al_map_rgb(0,0,0), 200, 500, ALLEGRO_ALIGN_LEFT, "YOU MUST DEFEAT THE ENEMY TARGET");
     al_draw_text(font_2, al_map_rgb(0,0,0), 200, 540,  ALLEGRO_ALIGN_LEFT, "BEFORE THE ENEMY TEAM DEFEAT YOURS.");

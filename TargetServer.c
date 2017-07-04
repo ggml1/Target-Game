@@ -663,7 +663,7 @@ int main(){
                                         }
                                     }
                                 }
-                                srand((unsigned)time(NULL)); /////////////////////////////////////////////////////////////////////////////////////
+                                srand(3); /////////////////////////////////////////////////////////////////////////////////////
                                 if(contadorVermelho > 0){
                                     nicknames.flagTarget = 1;
                                     nicknames.teamTarget[0] = 3 + rand()%contadorVermelho;
@@ -672,7 +672,7 @@ int main(){
                                         sendMsgToClient(&nicknames, sizeof(nicknames), playersJogando[p].playerID);
                                     }
                                 }
-                                srand((unsigned)time(NULL));
+                                srand(3);
                                 if(contadorAzul > 0){
                                     nicknames.flagTarget = 2;
                                     nicknames.teamTarget[1] = 6 + rand()%contadorAzul;

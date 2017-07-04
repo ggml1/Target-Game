@@ -2025,11 +2025,11 @@ void printaHelp()
     al_draw_bitmap(downKey,  15*TILE + 15,  5*TILE + 20, 0);
     al_draw_bitmap(leftKey,   4*TILE + 20,       8*TILE, 0);
     al_draw_bitmap(rightKey, 15*TILE + 15,  7*TILE + 25, 0);
-    al_draw_bitmap(spaceTecla,     5*TILE, 11*TILE + 10, 0);
+    al_draw_bitmap(spaceTecla,     5*TILE + 110, 11*TILE - 5, 0);   ///5*tile + 0
     al_draw_text(font_2, al_map_rgb(0,0,0), 600, 200, ALLEGRO_ALIGN_CENTRE , "DOWN");
     al_draw_text(font_2, al_map_rgb(0,0,0), 250, 270, ALLEGRO_ALIGN_CENTRE , "LEFT");
     al_draw_text(font_2, al_map_rgb(0,0,0), 600, 270, ALLEGRO_ALIGN_CENTRE , "RIGHT");
-    al_draw_text(font_2, al_map_rgb(0,0,0), 250, 345, ALLEGRO_ALIGN_CENTRE , "SPACE BAR");
+    al_draw_text(font_2, al_map_rgb(0,0,0), 360, 315, ALLEGRO_ALIGN_CENTRE , "SPACE BAR");  ///250
     al_draw_text(font_1, al_map_rgb(255,0,0), 100, 420, ALLEGRO_ALIGN_LEFT, "02. OBJECTIVE");
     al_draw_text(font_2, al_map_rgb(0,0,0), 200, 500, ALLEGRO_ALIGN_LEFT, "YOU MUST DEFEAT THE ENEMY TARGET");
     al_draw_text(font_2, al_map_rgb(0,0,0), 200, 540,  ALLEGRO_ALIGN_LEFT, "BEFORE THE ENEMY TEAM DEFEAT YOURS.");
@@ -2048,11 +2048,10 @@ void printaMenuTeamSelection(bool notReady)
     al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 20, ALLEGRO_ALIGN_CENTRE, "TEAM LOBBY");
     al_draw_text(font_1, al_map_rgb(255,  0,  0), LARGURA/2 - 325, 110, ALLEGRO_ALIGN_CENTRE, "RED TEAM");
     al_draw_text(font_1, al_map_rgb(  0,  0,255), LARGURA/2 + 330, 110, ALLEGRO_ALIGN_CENTRE, "BLUE TEAM");
-    al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2, 640, ALLEGRO_ALIGN_CENTRE, "PRESS ESC TO RETURN TO MENU");
+    al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2, 660, ALLEGRO_ALIGN_CENTRE, "PRESS ESC TO RETURN TO MENU");
     al_draw_rectangle(LARGURA/3 - 310, 160,      LARGURA/3, 600, al_map_rgb(0, 0, 0), 5);
     al_draw_rectangle(LARGURA   - 345, 160,   LARGURA - 20, 600, al_map_rgb(0, 0, 0), 5);
-    if(notReady) al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2, 610, ALLEGRO_ALIGN_CENTRE, "WAITING FOR PLAYERS...");
-    else al_draw_text(font_2, al_map_rgb(0,255,0), LARGURA/2, 610, ALLEGRO_ALIGN_CENTRE, "EVERYONE IS READY!");
+    if(notReady) al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2, 630, ALLEGRO_ALIGN_CENTRE, "WAITING FOR PLAYERS...");
 }
 
 void printaNomes(Lobby *nomes)

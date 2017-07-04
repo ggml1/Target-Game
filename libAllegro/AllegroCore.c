@@ -457,5 +457,11 @@ bool loadGraphics()
         return false;
 
     }
+    trofeu_tela = al_load_bitmap("Resources/Etc/trofeu_tela.png");
+    if(!trofeu_tela){
+        fprintf(stderr, "Falha ao carregar a tela de vitoria.\n");
+        return false;
+
+    }
     return true;
 }

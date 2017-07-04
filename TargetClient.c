@@ -20,11 +20,15 @@ void printaInicio();
 void printaMenuTeamSelection(bool notReady);
 void printaNomes(Lobby *nomes);
 void mostraTelaMorte();
-void printaAtaque(char direcao, short int newx, short int newy);
+void printaAtaqueBlue(char direcao, short int newx, short int newy);
+void printaAtaqueRed(char direcao, short int newx, short int newy);
 void printaFlechaRed(short int x, short int y, short int coeficiente, char direcao);
 void printaFlechaBlue(short int x, short int y, short int coeficiente, char direcaoFlecha);
 void printaMagiaBlue(short int x, short int y, short int coeficiente, char direcaoMagia);
 void printaMagiaRed(short int x, short int y, short int coeficiente, char direcaoMagia);
+void printaTelaLoser();
+void printaTelaWinner();
+void printaTarget(short int targetDaqui);
 
 int main(int argc, char const *argv[]){
 
@@ -62,12 +66,15 @@ int main(int argc, char const *argv[]){
     bool menuConnection = false;
 	bool help = false;
 	bool credits = false;
+    bool winner = false;
+    bool loser = false;
     bool gameOn = false;
     bool teamSelection = false;
     bool pisca = false;
     bool receberMapa = false;
-    short int coeficiente[2] = { -12 };
-    short int coeficienteMagia[2] = { -12 };
+    short int targetDaqui;
+    short int coeficiente[2] = { 0 };
+    short int coeficienteMagia[2] = { 0 };
     short int xFlecha[2], yFlecha[2], xMagia[2], yMagia[2];
     short int count = 0;
     short int option = 0;
@@ -104,7 +111,6 @@ int main(int argc, char const *argv[]){
     Player pacoteClient, EU;
     Moves Alteracoes;
     Lobby nomes;
-    
 //-------------------------------------------------------------------------------------
     
     while(program)
@@ -446,6 +452,11 @@ int main(int argc, char const *argv[]){
                         printf("\n");
                     }
                 }
+                if(nomes.flagTarget == 1){
+                    targetDaqui = nomes.teamTarget[0];
+                } else if(nomes.flagTarget == 2){
+                    targetDaqui = nomes.teamTarget[1];
+                }
             }
 
             printaMenuTeamSelection(notReady);
@@ -530,9 +541,32 @@ int main(int argc, char const *argv[]){
                 else if(Alteracoes.tag == 3) map[Alteracoes.newx][Alteracoes.newy] = Alteracoes.botaBoneco;
                 else if(Alteracoes.tag == 4){
                     mostraTelaMorte();
+                    flag = 0;
+                    strcpy(ipOficial, "0.0.0.0");
+                    strcpy(ipTemp, "");
+                    strcpy(nickname, "<seu_nick>");
+                    strcpy(nicknameTemp, "");
                     gameOn = false;
                     menu = true;
-                } else if(Alteracoes.tag == 5) playerHP = Alteracoes.HP;
+                }   else if(Alteracoes.tag == 5) playerHP = Alteracoes.HP;
+                    else if(Alteracoes.tag == 20) {
+                        gameOn = false;
+                        winner = true;
+                        flag = 0;
+                        strcpy(ipOficial, "0.0.0.0");
+                        strcpy(ipTemp, "");
+                        strcpy(nickname, "<seu_nick>");
+                        strcpy(nicknameTemp, "");
+                    } 
+                    else if (Alteracoes.tag == 21) {
+                        gameOn = false;
+                        loser = true;
+                        flag = 0;
+                        strcpy(ipOficial, "0.0.0.0");
+                        strcpy(ipTemp, "");
+                        strcpy(nickname, "<seu_nick>");
+                        strcpy(nicknameTemp, "");
+                    }
                 
                 // printf("Posicoes:\nAntiga: %d %d\nNova: %d %d\n", Alteracoes.oldx, Alteracoes.oldy, Alteracoes.newx, Alteracoes.newy);
                 // printf("Valor antigo: %d\n Valor novo: %d\n", map[Alteracoes.oldx][Alteracoes.oldy], map[Alteracoes.newx][Alteracoes.newy]);
@@ -541,18 +575,22 @@ int main(int argc, char const *argv[]){
             if(gameOn){
                 printaMapa(map, &Alteracoes);
                 printaVida(playerHP);
+                printaTarget(targetDaqui);
 
                 if(Alteracoes.tag == 6){
                    direcao = Alteracoes.olhando[Alteracoes.idMoved];
-                   printaAtaque(direcao, Alteracoes.newx, Alteracoes.newy);
+                   if(Alteracoes.qualAtaque == 1) printaAtaqueBlue(direcao, Alteracoes.newx, Alteracoes.newy);
+                   else printaAtaqueRed(direcao, Alteracoes.newx, Alteracoes.newy);
                    Alteracoes.tag = 0; 
                 } else if(Alteracoes.tag == 7){
-                    flecha[Alteracoes.qualFlecha] = true;
-                    xFlecha[Alteracoes.qualFlecha] = Alteracoes.newx;
-                    yFlecha[Alteracoes.qualFlecha] = Alteracoes.newy;
-                    direcaoFlecha[Alteracoes.qualFlecha] = Alteracoes.olhandoFlecha;
-                    coeficiente[Alteracoes.qualFlecha] = 0;
-                    Alteracoes.tag = 0;
+                    if(!flecha[Alteracoes.qualFlecha]){
+                        flecha[Alteracoes.qualFlecha] = true;
+                        xFlecha[Alteracoes.qualFlecha] = Alteracoes.newx;
+                        yFlecha[Alteracoes.qualFlecha] = Alteracoes.newy;
+                        direcaoFlecha[Alteracoes.qualFlecha] = Alteracoes.olhandoFlecha;
+                        coeficiente[Alteracoes.qualFlecha] = 0;
+                        Alteracoes.tag = 0;
+                    }
                 } else if(Alteracoes.tag == 8){
                     magia[Alteracoes.qualFlecha] = true;
                     xMagia[Alteracoes.qualFlecha] = Alteracoes.newx;
@@ -560,12 +598,13 @@ int main(int argc, char const *argv[]){
                     direcaoMagia[Alteracoes.qualFlecha] = Alteracoes.olhandoMagia;
                     coeficienteMagia[Alteracoes.qualFlecha] = 0;
                     Alteracoes.tag = 0;
-                }
+                } 
+
                 for(i=0; i<2; i++){
                     if(flecha[i] == true){
-                        coeficiente[i] += 24;
+                        coeficiente[i] += 32;
                         if(coeficiente[i] > 32){
-                            coeficiente[i] = -12;
+                            coeficiente[i] = 0;
                             switch(direcaoFlecha[i]){
                                 case 'u':
                                     xFlecha[i]--;
@@ -708,9 +747,9 @@ int main(int argc, char const *argv[]){
                     }
                     if(magia[i] == true){
                         printf("entrou no print da magia\n");
-                        coeficienteMagia[i] += 24;
+                        coeficienteMagia[i] += 32;
                         if(coeficienteMagia[i] > 32){
-                            coeficienteMagia[i] = -12;
+                            coeficienteMagia[i] = 0;
                             switch(direcaoMagia[i]){
                                 case 'u':
                                     xMagia[i]--;
@@ -866,83 +905,89 @@ int main(int argc, char const *argv[]){
             al_clear_to_color(al_map_rgb(0,0,0));
             FPSLimit();
         }
+
+        while (winner){
+            startTimer();
+            while(!al_is_event_queue_empty(eventsQueue)){
+                ALLEGRO_EVENT event;
+                al_wait_for_event(eventsQueue, &event);
+                if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
+                if(event.type == ALLEGRO_EVENT_KEY_DOWN){
+                    winner = false;
+                    menu = true;
+                }
+            }
+
+            printaTelaWinner();
+
+            al_flip_display();
+            al_clear_to_color(al_map_rgb(0,0,0));
+            FPSLimit();
+        }
+
+        while (loser){
+            startTimer();
+            while(!al_is_event_queue_empty(eventsQueue)){
+                ALLEGRO_EVENT event;
+                al_wait_for_event(eventsQueue, &event);
+                if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
+                if(event.type == ALLEGRO_EVENT_KEY_DOWN){
+                    loser = false;
+                    menu = true;
+                }
+            }
+
+            printaTelaLoser();
+
+            al_flip_display();
+            al_clear_to_color(al_map_rgb(0,0,0));
+            FPSLimit();
+            
+        }
     }
     return 0;       
 }
 //------------------------------------------------------------------------------------------------------------------------------------------------------
 //-----AQUI ESTA FORA DA MAIN - FUNCOES AUXILIARES!
 //------------------------------------------------------------------------------------------------------------------------------------------------------
-void printaMagiaBlue(short int x, short int y, short int coeficiente, char direcaoMagia)
-{
-    switch(direcaoMagia){
-        case 'u':
-            al_draw_bitmap(bmagicu, TILE*y, TILE*(x-1) - coeficiente, 0);
+void printaTarget(short int targetDaqui)
+{   
+    switch(targetDaqui){
+        case 3:
+            al_draw_text(font_2, al_map_rgb(255,255,255), 32, 13, ALLEGRO_ALIGN_LEFT, "YOUR TEAM'S TARGET IS THE WARRIOR!");
             break;
-        case 'd':
-            al_draw_bitmap(bmagicd, TILE*y, TILE*(x+1) + coeficiente, 0);
+        case 4:
+            al_draw_text(font_2, al_map_rgb(255,255,255), 32, 13, ALLEGRO_ALIGN_LEFT, "YOUR TEAM'S TARGET IS THE MAGICIAN!");
             break;
-        case 'r':
-            al_draw_bitmap(bmagicr, TILE*(y+1) + coeficiente, TILE*x, 0);
+        case 5:
+            al_draw_text(font_2, al_map_rgb(255,255,255), 32, 13, ALLEGRO_ALIGN_LEFT, "YOUR TEAM'S TARGET IS THE ARCHER!");
             break;
-        case 'l':
-            al_draw_bitmap(bmagicl, TILE*(y-1) - coeficiente, TILE*x, 0);
+        case 6:
+            al_draw_text(font_2, al_map_rgb(255,255,255), 32, 13, ALLEGRO_ALIGN_LEFT, "YOUR TEAM'S TARGET IS THE WARRIOR!");
             break;
-    }
-}
-void printaMagiaRed(short int x, short int y, short int coeficiente, char direcaoMagia)
-{
-    switch(direcaoMagia){
-        case 'u':
-            al_draw_bitmap(rmagicu, TILE*y, TILE*(x-1) - coeficiente, 0);
+        case 7:
+            al_draw_text(font_2, al_map_rgb(255,255,255), 32, 13, ALLEGRO_ALIGN_LEFT, "YOUR TEAM'S TARGET IS THE MAGICIAN!");
             break;
-        case 'd':
-            al_draw_bitmap(rmagicd, TILE*y, TILE*(x+1) + coeficiente, 0);
-            break;
-        case 'r':
-            al_draw_bitmap(rmagicr, TILE*(y+1) + coeficiente, TILE*x, 0);
-            break;
-        case 'l':
-            al_draw_bitmap(rmagicl, TILE*(y-1) - coeficiente, TILE*x, 0);
+        case 8:
+            al_draw_text(font_2, al_map_rgb(255,255,255), 32, 13, ALLEGRO_ALIGN_LEFT, "YOUR TEAM'S TARGET IS THE ARCHER!");
             break;
     }
 }
-void printaFlechaBlue(short int x, short int y, short int coeficiente, char direcaoFlecha)
+void printaTelaLoser()
 {
-    switch(direcaoFlecha){
-        case 'u':
-            al_draw_bitmap(barrowu, TILE*y, TILE*(x-1) - coeficiente, 0);
-            break;
-        case 'd':
-            al_draw_bitmap(barrowd, TILE*y, TILE*(x+1) + coeficiente, 0);
-            break;
-        case 'r':
-            al_draw_bitmap(barrowr, TILE*(y+1) + coeficiente, TILE*x, 0);
-            break;
-        case 'l':
-            al_draw_bitmap(barrowl, TILE*(y-1) - coeficiente, TILE*x, 0);
-            break;
-    }
+    al_draw_bitmap(telaMorte, 0, 0, 0);
+    al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 50, ALLEGRO_ALIGN_CENTRE, "LOSER");
+    al_draw_text(font_1, al_map_rgb(255,0,0), LARGURA/2 + 10, 345, ALLEGRO_ALIGN_CENTRE, "SORRY, BUT YOU LOST. HOPE YOU HAD FUN.");
+    al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2 - 20, 411, ALLEGRO_ALIGN_CENTRE, "PRESS ANY KEY TO RETURN AND TRY AGAIN.");
 }
-
-void printaFlechaRed(short int x, short int y, short int coeficiente, char direcaoFlecha)
+void printaTelaWinner()
 {
-    switch(direcaoFlecha){
-        case 'u':
-            al_draw_bitmap(rarrowu, TILE*y, TILE*(x-1) - coeficiente, 0);
-            break;
-        case 'd':
-            al_draw_bitmap(rarrowd, TILE*y, TILE*(x+1) + coeficiente, 0);
-            break;
-        case 'r':
-            al_draw_bitmap(rarrowr, TILE*(y+1) + coeficiente, TILE*x, 0);
-            break;
-        case 'l':
-            al_draw_bitmap(rarrowl, TILE*(y-1) - coeficiente, TILE*x, 0);
-            break;
-    }
+    al_draw_bitmap(trofeu_tela, 0, 0, 0);
+    al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 50, ALLEGRO_ALIGN_CENTRE, "WINNER");
+    al_draw_text(font_1, al_map_rgb(255,0,0), LARGURA/2 + 10, 345, ALLEGRO_ALIGN_CENTRE, "CONGRATULATIONS, YOU WON! HOPE YOU HAD FUN.");
+    al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2 - 20, 411, ALLEGRO_ALIGN_CENTRE, "PRESS ANY KEY TO RETURN AND PLAY AGAIN.");
 }
-
-void printaAtaque(char direcao, short int newx, short int newy)
+void printaAtaqueRed(char direcao, short int newx, short int newy)
 {
     switch(direcao){
         case 'u':
@@ -956,6 +1001,94 @@ void printaAtaque(char direcao, short int newx, short int newy)
             break;
         case 'r':
             al_draw_bitmap(rslashr, TILE*newy + 32, TILE*newx - 32, 0);
+            break;
+    }
+}
+
+void printaAtaqueBlue(char direcao, short int newx, short int newy)
+{
+    switch(direcao){
+        case 'u':
+            al_draw_bitmap(bslashu, TILE*newy - 32, TILE*newx - 32, 0);
+            break;
+        case 'd':
+            al_draw_bitmap(bslashd, TILE*newy - 32, TILE*newx + 32, 0);
+            break;
+        case 'l':
+            al_draw_bitmap(bslashl, TILE*newy - 32, TILE*newx - 32, 0);
+            break;
+        case 'r':
+            al_draw_bitmap(bslashr, TILE*newy + 32, TILE*newx - 32, 0);
+            break;
+    }
+}
+
+void printaMagiaBlue(short int x, short int y, short int coeficiente, char direcaoMagia)
+{
+    switch(direcaoMagia){
+        case 'u':
+            al_draw_bitmap(bmagicu, TILE*y, TILE*x - coeficiente, 0);
+            break;
+        case 'd':
+            al_draw_bitmap(bmagicd, TILE*y, TILE*x + coeficiente, 0);
+            break;
+        case 'r':
+            al_draw_bitmap(bmagicr, TILE*y + coeficiente, TILE*x, 0);
+            break;
+        case 'l':
+            al_draw_bitmap(bmagicl, TILE*y - coeficiente, TILE*x, 0);
+            break;
+    }
+}
+void printaMagiaRed(short int x, short int y, short int coeficiente, char direcaoMagia)
+{
+    switch(direcaoMagia){
+        case 'u':
+            al_draw_bitmap(rmagicu, TILE*y, TILE*x - coeficiente, 0);
+            break;
+        case 'd':
+            al_draw_bitmap(rmagicd, TILE*y, TILE*x + coeficiente, 0);
+            break;
+        case 'r':
+            al_draw_bitmap(rmagicr, TILE*y + coeficiente, TILE*x, 0);
+            break;
+        case 'l':
+            al_draw_bitmap(rmagicl, TILE*y - coeficiente, TILE*x, 0);
+            break;
+    }
+}
+void printaFlechaBlue(short int x, short int y, short int coeficiente, char direcaoFlecha)
+{
+    switch(direcaoFlecha){
+        case 'u':
+            al_draw_bitmap(barrowu, TILE*y, TILE*x - coeficiente, 0);
+            break;
+        case 'd':
+            al_draw_bitmap(barrowd, TILE*y, TILE*x + coeficiente, 0);
+            break;
+        case 'r':
+            al_draw_bitmap(barrowr, TILE*y + coeficiente, TILE*x, 0);
+            break;
+        case 'l':
+            al_draw_bitmap(barrowl, TILE*y - coeficiente, TILE*x, 0);
+            break;
+    }
+}
+
+void printaFlechaRed(short int x, short int y, short int coeficiente, char direcaoFlecha)
+{
+    switch(direcaoFlecha){
+        case 'u':
+            al_draw_bitmap(rarrowu, TILE*y, TILE*x - coeficiente, 0);
+            break;
+        case 'd':
+            al_draw_bitmap(rarrowd, TILE*y, TILE*x + coeficiente, 0);
+            break;
+        case 'r':
+            al_draw_bitmap(rarrowr, TILE*y + coeficiente, TILE*x, 0);
+            break;
+        case 'l':
+            al_draw_bitmap(rarrowl, TILE*y - coeficiente, TILE*x, 0);
             break;
     }
 }
@@ -1001,8 +1134,8 @@ void mostraTelaMorte()
             }
             if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
         }
+
         al_draw_bitmap(telaMorte, 0, 0, 0);
-        al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 50, ALLEGRO_ALIGN_CENTRE, "GAME OVER");
         al_draw_text(font_1, al_map_rgb(255,0,0), LARGURA/2 + 10, 345, ALLEGRO_ALIGN_CENTRE, "SORRY, BUT YOU DIED. HOPE YOU HAD FUN.");
         al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2 - 20, 391, ALLEGRO_ALIGN_CENTRE, "PRESS ANY KEY TO RETURN AND TRY AGAIN.");
         al_flip_display();
@@ -1766,11 +1899,21 @@ void printaMapa(short int map[][32], Moves *Alteracoes)
 
                             case 10:
                                 if(j > 15){
-                                    al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
-                                    al_draw_bitmap_region(Dungeon_B, 10*TILE, 15*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    if( ( j>=27 && j<=29 ) && (i>=1 && i<=3) ){
+                                        al_draw_bitmap(blue, TILE*j, TILE*i, 0);
+                                        al_draw_bitmap_region(Dungeon_B, 10*TILE, 15*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    } else{
+                                        al_draw_bitmap_region(Dungeon_A2, 0*TILE, 10*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                        al_draw_bitmap_region(Dungeon_B, 10*TILE, 15*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    }
                                 } else{
-                                    al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
-                                    al_draw_bitmap_region(Dungeon_B, 10*TILE, 14*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    if( (j >=2 && j <=4) && (i>=20 && i<=22) ){
+                                        al_draw_bitmap(red, TILE*j, TILE*i, 0);
+                                        al_draw_bitmap_region(Dungeon_B, 10*TILE, 15*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    } else{
+                                        al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                        al_draw_bitmap_region(Dungeon_B, 10*TILE, 14*TILE, 32, 32, TILE*j, TILE*i, 0);
+                                    }
                                 }
                                 break;
                             case 11:

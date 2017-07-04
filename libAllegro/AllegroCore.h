@@ -74,6 +74,7 @@ ALLEGRO_BITMAP *rslashu;
 ALLEGRO_BITMAP *rslashr;
 ALLEGRO_BITMAP *rslashl;
 ALLEGRO_BITMAP *rslashd;
+ALLEGRO_BITMAP *trofeu_tela;
 
 typedef struct{
 	short int esq_dir;
@@ -92,17 +93,21 @@ typedef struct{
 }Player;
 
 typedef struct{
+	short int flagTarget;
 	short int posicao[6][3];
 	short int qtdPlayers;
 	short int situacao[6];
 	short int aux;
 	char nicks[6][10];
 	bool comecaJogo;
+	short int teamTarget[2];
 }Lobby;
 
 typedef struct{
 	//int tipoPacote; nao precisa, pois o server mandara pro client e o client nao precisa ter um switch case de opcoes de moves.
+	short int qualTime;
 	short int qualFlecha;
+	short int qualAtaque;
 	short int tag;
 	short int HP;
 	short int oldx;

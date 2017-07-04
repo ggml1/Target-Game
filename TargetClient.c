@@ -913,8 +913,10 @@ int main(int argc, char const *argv[]){
                 al_wait_for_event(eventsQueue, &event);
                 if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
                 if(event.type == ALLEGRO_EVENT_KEY_DOWN){
-                    winner = false;
-                    menu = true;
+                    if(event.type == ALLEGRO_KEY_ESCAPE){
+                        winner = false;
+                        menu = true;
+                    }
                 }
             }
 
@@ -932,8 +934,10 @@ int main(int argc, char const *argv[]){
                 al_wait_for_event(eventsQueue, &event);
                 if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
                 if(event.type == ALLEGRO_EVENT_KEY_DOWN){
-                    loser = false;
-                    menu = true;
+                    if(event.type == ALLEGRO_KEY_ESCAPE){
+                        loser = false;
+                        menu = true;
+                    }
                 }
             }
 
@@ -978,14 +982,14 @@ void printaTelaLoser()
     al_draw_bitmap(telaMorte, 0, 0, 0);
     al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 50, ALLEGRO_ALIGN_CENTRE, "LOSER");
     al_draw_text(font_1, al_map_rgb(255,0,0), LARGURA/2 + 10, 345, ALLEGRO_ALIGN_CENTRE, "SORRY, BUT YOU LOST. HOPE YOU HAD FUN.");
-    al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2 - 20, 411, ALLEGRO_ALIGN_CENTRE, "PRESS ANY KEY TO RETURN AND TRY AGAIN.");
+    al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2 - 20, 411, ALLEGRO_ALIGN_CENTRE, "PRESS ESC TO RETURN AND TRY AGAIN.");
 }
 void printaTelaWinner()
 {
     al_draw_bitmap(trofeu_tela, 0, 0, 0);
     al_draw_text(font_1, al_map_rgb(255,255,255), LARGURA/2, 50, ALLEGRO_ALIGN_CENTRE, "WINNER");
     al_draw_text(font_1, al_map_rgb(255,0,0), LARGURA/2 + 10, 345, ALLEGRO_ALIGN_CENTRE, "CONGRATULATIONS, YOU WON! HOPE YOU HAD FUN.");
-    al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2 - 20, 411, ALLEGRO_ALIGN_CENTRE, "PRESS ANY KEY TO RETURN AND PLAY AGAIN.");
+    al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2 - 20, 411, ALLEGRO_ALIGN_CENTRE, "PRESS ESC TO RETURN AND PLAY AGAIN.");
 }
 void printaAtaqueRed(char direcao, short int newx, short int newy)
 {
@@ -1130,14 +1134,14 @@ void mostraTelaMorte()
             ALLEGRO_EVENT event;
             al_wait_for_event(eventsQueue, &event);
             if(event.type == ALLEGRO_EVENT_KEY_DOWN){
-                vdd = 0;
+                if(event.type == ALLEGRO_KEY_ESCAPE) vdd = 0;
             }
             if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
         }
 
         al_draw_bitmap(telaMorte, 0, 0, 0);
         al_draw_text(font_1, al_map_rgb(255,0,0), LARGURA/2 + 10, 345, ALLEGRO_ALIGN_CENTRE, "SORRY, BUT YOU DIED. HOPE YOU HAD FUN.");
-        al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2 - 20, 391, ALLEGRO_ALIGN_CENTRE, "PRESS ANY KEY TO RETURN AND TRY AGAIN.");
+        al_draw_text(font_2, al_map_rgb(255,0,0), LARGURA/2 - 20, 391, ALLEGRO_ALIGN_CENTRE, "PRESS ESC TO RETURN AND TRY AGAIN.");
         al_flip_display();
         al_clear_to_color(al_map_rgb(0,0,0));
         FPSLimit();

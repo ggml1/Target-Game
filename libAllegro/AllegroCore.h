@@ -95,6 +95,7 @@ typedef struct{
 typedef struct{
 	short int flagTarget;
 	short int posicao[6][3];
+	short int personagem[6][3];
 	short int qtdPlayers;
 	short int situacao[6];
 	short int aux;

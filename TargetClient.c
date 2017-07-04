@@ -572,7 +572,7 @@ int main(int argc, char const *argv[]){
                 // printf("Valor antigo: %d\n Valor novo: %d\n", map[Alteracoes.oldx][Alteracoes.oldy], map[Alteracoes.newx][Alteracoes.newy]);
             }
 
-            if(gameOn){
+            if(gameOn == true && playerHP > 0){
                 printaMapa(map, &Alteracoes);
                 printaVida(playerHP);
                 printaTarget(targetDaqui);
@@ -1127,10 +1127,10 @@ void printaVida(short int HP)
 void mostraTelaMorte()
 {
     int vdd = 1;
+    printf("---------------Player morreu.---------------\n");
     while(vdd){
         startTimer();
         while(!al_is_event_queue_empty(eventsQueue)){
-            printf("Player morreu.\n");
             ALLEGRO_EVENT event;
             al_wait_for_event(eventsQueue, &event);
             if(event.type == ALLEGRO_EVENT_KEY_DOWN){
@@ -2063,86 +2063,218 @@ void printaNomes(Lobby *nomes)
                 case 0:
                     if(j == 0){
                         al_draw_textf(font_1,al_map_rgb(255,0,0), (LARGURA/3) - 160, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[0]);
-                        if(nomes->situacao[0] == true)
-                        al_draw_text(font_1,al_map_rgb(0,0,0),(LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "X");
+                        if(nomes->situacao[0] == true){
+                            switch(nomes->personagem[i][j]){
+                                case 3:
+                                    al_draw_bitmap_region(tileSet, 0*TILE, 6*TILE, 32, 32, (LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                    break;
+                                case 4:
+                                    al_draw_bitmap_region(tileSet, 1*TILE, 6*TILE, 32, 32, (LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                    break;
+                                case 5:
+                                    al_draw_bitmap_region(tileSet, 2*TILE, 6*TILE, 32, 32, (LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                    break;
+                            }
+                        }
                     }
-                    else if(j == 1)
-                        al_draw_textf(font_1,al_map_rgb(0,0,0), (LARGURA/3)*2 - 175, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[0]);
+                    else if(j == 1) al_draw_textf(font_1,al_map_rgb(0,0,0), (LARGURA/3)*2 - 175, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[0]);
                     else{
+                        if(nomes->situacao[0] == true){
+                            switch(nomes->personagem[i][j]){
+                                    case 6:
+                                        al_draw_bitmap_region(tileSet, 0*TILE, 2*TILE, 32, 32, (LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                        break;
+                                    case 7:
+                                        al_draw_bitmap_region(tileSet, 1*TILE, 2*TILE, 32, 32, (LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                        break;
+                                    case 8:
+                                        al_draw_bitmap_region(tileSet, 2*TILE, 2*TILE, 32, 32, (LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                        break;
+                            }
+                        }
                         al_draw_textf(font_1,al_map_rgb(0,0,255), (LARGURA/3)*3 - 180, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[0]);
-                        if(nomes->situacao[0] == true)
-                        al_draw_text(font_1,al_map_rgb(0,0,0),(LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "X");
                     }
 
                     break;
                 case 1:
                     if(j == 0){
                         al_draw_textf(font_1,al_map_rgb(255,0,0), (LARGURA/3) - 160, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[1]);
-                        if(nomes->situacao[1] == true)
-                        al_draw_text(font_1,al_map_rgb(0,0,0),(LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "X");
+                        if(nomes->situacao[1] == true){
+                            switch(nomes->personagem[i][j]){
+                                case 3:
+                                    al_draw_bitmap_region(tileSet, 0*TILE, 6*TILE, 32, 32, (LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                    break;
+                                case 4:
+                                    al_draw_bitmap_region(tileSet, 1*TILE, 6*TILE, 32, 32, (LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                    break;
+                                case 5:
+                                    al_draw_bitmap_region(tileSet, 2*TILE, 6*TILE, 32, 32, (LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                    break;
+                            }
+                        }
+                        //al_draw_text(font_1,al_map_rgb(0,0,0),(LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "X");
                     }
                     else if(j == 1)
                         al_draw_textf(font_1,al_map_rgb(0,0,0), (LARGURA/3)*2 - 175, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[1]);
                     else{
                         al_draw_textf(font_1,al_map_rgb(0,0,255), (LARGURA/3)*3 - 180, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[1]);
-                        if(nomes->situacao[1] == true)
-                        al_draw_text(font_1,al_map_rgb(0,0,0),(LARGURA/3)*2 - 25 , 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "X");
+                        if(nomes->situacao[1] == true){
+                            switch(nomes->personagem[i][j]){
+                                    case 6:
+                                        al_draw_bitmap_region(tileSet, 0*TILE, 2*TILE, 32, 32, (LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                        break;
+                                    case 7:
+                                        al_draw_bitmap_region(tileSet, 1*TILE, 2*TILE, 32, 32, (LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                        break;
+                                    case 8:
+                                        al_draw_bitmap_region(tileSet, 2*TILE, 2*TILE, 32, 32, (LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                        break;
+                            }
+                        }
                     }
                     break;
                 case 2:
                     if(j == 0){
                         al_draw_textf(font_1,al_map_rgb(255,0,0), (LARGURA/3) - 160, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[2]);
-                        if(nomes->situacao[2] == true)
-                        al_draw_text(font_1,al_map_rgb(0,0,0),(LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "X");
+                        if(nomes->situacao[2] == true){
+                            switch(nomes->personagem[i][j]){
+                                case 3:
+                                    al_draw_bitmap_region(tileSet, 0*TILE, 6*TILE, 32, 32, (LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                    break;
+                                case 4:
+                                    al_draw_bitmap_region(tileSet, 1*TILE, 6*TILE, 32, 32, (LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                    break;
+                                case 5:
+                                    al_draw_bitmap_region(tileSet, 2*TILE, 6*TILE, 32, 32, (LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                    break;
+                            }
+                        }
                     }
                     else if(j == 1)
                         al_draw_textf(font_1,al_map_rgb(0,0,0), (LARGURA/3)*2 - 175, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[2]);
                     else{
                         al_draw_textf(font_1,al_map_rgb(0,0,255), (LARGURA/3)*3 - 180, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[2]);
-                        if(nomes->situacao[2] == true)
-                        al_draw_text(font_1,al_map_rgb(0,0,0),(LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "X");
+                        if(nomes->situacao[2] == true){
+                            switch(nomes->personagem[i][j]){
+                                    case 6:
+                                        al_draw_bitmap_region(tileSet, 0*TILE, 2*TILE, 32, 32, (LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                        break;
+                                    case 7:
+                                        al_draw_bitmap_region(tileSet, 1*TILE, 2*TILE, 32, 32, (LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                        break;
+                                    case 8:
+                                        al_draw_bitmap_region(tileSet, 2*TILE, 2*TILE, 32, 32, (LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                        break;
+                            }
+                        }
                     }
                     break;
                 case 3:
                     if(j == 0){
                         al_draw_textf(font_1,al_map_rgb(255,0,0), (LARGURA/3) - 160, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[3]);
-                        if(nomes->situacao[3] == true)
-                        al_draw_text(font_1,al_map_rgb(0,0,0),(LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "X");
+                        if(nomes->situacao[3] == true){
+                            switch(nomes->personagem[i][j]){
+                                case 3:
+                                    al_draw_bitmap_region(tileSet, 0*TILE, 6*TILE, 32, 32, (LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                    break;
+                                case 4:
+                                    al_draw_bitmap_region(tileSet, 1*TILE, 6*TILE, 32, 32, (LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                    break;
+                                case 5:
+                                    al_draw_bitmap_region(tileSet, 2*TILE, 6*TILE, 32, 32, (LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                    break;
+                            }
+                        }
                     }
                     else if(j == 1)
                         al_draw_textf(font_1,al_map_rgb(0,0,0), (LARGURA/3)*2 - 175, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[3]);
                     else{
                         al_draw_textf(font_1,al_map_rgb(0,0,255), (LARGURA/3)*3 - 180, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[3]);
-                        if(nomes->situacao[3] == true)
-                        al_draw_text(font_1,al_map_rgb(0,0,0),(LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "X");
+                        if(nomes->situacao[3] == true){
+                            switch(nomes->personagem[i][j]){
+                                    case 6:
+                                        al_draw_bitmap_region(tileSet, 0*TILE, 2*TILE, 32, 32, (LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                        break;
+                                    case 7:
+                                        al_draw_bitmap_region(tileSet, 1*TILE, 2*TILE, 32, 32, (LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                        break;
+                                    case 8:
+                                        al_draw_bitmap_region(tileSet, 2*TILE, 2*TILE, 32, 32, (LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                        break;
+                            }
+                        }
                     }
                     break;
                 case 4:
                     if(j == 0){
                         al_draw_textf(font_1,al_map_rgb(255,0,0), (LARGURA/3) - 160, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[4]);
-                        if(nomes->situacao[4] == true)
-                        al_draw_text(font_1,al_map_rgb(0,0,0),(LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "X");
+                        if(nomes->situacao[4] == true){
+                            switch(nomes->personagem[i][j]){
+                                case 3:
+                                    al_draw_bitmap_region(tileSet, 0*TILE, 6*TILE, 32, 32, (LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                    break;
+                                case 4:
+                                    al_draw_bitmap_region(tileSet, 1*TILE, 6*TILE, 32, 32, (LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                    break;
+                                case 5:
+                                    al_draw_bitmap_region(tileSet, 2*TILE, 6*TILE, 32, 32, (LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                    break;
+                            }
+                        }
                     }
                     else if(j == 1)
                         al_draw_textf(font_1,al_map_rgb(0,0,0), (LARGURA/3)*2 - 175, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[4]);
                     else{
                         al_draw_textf(font_1,al_map_rgb(0,0,255), (LARGURA/3)*3 - 180, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[4]);
-                        if(nomes->situacao[4] == true)
-                        al_draw_text(font_1,al_map_rgb(0,0,0),(LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "X");
+                        if(nomes->situacao[4] == true){
+                            switch(nomes->personagem[i][j]){
+                                    case 6:
+                                        al_draw_bitmap_region(tileSet, 0*TILE, 2*TILE, 32, 32, (LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                        break;
+                                    case 7:
+                                        al_draw_bitmap_region(tileSet, 1*TILE, 2*TILE, 32, 32, (LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                        break;
+                                    case 8:
+                                        al_draw_bitmap_region(tileSet, 2*TILE, 2*TILE, 32, 32, (LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                        break;
+                            }
+                        }
                     }
                     break;
                 case 5:
                     if(j == 0){
                         al_draw_textf(font_1,al_map_rgb(255,0,0), (LARGURA/3) - 160, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[5]);
-                        if(nomes->situacao[5] == true)
-                        al_draw_text(font_1,al_map_rgb(0,0,0),(LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "X");
+                        if(nomes->situacao[5] == true){
+                            switch(nomes->personagem[i][j]){
+                                case 3:
+                                    al_draw_bitmap_region(tileSet, 0*TILE, 6*TILE, 32, 32, (LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                    break;
+                                case 4:
+                                    al_draw_bitmap_region(tileSet, 1*TILE, 6*TILE, 32, 32, (LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                    break;
+                                case 5:
+                                    al_draw_bitmap_region(tileSet, 2*TILE, 6*TILE, 32, 32, (LARGURA/3) + 20, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                    break;
+                            }
+                        }
                     }
                     else if(j == 1)
                         al_draw_textf(font_1,al_map_rgb(0,0,0), (LARGURA/3)*2 - 175, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[5]);
                     else{
                         al_draw_textf(font_1,al_map_rgb(0,0,255), (LARGURA/3)*3 - 180, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[5]);
-                        if(nomes->situacao[5] == true)
-                        al_draw_text(font_1,al_map_rgb(0,0,0),(LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "X");
+                        if(nomes->situacao[5] == true){
+                            switch(nomes->personagem[i][j]){
+                                    case 6:
+                                        al_draw_bitmap_region(tileSet, 0*TILE, 2*TILE, 32, 32, (LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                        break;
+                                    case 7:
+                                        al_draw_bitmap_region(tileSet, 1*TILE, 2*TILE, 32, 32, (LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                        break;
+                                    case 8:
+                                        al_draw_bitmap_region(tileSet, 2*TILE, 2*TILE, 32, 32, (LARGURA/3)*2 - 25, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE);
+                                        break;
+                            }
+                        }
                     }
                     break;
             }

@@ -663,7 +663,7 @@ int main(){
                                         }
                                     }
                                 }
-                                srand(3); /////////////////////////////////////////////////////////////////////////////////////
+                                srand(time(NULL)); /////////////////////////////////////////////////////////////////////////////////////
                                 if(contadorVermelho > 0){
                                     nicknames.flagTarget = 1;
                                     nicknames.teamTarget[0] = 3 + rand()%contadorVermelho;
@@ -672,13 +672,47 @@ int main(){
                                         sendMsgToClient(&nicknames, sizeof(nicknames), playersJogando[p].playerID);
                                     }
                                 }
-                                srand(3);
+                                srand(time(NULL));
                                 if(contadorAzul > 0){
                                     nicknames.flagTarget = 2;
                                     nicknames.teamTarget[1] = 6 + rand()%contadorAzul;
                                     printf("O rand do red deu %d\n.", nicknames.teamTarget[1]);
                                     for(p=6; p<=8; p++){
                                         sendMsgToClient(&nicknames, sizeof(nicknames), playersJogando[p].playerID);
+                                    }
+                                }
+                            } else{
+                                for(i=0, contadorAzul = 0, contadorVermelho = 0; i<6; i++){
+                                    for(j=0; j<3; j++){
+                                        if(posicao[i][j] != -1){
+                                            if(j == 0){
+                                                contadorVermelho++;
+                                                switch(contadorVermelho){
+                                                    case 1:
+                                                        nicknames.personagem[i][j] = 3;
+                                                        break;
+                                                    case 2:
+                                                        nicknames.personagem[i][j] = 4;
+                                                        break;
+                                                    case 3:
+                                                        nicknames.personagem[i][j] = 5;
+                                                        break;
+                                                }
+                                            } else if(j == 2){
+                                                contadorAzul++;
+                                                switch(contadorAzul){
+                                                    case 1:
+                                                        nicknames.personagem[i][j] = 6;
+                                                        break;
+                                                    case 2:
+                                                        nicknames.personagem[i][j] = 7;
+                                                        break;
+                                                    case 3:
+                                                        nicknames.personagem[i][j] = 8;
+                                                        break;
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }

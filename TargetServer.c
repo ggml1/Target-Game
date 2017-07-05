@@ -43,20 +43,20 @@ short int posicao[6][3] = {{-1, -1, -1},
 bool status[6];
  
 int main(){
-    if(!coreInit()) //INICIA OS MODULOS PRINCIPAIS DO ALLEGRO
+    if(!coreInit())
         return -1;
     
-    if (!windowInit(150, 100, "SERVER")) // CRIA A JANELA DO SERVER
+    if (!windowInit(300, 200, "Target Server"))
         return -1;
     
-    if(!inputInit()) //SOMENTE O KEYBOARD ESTA SENDO INICIALIZADO
+    if(!inputInit())
         return -1;
 
-    if(!fontInit()) //FONTES
+    if(!fontInit())
         return -1;
     
 
-    bool sair = false; // CONDICAO DE ENCERRAMENTO DO CLIENT 
+    bool sair = false;
     bool naoComeca = true;
 
     short int idsValidos, idsReady;
@@ -78,7 +78,7 @@ int main(){
         status[i] = false;
     }
     
-    serverInit(6); // INICIALIZA O SERVER E PERMITE NO MAX. 6 CLIENTS
+    serverInit(6);
     sair = false;
         
     while(!sair)
@@ -88,7 +88,7 @@ int main(){
         if(naoComeca == false) id = acceptConnection(0);
         else id = acceptConnection(1);
         if(id != NO_CONNECTION){
-            printf("-----Alguem se conectou com ID %d.\n", id);
+            printf("-----Alguem se conectou. ID -> [%d].\n", id);
         }
         
         chegou = recvMsg(&pacote);
@@ -96,12 +96,12 @@ int main(){
         {
             id = chegou.client_id;
             switch(pacote.tipoPacote){
-                case playerFlagMSG: //0
-                    printf("%s se conectou com o id %d\n", pacote.playerName, chegou.client_id); //chegou.client_id = id;
+                case playerFlagMSG:
+                    printf("%s se conectou com o id %d\n", pacote.playerName, chegou.client_id);
                     playerList[id] = pacote;
                     break;
 
-                case playerAction: //1
+                case playerAction:
                     if(pacote.mov != 's') mudaMatriz.tag = 1;
                     switch(pacote.mov){
                         case 'u':
@@ -201,10 +201,8 @@ int main(){
                                     mudaMatriz.qualAtaque = 0;
                                     mudaMatriz.newx = x;
                                     mudaMatriz.newy = y;
-                                    // aux = mudaMatriz.idMoved;
                                     mudaMatriz.idMoved = teamPos[id];
                                     broadcast(&mudaMatriz, sizeof(mudaMatriz));
-                                    // mudaMatriz.idMoved = aux;
                                     mudaMatriz.tag = 5;
                                     switch(mudaMatriz.olhando[teamPos[id]]){
                                         case 'u':
@@ -305,15 +303,12 @@ int main(){
                                     mudaMatriz.qualAtaque = 1;
                                     mudaMatriz.newx = x;
                                     mudaMatriz.newy = y;
-                                    // aux = mudaMatriz.idMoved;
                                     mudaMatriz.idMoved = teamPos[id];
                                     broadcast(&mudaMatriz, sizeof(mudaMatriz));
-                                    // mudaMatriz.idMoved = aux;
                                     mudaMatriz.tag = 5;
                                     switch(mudaMatriz.olhando[teamPos[id]]){
                                         case 'u':
                                             if(mapa[x-1][y-1] == 3 || mapa[x-1][y] == 3 || mapa[x-1][y+1] == 3){
-                                                printf("**Player [%d] foi atingido pelo player 6.\n", playersJogando[3].playerID);
                                                 playersJogando[3].HP-=8;
                                                 mudaMatriz.HP = playersJogando[3].HP;
                                                 sendMsgToClient(&mudaMatriz, sizeof(mudaMatriz), playersJogando[3].playerID);
@@ -420,10 +415,9 @@ int main(){
                                                 sendMsgToClient(&mudaMatriz, sizeof(mudaMatriz), j);
                                                 disconnectClient(j);
                                             }
-                                    }
-                                    serverReset();
-                                    }
-                                    if(teamPos[i] == nicknames.teamTarget[1]){
+                                        }
+                                        serverReset();
+                                    } else if(teamPos[i] == nicknames.teamTarget[1]){
                                         for(j=0; j<6; j++){
                                             if(teamPos[j] <= 5 && isValidId(j)){
                                                 mudaMatriz.tag = 20;
@@ -434,8 +428,8 @@ int main(){
                                                 sendMsgToClient(&mudaMatriz, sizeof(mudaMatriz), j);
                                                 disconnectClient(j);
                                             }
-                                    }
-                                    serverReset();
+                                        }
+                                        serverReset();
                                     } else{
                                         x = playersJogando[teamPos[i]].playerX;
                                         y = playersJogando[teamPos[i]].playerY;
@@ -454,8 +448,7 @@ int main(){
                     mudaMatriz.tag = 0;
                     break;
 
-                case playerLogIn: /////////////////////////////////////////////////////////////////////2
-                    //player logou no server. hora de mostrar onde ele fica.
+                case playerLogIn:
                     mudaMatriz.tag = 3;
                     switch(teamPos[id]){
                         case 3:
@@ -597,9 +590,9 @@ int main(){
                                 for(j=0; j<3; j++) nicknames.posicao[i][j] = -1;
                             } else{
                                 for(j=0; j<3; j++){
-                                    printf("Nicknames ta recebendo [%d] na posicao [%d][%d]\n", posicao[i][j], i, j);
+                                    printf("O client de ID [%d] esta na posicao [%d][%d].\n", posicao[i][j], i, j);
                                     nicknames.posicao[i][j] = posicao[i][j];
-                                    printf("NOME -> %s, Time -> %d \n", nicknames.nicks[i], pacote.mov);
+                                    printf("NOME -> %s, Time -> %d \n\n", nicknames.nicks[i], pacote.mov);
                                 }
                             }
                             printf("\n");
@@ -658,17 +651,28 @@ int main(){
                                     }
                                 }
                             }
-                            srand(time(NULL)); /////////////////////////////////////////////////////////////////////////////////////
-                            if(contadorVermelho > 0){
+                            if(contadorVermelho == 0){
+                                nicknames.flagTarget = 3;
+                                for(p=0; p<contadorAzul; p++){
+                                    sendMsgToClient(&nicknames, sizeof(nicknames), playersJogando[p+6].playerID);
+                                }
+                            }
+                            else if(contadorAzul == 0){
+                                nicknames.flagTarget = 3;
+                                for(p=0; p<contadorVermelho; p++){
+                                    sendMsgToClient(&nicknames, sizeof(nicknames), playersJogando[p+3].playerID);
+                                }
+                            } else{
+                                ///////vermelho
+                                srand(time(NULL));
                                 nicknames.flagTarget = 1;
                                 nicknames.teamTarget[0] = 3 + rand()%contadorVermelho;
                                 printf("O rand do red deu %d\nO contador vermelho eh %d\n.", nicknames.teamTarget[0], contadorVermelho);
                                 for(p=0; p<contadorVermelho; p++){
                                     sendMsgToClient(&nicknames, sizeof(nicknames), playersJogando[p+3].playerID);
                                 }
-                            }
-                            srand(time(NULL));
-                            if(contadorAzul > 0){
+                                ///////azul
+                                srand(time(NULL));
                                 nicknames.flagTarget = 2;
                                 nicknames.teamTarget[1] = 6 + rand()%contadorAzul;
                                 printf("O rand do red deu %d\nO contador azul eh %d\n.", nicknames.teamTarget[1], contadorAzul);
@@ -772,8 +776,7 @@ int main(){
                                     }
                                 }
                                 serverReset();
-                            }
-                            if(teamPos[i] == nicknames.teamTarget[1]){
+                            } else if(teamPos[i] == nicknames.teamTarget[1]){
                                 for(j=0; j<6; j++){
                                     if(teamPos[j] <= 5 && isValidId(j)){
                                         mudaMatriz.tag = 20;
@@ -856,10 +859,9 @@ int main(){
                                             sendMsgToClient(&mudaMatriz, sizeof(mudaMatriz), j);
                                             disconnectClient(j);
                                         }
-                                }
-                                serverReset();
-                                }
-                                if(teamPos[i] == nicknames.teamTarget[1]){
+                                    }
+                                    serverReset();
+                                } else if(teamPos[i] == nicknames.teamTarget[1]){
                                     for(j=0; j<6; j++){
                                         if(teamPos[j] <= 5 && isValidId(j)){
                                             mudaMatriz.tag = 20;
@@ -870,8 +872,8 @@ int main(){
                                             sendMsgToClient(&mudaMatriz, sizeof(mudaMatriz), j);
                                             disconnectClient(j);
                                         }
-                                }
-                                serverReset();
+                                    }
+                                    serverReset();
                                 } else{
                                     x = playersJogando[teamPos[i]].playerX;
                                     y = playersJogando[teamPos[i]].playerY;

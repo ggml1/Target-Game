@@ -52,14 +52,15 @@ int main(int argc, char const *argv[]){
     if(!loadGraphics())
         return -1;
  
-    //PROGRAM == false (CONDICAO PARA O JOGO FECHAR)
     char direcao;
     char direcaoFlecha[2], direcaoMagia[2];
+
     bool flecha[2], magia[2];
     flecha[1] = false;
     flecha[0] = false;
     magia[0] = false;
     magia[1] = false;
+
 	bool program = true;
     bool inicio = true;
     bool menu = false;
@@ -72,11 +73,12 @@ int main(int argc, char const *argv[]){
     bool teamSelection = false;
     bool pisca = false;
     bool receberMapa = false;
+
     short int targetDaqui;
+    short int playerHP;
     short int coeficiente[2] = { 0 };
     short int coeficienteMagia[2] = { 0 };
     short int xFlecha[2], yFlecha[2], xMagia[2], yMagia[2];
-    short int count = 0;
     short int option = 0;
     short int conecta = 0;
     short int flag = 0;
@@ -106,12 +108,11 @@ int main(int argc, char const *argv[]){
                              {1, -91, 55, 55, 55, -91, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2,  2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
                              {1,  -9, 55, 55, 55,  -9, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  2,  2,  2,  2,  2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
                              {1,   1,  1,  1,  1,   1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}};
-    short int playerHP;
 
-    Player pacoteClient, EU;
+    Player pacoteClient;
     Moves Alteracoes;
     Lobby nomes;
-//-------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------------------------------------
     
     while(program)
     {
@@ -149,13 +150,13 @@ int main(int argc, char const *argv[]){
                 al_wait_for_event(eventsQueue, &event);
                 if(event.type == ALLEGRO_EVENT_KEY_DOWN)
                     switch(event.keyboard.keycode){
-                        case ALLEGRO_KEY_UP:                     // APERTA PRA CIMA ELE SOBE, PERMITINDO O LOOP ENTRE OPCAO 1 E 4
+                        case ALLEGRO_KEY_UP:
                             option = (option + 3)%4;
                             break;
-                        case ALLEGRO_KEY_DOWN:                   // APERTA PRA BAIXO ELE DESCE, PERMITINDO LOOP ENTRE OPCAO 4 E 1
+                        case ALLEGRO_KEY_DOWN:
                             option = (option + 1)%4;
                             break;
-                        case ALLEGRO_KEY_ENTER:                  // APERTOU ENTER E VAI ESCOLHER A OPCAO 
+                        case ALLEGRO_KEY_ENTER:
                             switch(option){
                 				case 0: 
                     				menuConnection = true;
@@ -182,7 +183,7 @@ int main(int argc, char const *argv[]){
                             inicio = true;
                             break;
     		        }
-                if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();   // APERTOU O 'X' DA JANELA
+                if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
 
                 printaMenuOpcoes(option);
 
@@ -341,7 +342,6 @@ int main(int argc, char const *argv[]){
                                 case 1:
                                     menuConnection = false;
                                     teamSelection = true;
-                                    //receberMapa = true;
                                     strcpy(pacoteClient.playerName, nickname);
                                     break;
                             }
@@ -400,7 +400,7 @@ int main(int argc, char const *argv[]){
                             pacoteClient.flag = 0;
 
                             if(nomes.aux == 0) pacoteClient.mov--;
-                            else pacoteClient.mov = pacoteClient.mov - 2;
+                            else pacoteClient.mov -= 2;
 
                             pacoteClient.esq_dir = 'l';
 
@@ -444,23 +444,22 @@ int main(int argc, char const *argv[]){
                 if(nomes.comecaJogo == true){
                     teamSelection = false;
                     receberMapa = true;
-                } else{
-                    for(i=0; i<6; i++){
-                        for(j=0; j<3; j++){
-                            printf("%d ", nomes.posicao[i][j]);
-                        }
-                        printf("\n");
-                    }
                 }
                 if(nomes.flagTarget == 1){
                     targetDaqui = nomes.teamTarget[0];
                 } else if(nomes.flagTarget == 2){
                     targetDaqui = nomes.teamTarget[1];
+                } else if(nomes.flagTarget == 3){
+                    teamSelection = false;
+                    receberMapa = false;
+                    winner = true;
                 }
             }
 
-            printaMenuTeamSelection(notReady);
-            printaNomes(&nomes);
+            if(!winner){
+                printaMenuTeamSelection(notReady);
+                printaNomes(&nomes);
+            }
 
             al_flip_display();
             al_clear_to_color(al_map_rgb(0,0,0));
@@ -470,7 +469,6 @@ int main(int argc, char const *argv[]){
         while(receberMapa){
             pacoteClient.tipoPacote = 2;
             sendMsgToServer(&pacoteClient, sizeof(pacoteClient));
-            printf("Recebi pra entrar!\n");
             if(recvMsgFromServer(&Alteracoes, WAIT_FOR_IT) == sizeof(Alteracoes)){
                 if(Alteracoes.tag == 1){
                     if(Alteracoes.oldy < 16){
@@ -481,8 +479,6 @@ int main(int argc, char const *argv[]){
                 } else{
                     playerHP += Alteracoes.HP;
                 }
-                // printf("Posicoes:\nAntiga: %d %d\nNova: %d %d\n", Alteracoes.oldx, Alteracoes.oldy, Alteracoes.newx, Alteracoes.newy);
-                // printf("Valor antigo: %d\n Valor novo: %d\n", map[Alteracoes.oldx][Alteracoes.oldy], map[Alteracoes.newx][Alteracoes.newy]);
             }
             for(i=0; i<6; i++) Alteracoes.olhando[3+i] = 'd';
             playerHP = 48;
@@ -1261,7 +1257,7 @@ void printaMapa(short int map[][32], Moves *Alteracoes)
                                 al_draw_bitmap_region(Dungeon_A2, 5*TILE, 6*TILE, 32, 32, TILE*j, TILE*i, 0);
                                 al_draw_bitmap_region(Dungeon_B, 2*TILE, 7*TILE, 32, 32, TILE*j, TILE*i, 0);
                                 break;
-                            //////////PLAYERS
+                            //////////////////////PLAYERS -> de 3 a 8.
                             case 3:
                                 switch(Alteracoes->olhando[3]){
                                     case 'u':
@@ -1838,7 +1834,7 @@ void printaMapa(short int map[][32], Moves *Alteracoes)
                                         break;
                                 }
                                 break;
-                            //////////PLAYERS
+                            //////////////////////PLAYERS
 
                             case 9:
                                 al_draw_bitmap(blue, TILE*j, TILE*i, 0);
@@ -1879,7 +1875,7 @@ void printaMapa(short int map[][32], Moves *Alteracoes)
                                 al_draw_bitmap(blue, TILE*j, TILE*i, 0);
                                 break;
 
-                            case 30: // LAPIDE, OK.  //LAPIDE NAO PEGA. VIROU CAVEIRA. ??
+                            case 30:
                                 if(j > 15){
                                     if( ( j>=27 && j<=29 ) && (i>=1 && i<=3) ){
                                         al_draw_bitmap(blue, TILE*j, TILE*i, 0);
@@ -2110,8 +2106,7 @@ void printaNomes(Lobby *nomes)
                             }
                         }
                     }
-                    else if(j == 1)
-                        al_draw_textf(font_1,al_map_rgb(0,0,0), (LARGURA/3)*2 - 175, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[1]);
+                    else if(j == 1) al_draw_textf(font_1,al_map_rgb(0,0,0), (LARGURA/3)*2 - 175, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[1]);
                     else{
                         al_draw_textf(font_1,al_map_rgb(0,0,255), (LARGURA/3)*3 - 180, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[1]);
                         if(nomes->situacao[1] == true){
@@ -2146,8 +2141,7 @@ void printaNomes(Lobby *nomes)
                             }
                         }
                     }
-                    else if(j == 1)
-                        al_draw_textf(font_1,al_map_rgb(0,0,0), (LARGURA/3)*2 - 175, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[2]);
+                    else if(j == 1) al_draw_textf(font_1,al_map_rgb(0,0,0), (LARGURA/3)*2 - 175, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[2]);
                     else{
                         al_draw_textf(font_1,al_map_rgb(0,0,255), (LARGURA/3)*3 - 180, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[2]);
                         if(nomes->situacao[2] == true){
@@ -2182,8 +2176,7 @@ void printaNomes(Lobby *nomes)
                             }
                         }
                     }
-                    else if(j == 1)
-                        al_draw_textf(font_1,al_map_rgb(0,0,0), (LARGURA/3)*2 - 175, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[3]);
+                    else if(j == 1) al_draw_textf(font_1,al_map_rgb(0,0,0), (LARGURA/3)*2 - 175, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[3]);
                     else{
                         al_draw_textf(font_1,al_map_rgb(0,0,255), (LARGURA/3)*3 - 180, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[3]);
                         if(nomes->situacao[3] == true){
@@ -2218,8 +2211,7 @@ void printaNomes(Lobby *nomes)
                             }
                         }
                     }
-                    else if(j == 1)
-                        al_draw_textf(font_1,al_map_rgb(0,0,0), (LARGURA/3)*2 - 175, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[4]);
+                    else if(j == 1) al_draw_textf(font_1,al_map_rgb(0,0,0), (LARGURA/3)*2 - 175, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[4]);
                     else{
                         al_draw_textf(font_1,al_map_rgb(0,0,255), (LARGURA/3)*3 - 180, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[4]);
                         if(nomes->situacao[4] == true){
@@ -2254,8 +2246,7 @@ void printaNomes(Lobby *nomes)
                             }
                         }
                     }
-                    else if(j == 1)
-                        al_draw_textf(font_1,al_map_rgb(0,0,0), (LARGURA/3)*2 - 175, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[5]);
+                    else if(j == 1) al_draw_textf(font_1,al_map_rgb(0,0,0), (LARGURA/3)*2 - 175, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[5]);
                     else{
                         al_draw_textf(font_1,al_map_rgb(0,0,255), (LARGURA/3)*3 - 180, 170 + i*FATOR, ALLEGRO_ALIGN_CENTRE, "%s", nomes->nicks[5]);
                         if(nomes->situacao[5] == true){

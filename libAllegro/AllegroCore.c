@@ -48,7 +48,6 @@ bool coreInit()
 
 bool windowInit(int W, int H, char title[])
 {
-    //window and event queue creation
     main_window = al_create_display(W, H);
     if (!main_window)
     {
@@ -57,7 +56,6 @@ bool windowInit(int W, int H, char title[])
     }
     al_set_window_title(main_window, title);
 
-    //registra janela na fila de eventos
     al_register_event_source(eventsQueue, al_get_display_event_source(main_window));
 
     return true;
@@ -100,7 +98,7 @@ bool inputInit()
     return true;
 }
 
-bool fontInit() // O NOME DA FONTE EH "font_1"
+bool fontInit()
 {
     /*------------------------------FONTE--------------------------------*/
     font_1 = al_load_font("Resources/Fonts/Boxy-Bold.ttf", 45, 0);

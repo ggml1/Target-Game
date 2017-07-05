@@ -79,17 +79,17 @@ ALLEGRO_BITMAP *trofeu_tela;
 typedef struct{
 	short int esq_dir;
 	short int flag;
-	short int tipoPacote;				// 0 -> msg inicial (nickname), 1 - > movimento
+	short int tipoPacote;
     short int HP;
     short int playerX;
     short int playerY;
+    short int playerID;
+    short int playerHit;
+    short int timeFlecha;
     char playerName[16];
     char mov;
 	bool situacao;	
     bool saiu;
-    short int playerID;
-    short int playerHit;
-    short int timeFlecha;
 }Player;
 
 typedef struct{
@@ -99,13 +99,12 @@ typedef struct{
 	short int qtdPlayers;
 	short int situacao[6];
 	short int aux;
+	short int teamTarget[2];
 	char nicks[6][10];
 	bool comecaJogo;
-	short int teamTarget[2];
 }Lobby;
 
 typedef struct{
-	//int tipoPacote; nao precisa, pois o server mandara pro client e o client nao precisa ter um switch case de opcoes de moves.
 	short int qualTime;
 	short int qualFlecha;
 	short int qualAtaque;
@@ -116,20 +115,20 @@ typedef struct{
 	short int newx;
 	short int newy;
 	short int idMoved;
+	short int botaBoneco;
 	char olhando[9];
 	char olhandoFlecha;
 	char olhandoMagia;
-	short int botaBoneco;
 }Moves;
 
-//Funções Centrais da Allegro
+//Funções centrais da Allegro
 bool coreInit();
 bool windowInit(int W, int H, char title[]);
 bool inputInit();
 bool fontInit();
 void allegroEnd();
 
-//Funções para Controle da quantidade de Frames por Segundo
+//Funções para controle da quantidade de Frames por Segundo (FPS)
 void startTimer();
 bool Blink();
 void startTimerBlink();
@@ -137,7 +136,7 @@ double getTimer();
 double getTimerBlink();
 void FPSLimit();
 
-//Função de Carregamento de Gráficos
+//Função para carregamento de gráficos
 bool loadGraphics();
 
 #endif

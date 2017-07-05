@@ -907,6 +907,11 @@ int main(int argc, char const *argv[]){
                     if(event.keyboard.keycode == ALLEGRO_KEY_ESCAPE){
                         winner = false;
                         menu = true;
+                        flag = 0;
+                        strcpy(ipOficial, "0.0.0.0");
+                        strcpy(ipTemp, "");
+                        strcpy(nickname, "<seu_nick>");
+                        strcpy(nicknameTemp, "");
                     }
                 }
             
@@ -929,6 +934,11 @@ int main(int argc, char const *argv[]){
                     if(event.keyboard.keycode == ALLEGRO_KEY_ESCAPE){
                         loser = false;
                         menu = true;
+                        flag = 0;
+                        strcpy(ipOficial, "0.0.0.0");
+                        strcpy(ipTemp, "");
+                        strcpy(nickname, "<seu_nick>");
+                        strcpy(nicknameTemp, "");
                     }
                 }
                 if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) allegroEnd();
